@@ -31,13 +31,13 @@ public class IndexerStitch {
 	public IndexerStitch() {}
 	 public static void main(String[] args) {
 		 Date start = new Date();
-		    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
+		    final Path docDir = Paths.get("/home/depot/2A/gmd/projet_2016-17/stitch/chemical.sources.v5.0.tsv");
 		    
 		   try {
 			   
-		      System.out.println("Indexing to directory '" + "C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv" + "'...");
+		      System.out.println("Indexing to directory '" + "/home/depot/2A/gmd/projet_2016-17/stitch/chemical.sources.v5.0.tsv" + "'...");
 
-		     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
+		     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Donnï¿½es/stitch"));
 		      Analyzer analyzer = new StandardAnalyzer();
 		     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		     iwc.setOpenMode(OpenMode.CREATE);
@@ -135,7 +135,7 @@ public class IndexerStitch {
 		      // Note that FileReader expects the file to be in UTF-8 encoding.
 		      // If that's not the case searching for special characters will fail.
 		    
-		    	  //On passe les 9 premiÃ¨res lignes du fichiers qui ne nous intéressent pas;
+		    	  //On passe les 9 premiÃ¨res lignes du fichiers qui ne nous intï¿½ressent pas;
     		  line=br.readLine();
     		  	int cpt = 0;
 		    	 while(cpt < 9){
@@ -165,7 +165,7 @@ public class IndexerStitch {
 		        // New index, so we just add the document (no old document can be there):
 		        System.out.println("adding " + file);
 		        writer.addDocument(doc);
-		        System.out.println("Nombre d'éléments : "+eltCount);
+		        System.out.println("Nombre d'ï¿½lï¿½ments : "+eltCount);
 		      } else {
 		        // Existing index (an old copy of this document may have been indexed) so 
 		        // we use updateDocument instead to replace the old one matching the exact 
