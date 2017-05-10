@@ -30,75 +30,47 @@ public class IndexerStitch {
 
 	public IndexerStitch() {}
 	 public static void main(String[] args) {
-		    String usage = "java org.apache.lucene.demo.IndexFiles"
-		                 + " [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n\n"
-		                 + "This indexes the documents in DOCS_PATH, creating a Lucene index"
-		                 + "in INDEX_PATH that can be searched with SearchFiles";
-		    String indexPath = "index";
-		    String docsPath = null;
-		    boolean create = true;
-		    for(int i=0;i<args.length;i++) {
-		      if ("-index".equals(args[i])) {
-		        indexPath = args[i+1];
-		        i++;
-		      } else if ("-docs".equals(args[i])) {
-		        docsPath = args[i+1];
-		        i++;
-		      } else if ("-update".equals(args[i])) {
-		        create = false;
-		      }
-		    }
-		
-		    if (docsPath == null) {
-		      System.err.println("Usage: " + usage);
-		      System.exit(1);
-		    }
-		
-		    final Path docDir = Paths.get(docsPath);
-		    if (!Files.isReadable(docDir)) {
-		      System.out.println("Document directory '" +docDir.toAbsolutePath()+ "' does not exist or is not readable, please check the path");
-		      System.exit(1);
-		    }
+		 Date start = new Date();
+		    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
 		    
-		    Date start = new Date();
-		    try {
-		      System.out.println("Indexing to directory '" + indexPath + "'...");
-		
-		      Directory dir = FSDirectory.open(Paths.get(indexPath));
+		   try {
+			   
+		      System.out.println("Indexing to directory '" + "C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv" + "'...");
+
+		     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
 		      Analyzer analyzer = new StandardAnalyzer();
-		      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-		
-		      if (create) {
-		        // Create a new index in the directory, removing any
-		        // previously indexed documents:
-		        iwc.setOpenMode(OpenMode.CREATE);
-		      } else {
-		        // Add new documents to an existing index:
-		        iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-		      }
-		
+		     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+		     iwc.setOpenMode(OpenMode.CREATE);
+		     
+
+		      // Optional: for better indexing performance, if you
+		      // are indexing many documents, increase the RAM
+		    // buffer.  But if you do this, increase the max heap
+		      // size to the JVM (eg add -Xmx512m or -Xmx1g):
+		      //
+		     // iwc.setRAMBufferSizeMB(256.0);
+
 		      IndexWriter writer = new IndexWriter(dir, iwc);
-		      indexDocs(writer, docDir);
-		
-		      // NOTE: if you want to maximize search performance,
+		     indexDocs(writer, docDir);
+
+		     // NOTE: if you want to maximize search performance,
 		      // you can optionally call forceMerge here.  This can be
 		      // a terribly costly operation, so generally it's only
 		      // worth it when your index is relatively static (ie
 		      // you're done adding documents to it):
-		      //
+		     //
 		      // writer.forceMerge(1);
-		
+
 		      writer.close();
-		
+
 		      Date end = new Date();
 		      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		
+
 		    } catch (IOException e) {
 		      System.out.println(" caught a " + e.getClass() +
 		       "\n with message: " + e.getMessage());
 		    }
 		  }
-		
 		  /**
 		135   * Indexes the given file using the given writer, or if a directory is given,
 		136   * recurses over files and directories found under the given directory.
@@ -162,30 +134,38 @@ public class IndexerStitch {
 		      // so that the text of the file is tokenized and indexed, but not stored.
 		      // Note that FileReader expects the file to be in UTF-8 encoding.
 		      // If that's not the case searching for special characters will fail.
-		      while ((line=br.readLine())!=null){
-		    	  //On passe les 9 premiÃ¨res lignes du fichiers qui ne nous intÃ©ressent pas;
-		    	  for (int i=0;i<9;i++){
+		    
+		    	  //On passe les 9 premiÃ¨res lignes du fichiers qui ne nous intéressent pas;
+    		  line=br.readLine();
+    		  	int cpt = 0;
+		    	 while(cpt < 9){
 		    		  line=br.readLine();
-		    	  }
-		    	  while (line.split("    ")[2].equals("ATC")){
-		    			  String contenuChamp1=line.split("    ")[0];
+		    		  cpt++;
+		    	 }
+		    	 String[] tampon = line.split("\t");
+		    	 System.out.println(tampon[2]);
+		    	  while (tampon[2].equals("ATC")){
+		    		  
+		    			  String contenuChamp1=tampon[0];
 		    			  doc.add(new TextField("CID1",contenuChamp1,Field.Store.NO));
-		    			  String contenuChamp2=line.split("    ")[1];
+		    			  String contenuChamp2=tampon[1];
 		    			  doc.add(new TextField("CID2",contenuChamp1,Field.Store.NO));
-		    			  String contenuChamp3=line.split("    ")[3];
+		    			  String contenuChamp3=tampon[3];
 		    			  doc.add(new StoredField("ATC",contenuChamp3));		    		  
 		    			  line=br.readLine();
+		    			  tampon = line.split("\t");
+		    			  eltCount++;
 		    	  }
-		    	  eltCount++;
+		    	 
 		    	  
-		      }
+		      
 		      
 		      
 		      if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 		        // New index, so we just add the document (no old document can be there):
 		        System.out.println("adding " + file);
 		        writer.addDocument(doc);
-		        System.out.println("Nombre d'Ã©lÃ©ments : "+eltCount);
+		        System.out.println("Nombre d'éléments : "+eltCount);
 		      } else {
 		        // Existing index (an old copy of this document may have been indexed) so 
 		        // we use updateDocument instead to replace the old one matching the exact 
