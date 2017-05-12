@@ -31,7 +31,7 @@ public class Sider {
 		    {
 		    	
 		    }*/
-		    String query = "SELECT stitch_compound_id1,stitch_compound_id2 FROM meddra_all_se WHERE side_effect_name REGEXP (\"" + where + "\");";
+		    String query = "SELECT DISTINCT stitch_compound_id1,stitch_compound_id2 FROM meddra_all_se WHERE side_effect_name REGEXP (\"" + where + "\");";
 		    statement = connexion.createStatement();
 		    
 		    result = statement.executeQuery(query);
@@ -67,7 +67,11 @@ public class Sider {
 		return stitch_ids;
 	}
 	public static void main(String[] args) {
-		ArrayList<String[]> data = Sider.GetSiderData(new String[] {"* pain"});
-		SearchStitch.SearchStitch(data.get(0));
+		Date start = new Date();
+		ArrayList<String[]> data = Sider.GetSiderData(new String[] {"Ankylosing spondylitis"});
+		ArrayList<String> ATC = SearchStitch.SearchStitch(data);
+		ArrayList<String> Label = SearchATC.SearchATC(ATC);
+		Date end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
 }

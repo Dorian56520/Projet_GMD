@@ -37,7 +37,7 @@ public class IndexerStitch {
 			   
 		      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/index" + "'...");
 
-		     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/index"));
+		     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch"));
 		      Analyzer analyzer = new StandardAnalyzer();
 		     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		     iwc.setOpenMode(OpenMode.CREATE);
@@ -135,7 +135,6 @@ public class IndexerStitch {
 		      // Note that FileReader expects the file to be in UTF-8 encoding.
 		      // If that's not the case searching for special characters will fail.
 		    
-		    	  //On passe les 9 premiÃ¨res lignes du fichiers qui ne nous intï¿½ressent pas;
     		  line=br.readLine();
     		  	int cpt = 0;
 		    	 while(cpt < 9){
@@ -143,9 +142,8 @@ public class IndexerStitch {
 		    		  cpt++;
 		    	 }
 		    	 String[] tampon = line.split("\t");
-		    	 System.out.println(tampon[2]);
 		    	  while (tampon[2].equals("ATC")){
-		    		  
+		    		  	  doc = new Document();
 		    			  String contenuChamp1=tampon[0];
 		    			  doc.add(new TextField("CID1",contenuChamp1,Field.Store.NO));
 		    			  String contenuChamp2=tampon[1];
@@ -154,6 +152,7 @@ public class IndexerStitch {
 		    			  doc.add(new StoredField("ATC",contenuChamp3));		    		  
 		    			  line=br.readLine();
 		    			  tampon = line.split("\t");
+		    			  writer.addDocument(doc);
 		    			  eltCount++;
 		    	  }
 		    	 
@@ -165,7 +164,7 @@ public class IndexerStitch {
 		        // New index, so we just add the document (no old document can be there):
 		        System.out.println("adding " + file);
 		        writer.addDocument(doc);
-		        System.out.println("Nombre d'ï¿½lï¿½ments : "+eltCount);
+		        System.out.println("Nombre d'éléments : "+eltCount);
 		      } else {
 		        // Existing index (an old copy of this document may have been indexed) so 
 		        // we use updateDocument instead to replace the old one matching the exact 
