@@ -1,4 +1,4 @@
-package Main;
+package Search;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -38,14 +38,18 @@ public class SearchATC {
 				ScoreDoc[] hits = results.scoreDocs;
 				for(ScoreDoc scoredoc: hits)
 				{
-					   LabelList.add(searcher.doc(scoredoc.doc).getField("Label").stringValue());
+					String value = searcher.doc(scoredoc.doc).getField("Label").stringValue();
+					if(!LabelList.contains(value))
+					   LabelList.add(value);
 				}
 			}
 		}
 		catch(Exception e){}
 		Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		System.out.println("Nb match Label : " + LabelList.size());
+	      System.out.println("---------------------------");
+	    System.out.println(end.getTime() - start.getTime() + " ATC milliseconds");
+		System.out.println("ATC match : " + LabelList.size());
+	      System.out.println("---------------------------");
 		return LabelList;
 	}
 }

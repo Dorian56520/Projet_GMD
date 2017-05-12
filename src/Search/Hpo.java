@@ -1,4 +1,4 @@
-package Main;
+package Search;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

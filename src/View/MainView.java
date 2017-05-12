@@ -21,68 +21,60 @@ public class MainView extends ImagePanel implements Observer{
 	 */
 	JPanel north = new JPanel();
 	JPanel center = new JPanel(new GridLayout(1,3));
-
-	JScrollPane JSsigne;
-	JScrollPane JSdisease;
-	JScrollPane JSdrug;
 	
-	JPanel GJPsigne = new JPanel(new GridLayout(5,1));
-	JPanel GJPdisease = new JPanel(new GridLayout(5,1));
-	JPanel GJPdrug = new JPanel(new GridLayout(5,1));
+	JScrollPane JSsign;
 	
-	JPanel BJPsigne = new JPanel(new BorderLayout());
-	JPanel BJPdisease = new JPanel(new BorderLayout());
-	JPanel BJPdrug = new JPanel(new BorderLayout());
+	JPanel GJPsign = new JPanel(new GridLayout(5,1));
+	JPanel BJPsign = new JPanel(new BorderLayout());
 	
 	JButton search  = new JButton(/*new ImageIcon ("./images/boutonconnexion.png")*/);
+	JButton loadImage = new JButton();
 	Controlers controler;
 	
-	ArrayList<JTextField> signes = new ArrayList<JTextField>();
-	ArrayList<JTextField> diseases = new ArrayList<JTextField>();
-	ArrayList<JTextField> drugs = new ArrayList<JTextField>();
+	ArrayList<JTextField> signs = new ArrayList<JTextField>();
+	
+	boolean searchClicked;
+	Timer tim;
+	ImageIcon[] IconList = new ImageIcon[] {new ImageIcon ("./Images/Spinner Frame 1-64.png"),new ImageIcon ("./Images/Spinner Frame 2-64.png"),new ImageIcon ("./Images/Spinner Frame 3-64.png"),new ImageIcon ("./Images/Spinner Frame 4-64.png"),new ImageIcon ("./Images/Spinner Frame 5-64.png"),new ImageIcon ("./Images/Spinner Frame 6-64.png"),new ImageIcon ("./Images/Spinner Frame 7-64.png"),new ImageIcon ("./Images/Spinner Frame 8-64.png")};
+	int cpt = 0;
 	
 	public MainView(Controlers c) {
 		super("./images/Présentation.jpg");
 		controler = c;
 		
 		search.setName("search");
-		search.setText("Rechercher");
+		search.setText("Search");
+		search.setPreferredSize(new Dimension(200,50));
 		search.addActionListener(new ButtonListener());
 		
-		JLabel titleSigne = new JLabel("Signes & symptomes",JLabel.CENTER);
-		titleSigne.setFont(new Font(titleSigne.getFont().getName(),titleSigne.getFont().getStyle(),30));
-		titleSigne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JLabel titledisease = new JLabel("diseases",JLabel.CENTER);
-		titledisease.setFont(new Font(titledisease.getFont().getName(),titledisease.getFont().getStyle(),30));
-		titledisease.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JLabel titledrugs = new JLabel("Médicaments",JLabel.CENTER);
-		titledrugs.setFont(new Font(titledrugs.getFont().getName(),titledrugs.getFont().getStyle(),30));
-		titledrugs.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		loadImage.setOpaque(false);
+		loadImage.setBorder(null);
+		loadImage.setBorderPainted(false);
+		loadImage.setContentAreaFilled(false);
+		loadImage.setPreferredSize(new Dimension(50,50));
+		
+		tim = new Timer(100,new TimerListener());
+		
+		JLabel titleSign = new JLabel("Cinical Signs",JLabel.CENTER);
+		titleSign.setFont(new Font(titleSign.getFont().getName(),titleSign.getFont().getStyle(),30));
+		titleSign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		
 		
 
-		GJPsigne.add(new CustomPanel(0));
-		GJPdisease.add(new CustomPanel(1));
-		GJPdrug.add(new CustomPanel(2));
+		GJPsign.add(new CustomPanel(0));
 		
-		BJPsigne.add(titleSigne,BorderLayout.NORTH);
-		BJPdisease.add(titledisease,BorderLayout.NORTH);
-		BJPdrug.add(titledrugs,BorderLayout.NORTH);
+		BJPsign.add(titleSign,BorderLayout.NORTH);
 
-		BJPsigne.add(GJPsigne,BorderLayout.CENTER);
-		BJPdisease.add(GJPdisease,BorderLayout.CENTER);
-		BJPdrug.add(GJPdrug,BorderLayout.CENTER);
+		BJPsign.add(GJPsign,BorderLayout.CENTER);
 		
-		JSsigne = new JScrollPane(BJPsigne);
-		JSdisease = new JScrollPane(BJPdisease);
-		JSdrug = new JScrollPane(BJPdrug);
+		JSsign = new JScrollPane(BJPsign);
 		
-		center.add(JSsigne);
-		center.add(JSdisease);
-		center.add(JSdrug);
+		center.add(JSsign);
 		
 		north.add(search);
+		north.add(loadImage);
 		
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
@@ -96,21 +88,10 @@ public class MainView extends ImagePanel implements Observer{
 		public CustomPanel(int contenttype)
 		{
 			this.contenttype = contenttype;
-			switch(contenttype)
-			{
-				case 0:
-					signes.add(tf);
-					break;
-				case 1:
-					diseases.add(tf);
-					break;
-				case 2:
-					drugs.add(tf);
-					break;
-			}
-			tf.setPreferredSize(new Dimension(300, 40));
+			signs.add(tf);
+			tf.setPreferredSize(new Dimension(500, 50));
 			add.addActionListener(new AddListener());
-			add.setPreferredSize(new Dimension(40, 40));
+			add.setPreferredSize(new Dimension(50, 50));
 			SpringLayout layout = new SpringLayout();
 			layout.putConstraint(SpringLayout.EAST, this,5,SpringLayout.EAST, add);
 			layout.putConstraint(SpringLayout.SOUTH, this,5,SpringLayout.SOUTH, add);
@@ -121,6 +102,19 @@ public class MainView extends ImagePanel implements Observer{
 	 
 	public void update() 
 	{
+		if(searchClicked)
+		{
+			if(tim.isRunning())
+			{
+				tim.stop();
+				search.setEnabled(true);
+				cpt=0;
+				loadImage.setIcon(null);
+				searchClicked = false;
+			}
+			else
+				tim.start();
+		}
 		controler.GetMainWindow().setContentPane(this);
 		controler.GetMainWindow().update();
 	}
@@ -129,17 +123,12 @@ public class MainView extends ImagePanel implements Observer{
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			String[] signsTab = new String[signes.size()];
-			String[] diseasesTab = new String[diseases.size()];
-			String[] drugsTab = new String[drugs.size()];
-			for(int i=0;i<signes.size();i++)
-				signsTab[i] = signes.get(i).getText();
-			for(int i=0;i<diseases.size();i++)
-				diseasesTab[i] = diseases.get(i).getText();
-			for(int i=0;i<drugs.size();i++)
-				drugsTab[i] = drugs.get(i).getText();
-				
-			controler.ParseIntoQuery(signsTab,diseasesTab,drugsTab);
+			searchClicked = true;
+			search.setEnabled(false);
+			String[] signsTab = new String[signs.size()];
+			for(int i=0;i<signs.size();i++)
+				signsTab[i] = signs.get(i).getText();
+			controler.ParseIntoQuery(signsTab);
 		}
 	}
 	class AddListener implements ActionListener
@@ -147,33 +136,26 @@ public class MainView extends ImagePanel implements Observer{
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			switch(((CustomPanel)((JButton)e.getSource()).getParent()).contenttype)
-			{
-				case 0:
-					if(GJPsigne.getComponentCount() == ((GridLayout)GJPsigne.getLayout()).getRows())
-						GJPsigne.setLayout(new GridLayout(((GridLayout)GJPsigne.getLayout()).getRows() + 1,((GridLayout)GJPsigne.getLayout()).getColumns()));
-					((CustomPanel)GJPsigne.getComponent(GJPsigne.getComponentCount() - 1)).add.setVisible(false);
-					GJPsigne.add(new CustomPanel(0));
-					GJPsigne.repaint();
-					GJPsigne.revalidate();
-					break;
-				case 1:
-					if(GJPdisease.getComponentCount() == ((GridLayout)GJPdisease.getLayout()).getRows())
-						GJPdisease.setLayout(new GridLayout(((GridLayout)GJPdisease.getLayout()).getRows() + 1,((GridLayout)GJPdisease.getLayout()).getColumns()));
-					((CustomPanel)GJPdisease.getComponent(GJPdisease.getComponentCount() - 1)).add.setVisible(false);
-					GJPdisease.add(new CustomPanel(1));
-					GJPdisease.repaint();
-					GJPdisease.revalidate();
-					break;
-				case 2:
-					if(GJPdrug.getComponentCount() == ((GridLayout)GJPdrug.getLayout()).getRows())
-						GJPdrug.setLayout(new GridLayout(((GridLayout)GJPdrug.getLayout()).getRows() + 1,((GridLayout)GJPdrug.getLayout()).getColumns()));
-					((CustomPanel)GJPdrug.getComponent(GJPdrug.getComponentCount() - 1)).add.setVisible(false);
-					GJPdrug.add(new CustomPanel(2));
-					GJPdrug.repaint();
-					GJPdrug.revalidate();
-					break;
-			}
+			if(GJPsign.getComponentCount() == ((GridLayout)GJPsign.getLayout()).getRows())
+				GJPsign.setLayout(new GridLayout(((GridLayout)GJPsign.getLayout()).getRows() + 1,((GridLayout)GJPsign.getLayout()).getColumns()));
+			((CustomPanel)GJPsign.getComponent(GJPsign.getComponentCount() - 1)).add.setVisible(false);
+			GJPsign.add(new CustomPanel(0));
+			GJPsign.repaint();
+			GJPsign.revalidate();
+		}
+	}
+	class TimerListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			if(cpt == IconList.length-1)
+				cpt=0;
+			loadImage.setIcon(IconList[cpt]);
+			cpt++;
+			revalidate();
+			repaint();
 		}
 	}
 }

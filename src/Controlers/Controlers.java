@@ -23,28 +23,8 @@ public class Controlers {
 	{
 		return model.getF();
 	}
-	public void ParseIntoQuery(String[] s, String[] di,String[] dr)
+	public void ParseIntoQuery(String[] s)
 	{
-		ArrayList<String[]> signs = new ArrayList<String[]>();
-		ArrayList<String[]> diseases = new ArrayList<String[]>();
-		ArrayList<String[]> drugs = new ArrayList<String[]>();
-		for(String tmp : s)
-		{
-			String[] values = tmp.contains(OrSeparator) ? tmp.split(OrSeparator) : new String[] {tmp};
-			signs.add(values);
-		}
-
-		for(String tmp : di)
-		{
-			String[] values = tmp.contains(OrSeparator) ? tmp.split(OrSeparator) : new String[] {tmp};
-			diseases.add(values);
-		}
-
-		for(String tmp : dr)
-		{
-			String[] values = tmp.contains(OrSeparator) ? tmp.split(OrSeparator) : new String[] {tmp};
-			drugs.add(values);
-		}
-		model.CreateQuery(signs,diseases,drugs);
+		model.CreateQuery(s);
 	}
 }

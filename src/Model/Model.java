@@ -7,9 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Interface.*;
+import Main.DrugThread;
 import Main.Window;
+import Search.SearchATC;
+import Search.SearchStitch;
+import Search.Sider;
 
 public class Model implements Observable{
 	Window f;
@@ -32,55 +37,19 @@ public class Model implements Observable{
 	{
 		this.f = f;
 	}
-	public void CreateQuery(ArrayList<String[]> s,ArrayList<String[]> di,ArrayList<String[]> dr)
+	public void CreateQuery(String[] s)
 	{
-		System.out.print("SEARCH IN SIGNS WHERE ");
-		for(int j=0;j<s.size() - 1;j++)
+		System.out.println("***************************");
+		System.out.print("SEARCH WHERE CS IN [");
+		for(int j=0;j<s.length - 2;j++)
 		{
-			String[] tmp = s.get(j);
-			System.out.print(" ( ");
-			for(int i=0;i<tmp.length - 1;i++)
-				System.out.print(tmp[i].trim() + " OU ");
-			System.out.print(tmp[tmp.length - 1].trim() + " ) ");
+			System.out.print(s[j]);
 			System.out.print( " AND ");
 		}
-		System.out.print(" ( ");
-		for(int i=0;i<s.get(s.size() - 1).length - 1;i++)
-			System.out.print(s.get(s.size() - 1)[i].trim() + " OU ");
-		System.out.print(s.get(s.size() - 1)[s.get(s.size() - 1).length - 1].trim() + " ) ");
-		System.out.print(" ) ");
-		
-		System.out.println();
-		System.out.print("SEARCH IN DISEASE WHERE ");
-		for(int j=0;j<di.size() - 1;j++)
-		{
-			String[] tmp = di.get(j);
-			System.out.print(" ( ");
-			for(int i=0;i<tmp.length - 1;i++)
-				System.out.print(tmp[i].trim() + " OU ");
-			System.out.print(tmp[tmp.length - 1].trim() + " ) ");
-			System.out.print( " AND ");
-		}
-		System.out.print(" ( ");
-		for(int i=0;i<di.get(di.size() - 1).length - 1;i++)
-			System.out.print(di.get(di.size() - 1)[i].trim() + " OU ");
-		System.out.print(di.get(di.size() - 1)[di.get(di.size() - 1).length - 1].trim() + " ) ");
-		
-		System.out.println();
-		System.out.print("SEARCH IN DRUG WHERE ");
-		for(int j=0;j<dr.size() - 1;j++)
-		{
-			String[] tmp = dr.get(j);
-			System.out.print(" ( ");
-			for(int i=0;i<tmp.length - 1;i++)
-				System.out.print(tmp[i].trim() + " OU ");
-			System.out.print(tmp[tmp.length - 1].trim() + " ) ");
-			System.out.print( " AND ");
-		}
-		System.out.print(" ( ");
-		for(int i=0;i<dr.get(dr.size() - 1).length - 1;i++)
-			System.out.print(dr.get(dr.size() - 1)[i].trim() + " OU ");
-		System.out.print(dr.get(dr.size() - 1)[dr.get(dr.size() - 1).length - 1].trim() + " ) ");
+		System.out.println(s[s.length - 1] + "]");
+		Thread t1 = new Thread(new DrugThread(this));
+		t1.start();
+		notifyObserver(null);
 	}
 	public Observer Instanceof(String typeofview)
 	{

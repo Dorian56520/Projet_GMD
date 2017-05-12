@@ -1,4 +1,4 @@
-package Main;
+package Search;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -37,14 +37,18 @@ public class SearchStitch {
 				ScoreDoc[] hits = results.scoreDocs;
 				for(ScoreDoc scoredoc: hits)
 				{
-					   ATCList.add(searcher.doc(scoredoc.doc).getField("ATC").stringValue());
+					String value = searcher.doc(scoredoc.doc).getField("ATC").stringValue();
+					if(!ATCList.contains(value))
+					   ATCList.add(value);
 				}
 			}
 		}
 		catch(Exception e){}
 		Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		System.out.println("Nb match ATC : " + ATCList.size());
+	      System.out.println("---------------------------");
+	    System.out.println(end.getTime() - start.getTime() + " Stitch milliseconds");
+		System.out.println("Stitch match : " + ATCList.size());
+	      System.out.println("---------------------------");
 		return ATCList;
 	}
 }

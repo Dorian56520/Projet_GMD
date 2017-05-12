@@ -141,10 +141,13 @@ public class IndexerATC {
 	    		 line = line.substring(1).trim();
 	    		 String[] tmp = line.split(" ");
 				  String ATC =line.split(" ")[0];
-				  String label = line.substring(0, ATC.length()).trim();
+				  String label = line.substring(ATC.length(),line.length()).trim();
+				  label = label.replaceAll("[(\\[].*[)\\]]", "").trim();
 				  doc.add(new TextField("ATC",ATC,Field.Store.NO));
 				  doc.add(new StoredField("Label",label));
+    			  writer.addDocument(doc);
 				  eltCount++;
+    		  	  doc = new Document();
 	    	 }
     	 }
       if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
