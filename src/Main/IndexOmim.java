@@ -175,16 +175,7 @@ public class IndexOmim {
 	      String line = br.readLine();
 	  
 	      
-	      while(line != null){
-	    	  while(! line.equals("*RECORD*")){
-	    		  line = br.readLine();
-	    		  while(! line.equals("*FIELD* NO")){
-	    			  line = br.readLine();
-	    		  }
-	    		  
-	    	  }
-	    	  
-	      }
+	     
 	    	  String field[] = line.split(" ");
 	    	  String content = "" ;
 	    	  String id = field[1];

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class PretraitementOmin {
 
@@ -12,24 +13,28 @@ public class PretraitementOmin {
 	public PretraitementOmin()
 	{
 		FileReader Fr;
+		BufferedReader br;
+		boolean read = false;
 		try {
 			Date start = new Date();
-			Fr = new FileReader("/home/depot/2A/gmd/projet_2016-17/omim/omim.txt");
-	    	BufferedReader br = new BufferedReader(Fr);
-	    	String line;
+			Fr = new FileReader("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt");
+	    	br = new BufferedReader(Fr);
+	    	String line = br.readLine();
 	    	Record r = null;
-	    	while((line = br.readLine()) != null)
+	    	while(line != null)
 	    	{
 	    		if(line.startsWith("*RECORD*"))
 	    		{
 	    			r = new Record();
-	    			while(!line.equals("*FIELD* NO"))
-	    				line = br.readLine();
-    				line = br.readLine();
+	        		RecordList.add(r);
+	    		}
+	    		else if(line.equals("*FIELD* NO"))
+	    		{
+	    			line = br.readLine();
 	    			r.NO = Integer.parseInt(line.trim());
-	    			
-	    			while(!line.equals("*FIELD* TI"))
-	    				line = br.readLine();
+	    		}
+	    		else if(line.equals("*FIELD* TI"))
+	    		{
     				line = br.readLine();
     				if(!line.contains("MOVED TO"))
     					r.TI = line.substring(line.split(" ")[0].length()).trim();
@@ -62,12 +67,33 @@ public class PretraitementOmin {
         						{
         							r.TI += tmp.TI + " ";
         						}
-    						}
+        					}
     					}
     				}
-    				r.CS = null;
-    				RecordList.add(r);
 	    		}
+	    		else if(line.equals("*FIELD* CS"))
+	    		{
+	    			line = br.readLine();
+	    			do
+	    			{
+    					if(!line.trim().endsWith(":") && !line.contains("[") && !line.isEmpty())
+    					{
+    						if(line.endsWith(";"))
+    							line = line.substring(0, line.length()-1).trim();
+    						if(line.contains("("))
+    							line = line.replaceAll("\\(.*\\)", "").trim();
+    						r.CS += line.endsWith(";") ? line.substring(0, line.length()-1).trim() + ";" : line.trim() + ";";
+    					}
+    	    			line = br.readLine();
+	    			} while(!line.startsWith("*FIELD*") && !line.startsWith("*RECORD*"));
+	    			if(line.startsWith("*RECORD*"))
+	    				read = true;
+	    				
+	    		}
+	    		if(read)
+	    			read = !read;
+	    		else
+	    			line = br.readLine();
 	    	}
 			for(Record rec : RecordList)
 			{
@@ -80,20 +106,58 @@ public class PretraitementOmin {
 						rec.TI = rec.TI + " " + SearchNo(rec.movedto.get(i)).TI;
 					rec.TI = tmp == null ? rec.TI : rec.TI + " " + SearchNo(rec.movedto.get(i)).TI;
 				}
+				if(rec.CS != "")
+					System.out.println(rec.toString() + "\n");
 			}
 		      Date end = new Date();
 		      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	    	System.out.println("Nb record : " + RecordList.size());
+			br.close();
+			Fr.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		/*Date start = new Date();
+		int count = PretraitementOmimCsv.OmimCsv(RecordList);
+	    Date end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+	    System.out.println("Nb CUI : " + count);*/
 	}
 	public class Record {
+		public int getNO() {
+			return NO;
+		}
+		public void setNO(int nO) {
+			NO = nO;
+		}
+		public String getTI() {
+			return TI;
+		}
+		public void setTI(String tI) {
+			TI = tI;
+		}
+		public String getCS() {
+			return CS;
+		}
+		public void setCS(String cS) {
+			CS = cS;
+		}
+		public String getCUI() {
+			return CUI;
+		}
+		public void setCUI(String cUI) {
+			CUI = cUI;
+		}
 		private ArrayList<Integer> movedto = new ArrayList<Integer>();
 		private int NO;
 		private String TI = "";
-		private String CS;
+		private String CS = "";
+		private String CUI;
+		public String toString()
+		{
+			return "NO : " + NO + "\nTI : " + TI + "\nCS : " + CS;
+		}
 	}
 	public Record SearchNo(int no)
 	{

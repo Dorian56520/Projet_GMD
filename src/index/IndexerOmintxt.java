@@ -31,13 +31,13 @@ import org.apache.lucene.store.FSDirectory;
 public class IndexerOmintxt {
 	public static void main(String[] args) {
 	Date start = new Date();
-    final Path docDir = Paths.get("/home/depot/2A/gmd/projet_2016-17/stitch/chemical.sources.v5.0.tsv");
+    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt");
     
    try {
-	   
-      System.out.println("Indexing to directory '" + "/home/depot/2A/gmd/projet_2016-17/stitch/chemical.sources.v5.0.tsv" + "'...");
+	   PretraitementOmin po = new PretraitementOmin();
+      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt" + "'...");
 
-     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Donn�es/stitch"));
+     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/index"));
       Analyzer analyzer = new StandardAnalyzer();
      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
      iwc.setOpenMode(OpenMode.CREATE);

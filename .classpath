@@ -2,9 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="/home/etudiants/demange41u/Projet_GMD/lucene-core-6.4.1.jar"/>
-	<classpathentry kind="lib" path="/home/etudiants/demange41u/Projet_GMD/lucene-analyzers-common-6.4.1.jar"/>
-	<classpathentry kind="lib" path="/home/etudiants/demange41u/Projet_GMD/lucene-queryparser-6.4.1.jar"/>
-	<classpathentry kind="lib" path="/home/etudiants/demange41u/Projet_GMD/lucene-demo-6.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Projet_GMD/lucene-core-6.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Projet_GMD/lucene-analyzers-common-6.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Projet_GMD/lucene-queryparser-6.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Projet_GMD/lucene-demo-6.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Desktop/mysql-connector-java-5.1.42/mysql-connector-java-5.1.42-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gauthier/Desktop/sqlite-jdbc-3.16.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
