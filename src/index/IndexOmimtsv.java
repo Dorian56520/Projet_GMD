@@ -193,7 +193,7 @@ public class IndexOmimtsv {
 				  		  {
 				  			  if(token.trim().matches("^C[0-9].*"))
 				  			  {
-				  				doc.add(new StoredField("CUI",token));
+				  				doc.add(new StoredField("CUI",token.trim()));
 				  				break;
 				  			  }
 				  		  }
@@ -201,7 +201,7 @@ public class IndexOmimtsv {
 				  			  doc.add(new StoredField("CUI",""));
 				  	  }
 				  	  else
-				  		  doc.add(new StoredField("CUI",tokens[5]));
+				  		  doc.add(new StoredField("CUI",tokens[5].trim()));
 				      writer.addDocument(doc);
 	    		  }
 	    	  }

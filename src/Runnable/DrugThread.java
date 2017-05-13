@@ -23,11 +23,11 @@ public class DrugThread implements Runnable{
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		System.out.println("***************************");
+		/*System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
 		for(String s : Labels)
-			System.out.println(s);
+			System.out.println(s);*/
 	    model.notifyObserver(null);
 	    model.sendResult(Labels);
 	  } 

@@ -22,7 +22,7 @@ public class SearchOmimtsv {
 	public static ArrayList<String> SearchOmimtsvCUI(ArrayList<String> args)
 	{
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv";
-		ArrayList<String> ATCList = new ArrayList<String>();
+		ArrayList<String> CUIList = new ArrayList<String>();
 		Date start = new Date();
 		try
 		{
@@ -40,8 +40,20 @@ public class SearchOmimtsv {
 				for(ScoreDoc scoredoc: hits)
 				{
 					String value = searcher.doc(scoredoc.doc).getField("CUI").stringValue();
-					if(!ATCList.contains(value))
-					   ATCList.add(value);
+					if(value.contains("|"))
+					{
+						String[] cuis = value.split("\\|");
+						for(String cui : cuis)
+						{
+							if(!CUIList.contains(cui))
+								CUIList.add(cui.trim());
+						}
+					}
+					else
+					{
+						if(!CUIList.contains(value))
+							CUIList.add(value.trim());
+					}
 				}
 			}
 		}
@@ -49,16 +61,18 @@ public class SearchOmimtsv {
 		Date end = new Date();
 	      System.out.println("---------------------------");
 	    System.out.println(end.getTime() - start.getTime() + " Omimtsv milliseconds");
-		System.out.println("Omimtsv match : " + ATCList.size());
+		System.out.println("Omimtsv match : " + CUIList.size());
 	      System.out.println("---------------------------");
-		return ATCList;
+		return CUIList;
 	}
 	public static void main(String[] args) 
 	{
 		Date start = new Date();
 		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
 		ArrayList<String> CUI = SearchOmimtsv.SearchOmimtsvCUI(data);
-		/*ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
+		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUI);
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
 		/*System.out.println("***************************");
 		System.out.println();

@@ -25,19 +25,17 @@ public class Sider {
 		}
 		try {
 		    connexion = DriverManager.getConnection( url, user, password );
+		    String where = "";
+		    for(int i=0;i<args.size() - 1;i++)
+		    	where += "\"" + args.get(i).trim() + "\",";
+		    where += "\"" + args.get(args.size() - 1).trim() + "\"";
+		    String query = "SELECT DISTINCT stitch_compound_id FROM meddra_all_indications WHERE cui_of_meddra_term IN ( " + where + ")";
+		    statement = connexion.createStatement();
 		    
-		    for(String arg : args)
+		    result = statement.executeQuery(query);
+		    while(result.next())
 		    {
-			    String where = arg.replace("*", "%");
-			    String query = "SELECT DISTINCT stitch_compound_id FROM meddra_all_indications WHERE cui_of_meddra_term LIKE \"" + where + "\"";
-			    statement = connexion.createStatement();
-			    
-			    result = statement.executeQuery(query);
-			    while(result.next())
-			    {
-			    	if(!stitch_ids.contains(result.getString(1).replaceFirst("1", "m")))
-			    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
-			    }
+	    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
 		    }
 		    Date end = new Date();
 		    System.out.println("---------------------------");
@@ -173,7 +171,7 @@ public class Sider {
 			    	{
 			    		if(cpt != index)
 			    		{
-				    		if(!stitch_ids.contains(stitch))
+				    		if(!stitch_ids.get(cpt).contains(stitch))
 				    		{
 				    			contains = false;
 				    			break;
