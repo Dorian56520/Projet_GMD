@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Interface.*;
-import Main.DrugThread;
 import Main.Window;
+import Runnable.DrugThread;
+import Runnable.OmimThread;
 import View.MainView;
 import Search.SearchATC;
 import Search.SearchStitch;
@@ -50,6 +51,8 @@ public class Model implements Observable{
 		System.out.println(s[s.length - 1] + "]");
 		Thread t1 = new Thread(new DrugThread(this,s));
 		t1.start();
+		Thread t2 = new Thread(new OmimThread(this,s));
+		t2.start();
 		notifyObserver(null);
 	}
 	public void sendResult(ArrayList<String> result)

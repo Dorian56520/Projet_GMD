@@ -32,7 +32,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 
-public class IndexOmim {
+public class IndexOmimtsv {
 
 	
 	/*
@@ -62,7 +62,7 @@ public class IndexOmim {
 	 */
 
 	  
-	  private IndexOmim() {}
+	  private IndexOmimtsv() {}
 
 	  /** Index all text files under a directory. */
 	 public static void main(String[] args) {
@@ -70,13 +70,15 @@ public class IndexOmim {
 	    
 		 
 	    Date start = new Date();
-	    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
+	    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omimtsv.tsv");
+	    //final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
 	    
 	   try {
 		   
-	      System.out.println("Indexing to directory '" + "C:/Users/lulu/Desktop/Projet/Données/stitch/-" + "'...");
+	      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv" + "'...");
 
-	     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
+		  Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv"));
+	     //Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
 	      Analyzer analyzer = new StandardAnalyzer();
 	     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 	     iwc.setOpenMode(OpenMode.CREATE);
@@ -173,38 +175,38 @@ public class IndexOmim {
 	      InputStreamReader ipsr = new InputStreamReader(stream);
 	      BufferedReader br = new BufferedReader(ipsr);
 	      String line = br.readLine();
-	  
-	      
-	     
-	    	  String field[] = line.split(" ");
-	    	  String content = "" ;
-	    	  String id = field[1];
-	    	  
-	    	  doc.add(new StoredField("id", field[1]));
-	    	  
-	    	 
-	    			doc.add(new TextField("Generic_Name" , line , Field.Store.YES ));
-	    	
-	    			doc.add(new TextField("Synonyms" , content , Field.Store.NO));
-	    		
-	    			
-	    			doc.add(new TextField("Brand_Names" , content , Field.Store.NO));
-	    	
-	    			
-	    			doc.add(new TextField(" description" , content , Field.Store.NO));
-	    		
-	    			
-	    			doc.add(new TextField("Indication" , content , Field.Store.NO));
-	    		
-	    			
-	    			doc.add(new TextField("Pharmacology" , content , Field.Store.NO));
-	    		
-	    			
-	    			doc.add(new TextField("Drug_Interactions" , content , Field.Store.NO));
-	    			
-	    		
-	    	
-	      
+	      int cpt = 0;
+	      while((line = br.readLine()) != null)
+	      {
+	    	  String[] tokens = line.trim().split("\t");
+	    	  if(tokens.length > 6)
+	    	  {
+	    		  String id = tokens[0].split("/")[tokens[0].split("/").length - 1].trim();
+	    		  if(id.matches("^[0-9]*"))
+	    		  {
+				  	  doc = new Document();
+	    			  cpt++;
+					  doc.add(new TextField("ID",id,Field.Store.NO));
+				  	  if(!tokens[5].trim().matches("^C[0-9].*"))
+				  	  {
+				  		  for(String token : tokens)
+				  		  {
+				  			  if(token.trim().matches("^C[0-9].*"))
+				  			  {
+				  				doc.add(new StoredField("CUI",token));
+				  				break;
+				  			  }
+				  		  }
+				  		  if(doc.getFields().size() != 2)
+				  			  doc.add(new StoredField("CUI",""));
+				  	  }
+				  	  else
+				  		  doc.add(new StoredField("CUI",tokens[5]));
+				      writer.addDocument(doc);
+	    		  }
+	    	  }
+	      }
+	      System.out.println("Nombre d'éléments : "+cpt);
 	      if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 	        // New index, so we just add the document (no old document can be there):
 	        System.out.println("adding " + file);

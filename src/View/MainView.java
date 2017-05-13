@@ -89,12 +89,17 @@ public class MainView extends ImagePanel implements Observer{
 	{
 		int contenttype;
 		JTextField tf = new JTextField();
-		JButton add = new JButton("+");
+		JButton add = new JButton(new ImageIcon ("./Images/Add-64.png"));
 		public CustomPanel(int contenttype)
 		{
 			this.contenttype = contenttype;
 			signs.add(tf);
 			tf.setPreferredSize(new Dimension(500, 50));
+			
+			add.setOpaque(false);
+			add.setBorder(null);
+			add.setBorderPainted(false);
+			add.setContentAreaFilled(false);
 			add.addActionListener(new AddListener());
 			add.setPreferredSize(new Dimension(50, 50));
 			SpringLayout layout = new SpringLayout();

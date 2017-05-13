@@ -143,17 +143,17 @@ public class IndexerStitch {
 		    	 }
 		    	 String[] tampon = line.split("\t");
 		    	  while (tampon[2].equals("ATC")){
+	    		  	  doc = new Document();
 		    			  String contenuChamp1=tampon[0];
 		    			  doc.add(new TextField("CID1",contenuChamp1,Field.Store.NO));
 		    			  String contenuChamp2=tampon[1];
-		    			  doc.add(new TextField("CID2",contenuChamp1,Field.Store.NO));
+		    			  doc.add(new TextField("CID2",contenuChamp2,Field.Store.NO));
 		    			  String contenuChamp3=tampon[3];
 		    			  doc.add(new StoredField("ATC",contenuChamp3));		    		  
 		    			  line=br.readLine();
 		    			  tampon = line.split("\t");
 		    			  writer.addDocument(doc);
 		    			  eltCount++;
-		    		  	  doc = new Document();
 		    	  }
 		    	 
 		    	  
