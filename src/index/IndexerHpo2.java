@@ -161,7 +161,7 @@ public class IndexerHpo2 {
 			    	  if(line != null){
 			    		  line = br.readLine();
 			    		  String id = line.substring(4,line.length());
-	    				  System.out.println("id = " + id);
+	    				  //System.out.println("id = " + id);
 	    				  //doc.add(new TextField("id",id,Field.Store.YES));
 	    				  doc.add(new StoredField("id",id));
 	    				  line = br.readLine();
