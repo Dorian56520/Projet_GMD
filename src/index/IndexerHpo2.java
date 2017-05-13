@@ -163,7 +163,7 @@ public class IndexerHpo2 {
 			    		  String id = line.substring(4,line.length());
 	    				  //System.out.println("id = " + id);
 	    				  //doc.add(new TextField("id",id,Field.Store.YES));
-	    				  doc.add(new StoredField("id",id));
+	    				  doc.add(new TextField("id",id,Field.Store.YES));
 	    				  line = br.readLine();
 	    				 // System.out.println(line.substring(6,line.length()));
 		    				String[] name = line.substring(6,line.length()).split(" ");
