@@ -161,10 +161,10 @@ public class Sider {
 		    }
 		    if(stitch_ids.size() > 1)
 		    {
-			    int cpt = 0;
 			    int index = GetsmallerSet(stitch_ids);
 			    for(int i =0;i<stitch_ids.get(index).size();i++)
 			    {
+				    int cpt = 0;
 				    boolean contains = true;
 			    	String stitch = stitch_ids.get(index).get(i);
 			    	while(cpt < stitch_ids.size())
@@ -231,7 +231,7 @@ public class Sider {
 	
 	public static void main(String[] args) {
 		/*Date start = new Date();
-		ArrayList<String> data = Sider.GetSiderDrugData(new String[] {"*fever*"});
+		ArrayList<String> data = Sider.GetSiderDrugData(new String[] {"*"});
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();

@@ -32,7 +32,7 @@ public class SearchStitch {
 			for(String arg : args)
 			{
 				//String[] queries = arg;
-				Query query = new QueryParser("CID1",analyzer).parse(arg);
+				Query query = new QueryParser("CID1",analyzer).parse(arg.trim());
 				//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
 				
 				TopDocs results = searcher.search(query, 10);

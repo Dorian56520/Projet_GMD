@@ -20,7 +20,7 @@ public class OmimThread implements Runnable{
 	}
 	public void run(){
 		Date start = new Date();
-		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
+		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(items);
 		ArrayList<String> CUI = SearchOmimtsv.SearchOmimtsvCUI(data);
 		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUI);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
@@ -30,7 +30,7 @@ public class OmimThread implements Runnable{
 		System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
-		for(String s : Labels)
-			System.out.println(s);
+		/*for(String s : Labels)
+			System.out.println(s);*/
 	  } 
 }

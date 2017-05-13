@@ -21,8 +21,10 @@ public class searchOrphadata {
 	public searchOrphadata() throws IOException, ParseException{
 			
         }
-	 public static ArrayList<String[]> getOrphadataData(String[] args) throws IOException, ParseException{
+	 public static ArrayList<String[]> getOrphadataData(String[] args) {
 		 ArrayList<String[]> results = new ArrayList<String[]>();
+		 try
+		 {
 		 for (String arg : args){
 			String trimedArg=arg.trim();
 			String transformedArg=trimedArg.replace(" ", "%20");
@@ -96,7 +98,8 @@ public class searchOrphadata {
 		    }
 		    else
 		    	results = stockOrpha.get(0);
-		 
+		 }
+		 catch(Exception e){}
 		return results;
 		 
   }
