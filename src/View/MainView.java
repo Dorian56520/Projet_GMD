@@ -29,6 +29,7 @@ public class MainView extends ImagePanel implements Observer{
 	
 	JButton search  = new JButton(/*new ImageIcon ("./images/boutonconnexion.png")*/);
 	JButton loadImage = new JButton();
+	JLabel result = new JLabel();
 	Controlers controler;
 	
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
@@ -75,11 +76,15 @@ public class MainView extends ImagePanel implements Observer{
 		
 		north.add(search);
 		north.add(loadImage);
+		north.add(result);
 		
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
 	}
-	
+	public void SetLabel(ArrayList<String> Result)
+	{
+		result.setText(Result.size() + " results found");
+	}
 	class CustomPanel extends JPanel
 	{
 		int contenttype;

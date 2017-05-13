@@ -12,6 +12,7 @@ import java.util.Date;
 import Interface.*;
 import Main.DrugThread;
 import Main.Window;
+import View.MainView;
 import Search.SearchATC;
 import Search.SearchStitch;
 import Search.Sider;
@@ -41,15 +42,25 @@ public class Model implements Observable{
 	{
 		System.out.println("***************************");
 		System.out.print("SEARCH WHERE CS IN [");
-		for(int j=0;j<s.length - 2;j++)
+		for(int j=0;j<s.length - 1;j++)
 		{
 			System.out.print(s[j]);
 			System.out.print( " AND ");
 		}
 		System.out.println(s[s.length - 1] + "]");
-		Thread t1 = new Thread(new DrugThread(this));
+		Thread t1 = new Thread(new DrugThread(this,s));
 		t1.start();
 		notifyObserver(null);
+	}
+	public void sendResult(ArrayList<String> result)
+	{
+		for(Observer view : views)
+		{
+			if(view == Instanceof("MainView"))
+			{
+				((MainView)view).SetLabel(result);
+			}
+		}
 	}
 	public Observer Instanceof(String typeofview)
 	{
