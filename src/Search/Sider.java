@@ -8,7 +8,7 @@ import index.PretraitementOmin;
 
 public class Sider {
 
-	public static ArrayList<String[]> GetCUIfromDisease(String[] args)
+	public static ArrayList<String> GetStitchIDfromCUI(ArrayList<String> args)
 	{
 		Date start = new Date();
 		String url = "jdbc:mysql://neptune.telecomnancy.univ-lorraine.fr:3306/gmd";
@@ -17,7 +17,7 @@ public class Sider {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ArrayList<String[]> stitch_ids = new ArrayList<String[]>();
+		ArrayList<String> stitch_ids = new ArrayList<String>();
 		try {
 		    Class.forName( "com.mysql.jdbc.Driver" );
 		} catch ( ClassNotFoundException e ) {
@@ -25,23 +25,23 @@ public class Sider {
 		}
 		try {
 		    connexion = DriverManager.getConnection( url, user, password );
-		    String where = args[0].replace("*", "%");
-		    
-		    /*for(String arg : args)
-		    {
-		    	
-		    }*/
-		    String query = "SELECT DISTINCT stitch_compound_id1,stitch_compound_id2 FROM meddra_all_se WHERE side_effect_name LIKE \"" + where + "\"";
+		    String where = "";
+		    for(int i=0;i<args.size() - 1;i++)
+		    	where += "\"" + args.get(i).trim() + "\",";
+		    where += "\"" + args.get(args.size() - 1).trim() + "\"";
+		    String query = "SELECT DISTINCT stitch_compound_id FROM meddra_all_indications WHERE cui_of_meddra_term IN ( " + where + ")";
 		    statement = connexion.createStatement();
 		    
 		    result = statement.executeQuery(query);
 		    while(result.next())
 		    {
-		    	stitch_ids.add(new String[] {result.getString(1).replaceFirst("1", "m"), result.getString(2).replaceFirst("0", "s")});
+	    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
 		    }
-		      Date end = new Date();
-		      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-	    	System.out.println("Nb results : " + stitch_ids.size());
+		    Date end = new Date();
+		    System.out.println("---------------------------");
+		    System.out.println(end.getTime() - start.getTime() + " Sider milliseconds");
+	    	System.out.println("Sider match : " + stitch_ids.size());
+		    System.out.println("---------------------------");
 		} catch ( SQLException e ) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -66,7 +66,7 @@ public class Sider {
 		}
 		return stitch_ids;
 	}
-	public static ArrayList<String[]> GetSiderData(String[] args)
+	public static ArrayList<String> GetStitchIDfromDisease(String[] args)
 	{
 		Date start = new Date();
 		String url = "jdbc:mysql://neptune.telecomnancy.univ-lorraine.fr:3306/gmd";
@@ -75,8 +75,7 @@ public class Sider {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ArrayList<ArrayList<String[]>> stitch_ids = new ArrayList<ArrayList<String[]>>();
-		ArrayList<String[]> results = new ArrayList<String[]>();
+		ArrayList<String> stitch_ids = new ArrayList<String>();
 		try {
 		    Class.forName( "com.mysql.jdbc.Driver" );
 		} catch ( ClassNotFoundException e ) {
@@ -87,16 +86,76 @@ public class Sider {
 		    
 		    for(String arg : args)
 		    {
-		    	ArrayList<String[]> tmp_ids = new ArrayList<String[]>();
 			    String where = arg.replace("*", "%");
-			    String query = "SELECT DISTINCT stitch_compound_id1,stitch_compound_id2 FROM meddra_all_se WHERE side_effect_name LIKE \"" + where + "\"";
+			    String query = "SELECT DISTINCT stitch_compound_id FROM meddra_all_indications WHERE meddra_concept_name LIKE \"" + where + "\"";
 			    statement = connexion.createStatement();
 			    
 			    result = statement.executeQuery(query);
 			    while(result.next())
 			    {
-			    	String[] ids = new String[] {result.getString(1).replaceFirst("1", "m"), result.getString(2).replaceFirst("0", "s")};
-			    	tmp_ids.add(ids);
+			    	if(!stitch_ids.contains(result.getString(1).replaceFirst("1", "m")))
+			    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
+			    }
+		    }
+		    Date end = new Date();
+		    System.out.println("---------------------------");
+		    System.out.println(end.getTime() - start.getTime() + " Sider milliseconds");
+	    	System.out.println("Sider match : " + stitch_ids.size());
+		    System.out.println("---------------------------");
+		} catch ( SQLException e ) {
+			System.out.println(e.getMessage());
+		} finally {
+		    if ( result != null ) {
+		        try {
+		        	result.close();
+		        } catch ( SQLException ignore ) {
+		        }
+		    }
+		    if ( statement != null ) {
+		        try {
+		            statement.close();
+		        } catch ( SQLException ignore ) {
+		        }
+		    }
+		    if ( connexion != null ) {
+		        try {
+		            connexion.close();
+		        } catch ( SQLException ignore ) {
+		        }
+		    }
+		}
+		return stitch_ids;
+	}
+	public static ArrayList<String> GetSiderDrugData(String[] args)
+	{
+		Date start = new Date();
+		String url = "jdbc:mysql://neptune.telecomnancy.univ-lorraine.fr:3306/gmd";
+		String user = "gmd-read";
+		String password = "esial";
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet result = null;
+		ArrayList<ArrayList<String>> stitch_ids = new ArrayList<ArrayList<String>>();
+		ArrayList<String> results = new ArrayList<String>();
+		try {
+		    Class.forName( "com.mysql.jdbc.Driver" );
+		} catch ( ClassNotFoundException e ) {
+			System.out.println(e.getMessage());
+		}
+		try {
+		    connexion = DriverManager.getConnection( url, user, password );
+		    
+		    for(String arg : args)
+		    {
+		    	ArrayList<String> tmp_ids = new ArrayList<String>();
+			    String where = arg.replace("*", "%");
+			    String query = "SELECT DISTINCT stitch_compound_id1 FROM meddra_all_se WHERE side_effect_name LIKE \"" + where + "\"";
+			    statement = connexion.createStatement();
+			    
+			    result = statement.executeQuery(query);
+			    while(result.next())
+			    {
+			    	tmp_ids.add(result.getString(1).replaceFirst("1", "m"));
 			    }
 			    stitch_ids.add(tmp_ids);
 		    }
@@ -107,12 +166,12 @@ public class Sider {
 			    for(int i =0;i<stitch_ids.get(index).size();i++)
 			    {
 				    boolean contains = true;
-			    	String[] stitch = stitch_ids.get(index).get(i);
+			    	String stitch = stitch_ids.get(index).get(i);
 			    	while(cpt < stitch_ids.size())
 			    	{
 			    		if(cpt != index)
 			    		{
-				    		if(!Contains(stitch_ids.get(cpt),stitch))
+				    		if(!stitch_ids.get(cpt).contains(stitch))
 				    		{
 				    			contains = false;
 				    			break;
@@ -155,7 +214,7 @@ public class Sider {
 		}
 		return results;
 	}
-	public static int GetsmallerSet(ArrayList<ArrayList<String[]>> stitch_ids)
+	public static int GetsmallerSet(ArrayList<ArrayList<String>> stitch_ids)
 	{
 		int minSize = stitch_ids.get(0).size();
 		int index = 0;
@@ -169,21 +228,42 @@ public class Sider {
 		}
 		return index;
 	}
-	public static boolean Contains(ArrayList<String[]> list,String[] value)
-	{
-		for(String[] val : list)
-		{
-			if(val[0].equals(value[0]) && val[1].equals(value[1]))
-				return true;
-		}
-		return false;
-	}
+	
 	public static void main(String[] args) {
-		Date start = new Date();
-		ArrayList<String[]> data = Sider.GetSiderData(new String[] {"*pain*"});
-		ArrayList<String> ATC = SearchStitch.SearchStitch(data);
+		/*Date start = new Date();
+		ArrayList<String> data = Sider.GetSiderDrugData(new String[] {"*fever*"});
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+		System.out.println("***************************");
+		System.out.println();
+		System.out.println("Results :");
+		for(String s : Labels)
+			System.out.println(s);*/
+
+		/*Date start = new Date();
+		ArrayList<String> data = Sider.GetStitchIDfromDisease(new String[] {"Hypoglycaemia","Varicella"});
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		Date end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+		System.out.println("***************************");
+		System.out.println();
+		System.out.println("Results :");
+		for(String s : Labels)
+			System.out.println(s);*/
+
+		/*Date start = new Date();
+		ArrayList<String> data = Sider.GetStitchIDfromCUI(new String[] {"C0020615","C0008049"});
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		Date end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+		System.out.println("***************************");
+		System.out.println();
+		System.out.println("Results :");
+		for(String s : Labels)
+			System.out.println(s);*/
 	}
 }

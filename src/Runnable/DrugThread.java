@@ -1,4 +1,4 @@
-package Main;
+package Runnable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,16 +18,16 @@ public class DrugThread implements Runnable{
 	}
 	public void run(){
 		Date start = new Date();
-		ArrayList<String[]> data = Sider.GetSiderData(items);
-		ArrayList<String> ATC = SearchStitch.SearchStitch(data);
+		ArrayList<String> data = Sider.GetSiderDrugData(items);
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		System.out.println("***************************");
+		/*System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
 		for(String s : Labels)
-			System.out.println(s);
+			System.out.println(s);*/
 	    model.notifyObserver(null);
 	    model.sendResult(Labels);
 	  } 

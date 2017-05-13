@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import Main.Record;
+
 public class PretraitementOmin {
 
-	public ArrayList<Record> RecordList = new ArrayList<Record>();
-	public PretraitementOmin()
+	public static ArrayList<Record> PretraitementOmin()
 	{
+		ArrayList<Record> RecordList = new ArrayList<Record>();
 		FileReader Fr;
 		BufferedReader br;
 		boolean read = false;
@@ -20,7 +22,7 @@ public class PretraitementOmin {
 			Fr = new FileReader("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt");
 	    	br = new BufferedReader(Fr);
 	    	String line = br.readLine();
-	    	Record r = null;
+			Record r = null;
 	    	while(line != null)
 	    	{
 	    		if(line.startsWith("*RECORD*"))
@@ -31,23 +33,24 @@ public class PretraitementOmin {
 	    		else if(line.equals("*FIELD* NO"))
 	    		{
 	    			line = br.readLine();
-	    			r.NO = Integer.parseInt(line.trim());
+	    			r.setNO(Integer.parseInt(line.trim()));
 	    		}
+	    		//A modfier pour récupérer tout le TI
 	    		else if(line.equals("*FIELD* TI"))
 	    		{
     				line = br.readLine();
     				if(!line.contains("MOVED TO"))
-    					r.TI = line.substring(line.split(" ")[0].length()).trim();
+    					r.setTI(line.substring(line.split(" ")[0].length()).trim());
     				else
     				{
     					line = line.substring(line.indexOf("MOVED TO") + "MOVED TO".length()).trim();
     					if(!line.toUpperCase().contains("AND"))
 						{
-    						Record tmp = SearchNo(Integer.parseInt(line));
+    						Record tmp = SearchNo(RecordList,Integer.parseInt(line));
     						if(tmp == null)
-    							r.movedto.add(Integer.parseInt(line));
+    							r.getMovedto().add(Integer.parseInt(line));
     						else
-    							r.TI = SearchNo(Integer.parseInt(line)).TI;
+    							r.setTI(SearchNo(RecordList,Integer.parseInt(line)).getTI());
 						}
     					else
     					{
@@ -58,14 +61,14 @@ public class PretraitementOmin {
     							tokens = line.split("and");
     						for(String s : tokens)
     						{
-        						Record tmp = SearchNo(Integer.parseInt(s.trim()));
+        						Record tmp = SearchNo(RecordList,Integer.parseInt(s.trim()));
         						if(tmp == null)
         						{
-        							r.movedto.add(Integer.parseInt(s.trim()));
+        							r.getMovedto().add(Integer.parseInt(s.trim()));
         						}
         						else
         						{
-        							r.TI += tmp.TI + " ";
+        							r.setTI(r.getTI() + (tmp.getTI() + " "));
         						}
         					}
     					}
@@ -82,7 +85,7 @@ public class PretraitementOmin {
     							line = line.substring(0, line.length()-1).trim();
     						if(line.contains("("))
     							line = line.replaceAll("\\(.*\\)", "").trim();
-    						r.CS += line.endsWith(";") ? line.substring(0, line.length()-1).trim() + ";" : line.trim() + ";";
+    						r.setCS(r.getCS() + (line.endsWith(";") ? line.substring(0, line.length()-1).trim() + ";" : line.trim() + ";"));
     					}
     	    			line = br.readLine();
 	    			} while(!line.startsWith("*FIELD*") && !line.startsWith("*RECORD*"));
@@ -97,17 +100,15 @@ public class PretraitementOmin {
 	    	}
 			for(Record rec : RecordList)
 			{
-				for(int i = 0; i < rec.movedto.size();i++)
+				for(int i = 0; i < rec.getMovedto().size();i++)
 				{
-					Record tmp = SearchNo(rec.movedto.get(i));
+					Record tmp = SearchNo(RecordList,rec.getMovedto().get(i));
 					if(tmp == null)
-						rec.TI = rec.TI;
+						rec.setTI(rec.getTI());
 					else
-						rec.TI = rec.TI + " " + SearchNo(rec.movedto.get(i)).TI;
-					rec.TI = tmp == null ? rec.TI : rec.TI + " " + SearchNo(rec.movedto.get(i)).TI;
+						rec.setTI(rec.getTI() + " " + SearchNo(RecordList,rec.getMovedto().get(i)).getTI());
+					rec.setTI(tmp == null ? rec.getTI() : rec.getTI() + " " + SearchNo(RecordList,rec.getMovedto().get(i)).getTI());
 				}
-				if(rec.CS != "")
-					System.out.println(rec.toString() + "\n");
 			}
 		      Date end = new Date();
 		      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
@@ -118,57 +119,18 @@ public class PretraitementOmin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*Date start = new Date();
-		int count = PretraitementOmimCsv.OmimCsv(RecordList);
-	    Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-	    System.out.println("Nb CUI : " + count);*/
+		return RecordList;
 	}
-	public class Record {
-		public int getNO() {
-			return NO;
-		}
-		public void setNO(int nO) {
-			NO = nO;
-		}
-		public String getTI() {
-			return TI;
-		}
-		public void setTI(String tI) {
-			TI = tI;
-		}
-		public String getCS() {
-			return CS;
-		}
-		public void setCS(String cS) {
-			CS = cS;
-		}
-		public String getCUI() {
-			return CUI;
-		}
-		public void setCUI(String cUI) {
-			CUI = cUI;
-		}
-		private ArrayList<Integer> movedto = new ArrayList<Integer>();
-		private int NO;
-		private String TI = "";
-		private String CS = "";
-		private String CUI;
-		public String toString()
-		{
-			return "NO : " + NO + "\nTI : " + TI + "\nCS : " + CS;
-		}
-	}
-	public Record SearchNo(int no)
+	
+	public static Record SearchNo(ArrayList<Record> RecordList,int no)
 	{
 		for(Record r : RecordList)
 		{
-			if(r.NO == no)
+			if(r.getNO() == no)
 				return r;
 		}
 		return null;
 	}
 	public static void main(String[] args) {
-		new PretraitementOmin();
 	}
 }

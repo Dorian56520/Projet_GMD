@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -28,16 +29,19 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import Main.Record;
+
 public class IndexerOmimtxt {
+	static ArrayList<Record> RecordList;
 	public static void main(String[] args) {
 	Date start = new Date();
     final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt");
     
    try {
-	   PretraitementOmin po = new PretraitementOmin();
+	   RecordList = PretraitementOmin.PretraitementOmin();
       System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omim.txt" + "'...");
 
-     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/index"));
+     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtxt"));
       Analyzer analyzer = new StandardAnalyzer();
      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
      iwc.setOpenMode(OpenMode.CREATE);
@@ -106,11 +110,6 @@ public class IndexerOmimtxt {
 
   /** Indexes a single document */
   static void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
-    try (InputStream stream = Files.newInputStream(file)) {
-    	int eltCount=0;
-    	InputStreamReader ipsr= new InputStreamReader(stream, StandardCharsets.UTF_8);
-    	BufferedReader br = new BufferedReader(ipsr);
-    	String line;
       // make a new, empty document
       Document doc = new Document();
       
@@ -135,37 +134,23 @@ public class IndexerOmimtxt {
       // Note that FileReader expects the file to be in UTF-8 encoding.
       // If that's not the case searching for special characters will fail.
     
-    	  //On passe les 9 premières lignes du fichiers qui ne nous int�ressent pas;
-	  line=br.readLine();
-	  	int cpt = 0;
-    	 while(cpt < 9){
-    		  line=br.readLine();
-    		  cpt++;
-    	 }
-    	 String[] tampon = line.split("\t");
-    	 System.out.println(tampon[2]);
-    	  while (tampon[2].equals("ATC")){
-    		  
-    			  String contenuChamp1=tampon[0];
-    			  doc.add(new TextField("CID1",contenuChamp1,Field.Store.NO));
-    			  String contenuChamp2=tampon[1];
-    			  doc.add(new TextField("CID2",contenuChamp1,Field.Store.NO));
-    			  String contenuChamp3=tampon[3];
-    			  doc.add(new StoredField("ATC",contenuChamp3));		    		  
-    			  line=br.readLine();
-    			  tampon = line.split("\t");
-    			  eltCount++;
-    	  }
+    		  for(Record r : RecordList)
+    		  {
+    		  	  doc = new Document();
+    			  String contenuChamp1=String.valueOf(r.getCS());
+    			  doc.add(new TextField("CS",contenuChamp1.toLowerCase(),Field.Store.NO));
+    			  String contenuChamp2=String.valueOf(r.getTI());
+    			  doc.add(new StoredField("TI",contenuChamp2.toLowerCase()));
+    			  String contenuChamp3=String.valueOf(r.getNO());
+    			  doc.add(new StoredField("NO",contenuChamp3.toLowerCase()));
+    		      writer.addDocument(doc);
+    		  }
     	 
-    	  
-      
-      
       
       if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
         // New index, so we just add the document (no old document can be there):
         System.out.println("adding " + file);
-        writer.addDocument(doc);
-        System.out.println("Nombre d'�l�ments : "+eltCount);
+	      writer.addDocument(doc);
       } else {
         // Existing index (an old copy of this document may have been indexed) so 
         // we use updateDocument instead to replace the old one matching the exact 
@@ -173,6 +158,5 @@ public class IndexerOmimtxt {
         System.out.println("updating " + file);
         writer.updateDocument(new Term("path", file.toString()), doc);
       }
-    }
   }
 }

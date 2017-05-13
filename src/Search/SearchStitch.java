@@ -11,6 +11,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -18,7 +19,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
 public class SearchStitch {
-	public static ArrayList<String> SearchStitch(ArrayList<String[]> args)
+	public static ArrayList<String> SearchStitchAll(ArrayList<String> args)
 	{
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
 		ArrayList<String> ATCList = new ArrayList<String>();
@@ -28,10 +29,11 @@ public class SearchStitch {
 			IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
-			for(String[] arg : args)
+			for(String arg : args)
 			{
-				String[] queries = arg;
-				Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
+				//String[] queries = arg;
+				Query query = new QueryParser("CID1",analyzer).parse(arg);
+				//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
 				
 				TopDocs results = searcher.search(query, 10);
 				ScoreDoc[] hits = results.scoreDocs;
