@@ -63,7 +63,6 @@ public class searchOrphadata {
       		System.out.print( stockOrpha.get(i).get(0) + "   ");
       		System.out.println( stockOrpha.get(i).get(1));
       	}
-      
 	}
 
 
