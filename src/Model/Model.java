@@ -41,7 +41,6 @@ public class Model implements Observable{
 		}
 		System.out.println(s[s.length - 1] + "]");
 		final Object lock1 = new Object();
-	    //final Object lock2 = new Object();
 		Thread t1 = new Thread(new DrugThread(this,s,lock1));
 		t1.start();
 		Thread t2 = new Thread(new OmimThread(this,s,lock1));
