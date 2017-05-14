@@ -31,13 +31,13 @@ public class IndexerStitch {
 	public IndexerStitch() {}
 	 public static void main(String[] args) {
 		 Date start = new Date();
-		    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/chemical.sources.v5.0.tsv");
+		    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
 		    
 		   try {
 			   
 		      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/index" + "'...");
 
-		     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch"));
+		     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/indexStitch"));
 		      Analyzer analyzer = new StandardAnalyzer();
 		     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		     iwc.setOpenMode(OpenMode.CREATE);

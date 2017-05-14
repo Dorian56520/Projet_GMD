@@ -30,13 +30,13 @@ public class IndexerHpoobo {
 		
 		 public static void main(String[] args) {
 			 Date start = new Date();
-			    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo.obo");
+			    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/hp.obo");
 			    
 			   try {
 				   
 			      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo" + "'...");
 
-			     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo"));
+			     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/index"));
 			      Analyzer analyzer = new StandardAnalyzer();
 			     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 			     iwc.setOpenMode(OpenMode.CREATE);

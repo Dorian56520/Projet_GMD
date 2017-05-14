@@ -40,7 +40,7 @@ public class SearchHpoFinale {
 			}
 			lCUI.add(h,res.get(1));
 			resr.add(h,resf);
-			//affiche(resf);
+			affiche(resf);
 		}
 		if(resr.size() > 1){
 			
@@ -92,7 +92,7 @@ public class SearchHpoFinale {
 			}
 			
 		}
-		//affiche3(resff);
+		affiche3(resff);
 		} catch(Exception e) {}
 		return resff;
 		
@@ -182,25 +182,51 @@ public class SearchHpoFinale {
 		
 		
 	}
+	
+public static ArrayList<ArrayList<String>> tansf(ArrayList<String []> l){
+	ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+		
+		for(int i = 0; i < l.size();i++){
+			if(ContainsDisease(res,l.get(i)[1]) != 2){
+				
+			}
+		}
+		
+	
+	return res;
+}
+	
+
+
+public static int ContainsDisease(ArrayList<ArrayList<String>> l, String value){
+	int res = -2;
+	for(int i = 0 ; i < l.size();i++){
+		if(l.get(i).get(0).equals(value)){
+			res = i;
+		}
+	}
+
+	return res;
+}
 
 	public static void main(String[] args) throws IOException {
 
 		
-		SearchHpof(new String[]{"Urinary urgency"});
+		SearchHpof(new String[]{"pain","tremor"});
 		//"Bladder diverticulum","Urinary urgency"
 		//ArrayList<String> test = concateneCui("C0085606;C3544092;C4020898","C40208958;A");
 		//affiche(test);
-Date start = new Date();
-SearchHpof(new String[]{"Bladder diverticulum"});
-Date end = new Date();
-System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
+//Date start = new Date();
+//SearchHpof(new String[]{"Bladder diverticulum"});
+//Date end = new Date();
+//System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
 		
 
 		
 	}
 	
 	public static void affiche(ArrayList<String> t ){
-		System.out.println("\n\n\naffichage finale");
+		
 		for (int i = 0; i < t.size(); i++){
 			
 			System.out.println(t.get(i));
@@ -209,6 +235,7 @@ System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
 	
 	public static void affiche2(ArrayList<ArrayList<String>> t){
 		for(int i=0; i< t.size();i++){
+			System.out.print("i = "+i + "");
 			affiche(t.get(i));
 		}
 	}

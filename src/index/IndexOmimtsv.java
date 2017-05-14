@@ -70,14 +70,14 @@ public class IndexOmimtsv {
 	    
 		 
 	    Date start = new Date();
-	    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/omimtsv.tsv");
+	    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/omimtsv.tsv");
 	    //final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
 	    
 	   try {
 		   
 	      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv" + "'...");
 
-		  Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv"));
+		  Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/indexOmimtsv"));
 	     //Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
 	      Analyzer analyzer = new StandardAnalyzer();
 	     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);

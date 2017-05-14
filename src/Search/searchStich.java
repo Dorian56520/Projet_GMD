@@ -33,7 +33,7 @@ System.out.println(usage);
 System.exit(0);
  }
 
-    String index = "C:/Users/lulu/Desktop/Projet/Données/stitch/index";
+    String index = "C:/Users/lulu/Desktop/Projet/Données/stitch/indexStitch";
     String field = "CID1";
     String queries = null;
     int repeat = 0;

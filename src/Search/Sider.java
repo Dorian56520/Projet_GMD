@@ -175,8 +175,7 @@ public static int GetsmallerSet(ArrayList<ArrayList<String>> stitch_ids)
 		return index;
 	}
 
-	
-	
+
 	public static void main(String[] args) {
 		/*Date start = new Date();
 		ArrayList<String> data = Sider.GetSiderDrugData(new String[] {"*"});

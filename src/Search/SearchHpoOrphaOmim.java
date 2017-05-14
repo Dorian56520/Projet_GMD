@@ -68,12 +68,43 @@ public class SearchHpoOrphaOmim {
 		return false;
 	}
 	
-	 public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO,ArrayList<ArrayList<String>> Omim){
+	 public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO ,ArrayList<ArrayList<String>> Omim){
 		 ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>> ();
 		 int cpt = 0;
+		 boolean BOrpha = true;
+		 boolean BHPO = false;
+		 boolean BOmim = false;
 		 for(int i = 0; i < Orpha.size();i++){
 			if(ContainsMaladie(res,Orpha.get(i).get(0)) != -2){
-				for(int j = 1; j<Orpha.get(i).size();j++){
+				String sAajouter = res.get((ContainsMaladie(res,Orpha.get(i).get(0)))).get(1);
+				int score = 1;
+				
+				if (!sAajouter.contains("Orpha")&&BOrpha){
+					
+					sAajouter = sAajouter + "," + "Orpha";
+					score++;
+				}
+				
+				
+				if (!sAajouter.contains("HPO")&&BHPO){
+					sAajouter = sAajouter + "," + "HPO";
+					score++;
+					
+				}
+
+				if (!sAajouter.contains("Omim")&&BOmim){
+		
+					sAajouter = sAajouter + "," + "Omim";
+					score++;
+				}
+				
+				
+				
+				
+				res.get((ContainsMaladie(res,Orpha.get(i).get(0)))).set(1, sAajouter);
+				
+				res.get((ContainsMaladie(res,Orpha.get(i).get(0)))).set(2,String.valueOf(score) );
+				for(int j = 0; j<Orpha.get(i).size();j++){
 					if(!ContainsCui(res,Orpha.get(i).get(j))){
 						res.get(ContainsMaladie(res,Orpha.get(i).get(0))).add(res.get(ContainsMaladie(res,Orpha.get(i).get(0))).size(),Orpha.get(i).get(j));
 					}
@@ -81,24 +112,58 @@ public class SearchHpoOrphaOmim {
 				
 			}
 			
+			
 			else{
 				ArrayList<String> aAjoute = new ArrayList<String>();
 				aAjoute.add(0,Orpha.get(i).get(0));
 				aAjoute.add(1,"Orpha");
 				aAjoute.add(2,"1");
+				
 				for(int j =3 ; j < Orpha.get(i).size();j++){
 					aAjoute.add(j,Orpha.get(i).get(j));
 					
 				}
-				res.add(cpt,Orpha.get(i));
+				res.add(cpt,aAjoute);
 				cpt++;
 			}
 	    		
 	    }
 		 
-		 for(int i = 0; i < HPO.size();i++){
+		  BOrpha = false;
+		  BHPO = true;
+		  BOmim = false;
+		
+		  for(int i = 0; i < HPO.size();i++){
 				if(ContainsMaladie(res,HPO.get(i).get(0)) != -2){
-					for(int j = 1; j<HPO.get(i).size();j++){
+					String sAajouter = res.get((ContainsMaladie(res,HPO.get(i).get(0)))).get(1);
+					int score = 1;
+					
+					if (!sAajouter.contains("Orpha")&&BOrpha){
+						
+						sAajouter = sAajouter + "," + "Orpha";
+						score++;
+					}
+					
+					
+					if (!sAajouter.contains("HPO")&&BHPO){
+						sAajouter = sAajouter + "," + "HPO";
+						score++;
+						
+					}
+
+					if (!sAajouter.contains("Omim")&&BOmim){
+			
+						sAajouter = sAajouter + "," + "Omim";
+						score++;
+					}
+					
+					
+					
+					
+					res.get((ContainsMaladie(res,HPO.get(i).get(0)))).set(1, sAajouter);
+					
+					res.get((ContainsMaladie(res,HPO.get(i).get(0)))).set(2,String.valueOf(score) );
+					for(int j = 0; j<HPO.get(i).size();j++){
 						if(!ContainsCui(res,HPO.get(i).get(j))){
 							res.get(ContainsMaladie(res,HPO.get(i).get(0))).add(res.get(ContainsMaladie(res,HPO.get(i).get(0))).size(),HPO.get(i).get(j));
 						}
@@ -106,25 +171,58 @@ public class SearchHpoOrphaOmim {
 					
 				}
 				
+				
 				else{
 					ArrayList<String> aAjoute = new ArrayList<String>();
 					aAjoute.add(0,HPO.get(i).get(0));
 					aAjoute.add(1,"HPO");
 					aAjoute.add(2,"1");
+					
 					for(int j =3 ; j < HPO.get(i).size();j++){
 						aAjoute.add(j,HPO.get(i).get(j));
 						
 					}
-					res.add(cpt,HPO.get(i));
+					res.add(cpt,aAjoute);
 					cpt++;
 				}
 		    		
 		    }
-		 
-		 
-		 for(int i = 0; i < Omim.size();i++){
+		  
+		  BOrpha = false;
+		  BHPO = false;
+		  BOmim = true;
+		  
+		  for(int i = 0; i < Omim.size();i++){
 				if(ContainsMaladie(res,Omim.get(i).get(0)) != -2){
-					for(int j = 1; j<Omim.get(i).size();j++){
+					String sAajouter = res.get((ContainsMaladie(res,Omim.get(i).get(0)))).get(1);
+					int score = 1;
+					
+					if (!sAajouter.contains("Orpha")&&BOrpha){
+						
+						sAajouter = sAajouter + "," + "Orpha";
+						score++;
+					}
+					
+					
+					if (!sAajouter.contains("HPO")&&BHPO){
+						sAajouter = sAajouter + "," + "HPO";
+						score++;
+						
+					}
+
+					if (!sAajouter.contains("Omim")&&BOmim){
+			
+						sAajouter = sAajouter + "," + "Omim";
+						score++;
+					}
+					
+					
+					
+					
+					res.get((ContainsMaladie(res,Omim.get(i).get(0)))).set(1, sAajouter);
+					
+					res.get((ContainsMaladie(res,Omim.get(i).get(0)))).set(2,String.valueOf(score) );
+					for(int j = 0; j<Omim.get(i).size();j++){
 						if(!ContainsCui(res,Omim.get(i).get(j))){
 							res.get(ContainsMaladie(res,Omim.get(i).get(0))).add(res.get(ContainsMaladie(res,Omim.get(i).get(0))).size(),Omim.get(i).get(j));
 						}
@@ -132,30 +230,31 @@ public class SearchHpoOrphaOmim {
 					
 				}
 				
+				
 				else{
 					ArrayList<String> aAjoute = new ArrayList<String>();
 					aAjoute.add(0,Omim.get(i).get(0));
 					aAjoute.add(1,"Omim");
 					aAjoute.add(2,"1");
+					
 					for(int j =3 ; j < Omim.get(i).size();j++){
 						aAjoute.add(j,Omim.get(i).get(j));
 						
 					}
-					res.add(cpt,Omim.get(i));
+					res.add(cpt,aAjoute);
 					cpt++;
 				}
 		    		
 		    }
-		 
-		 
+		
 		 
 		 
 		 return res;
 	    }
 	
-    public static void main(String[] args) {
-    	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"hypo*"});
-    }
+   
+	 
+	
     
 	public static int ContainsMaladie( ArrayList<ArrayList<String>> list, String value)
     {
@@ -182,6 +281,30 @@ public class SearchHpoOrphaOmim {
         }
         return false;
     }
+	
+	
+	 public static void main(String[] args) {
+		 String[] items = new String[] {"micropenis"};
+		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+	        ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+	    	
+	    
+	        ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
+	        ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
+	        ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
+	    	ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
+	    	
+	    	ArrayList<ArrayList<String>> presquefin = combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
+	    	
+	    	SearchHpoFinale.affiche2(presquefin);
+	    	
+	    	
+	     
+	        
+	        
+	    }
+	
+	
     
    
 

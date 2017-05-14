@@ -26,7 +26,7 @@ public class SearchHpo {
 	public static ArrayList<ArrayList<String>> GetCUIFromHPOid (ArrayList<String[]> HPids)
 	{
 
-		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
+		String index = "C:/Users/lulu/Desktop/Projet/Données/hpo/index";
 		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try

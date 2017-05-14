@@ -2,7 +2,7 @@ package Main;
 
 import Controlers.Controlers;
 import Model.Model;
-import View.MainView;
+import View.SearchView;
 
 public class Main 
 {
@@ -14,7 +14,8 @@ public class Main
 
 	    Controlers controler = new Controlers(model);
 	    
-	    MainView vue = new MainView(controler);
+	    //MainView vue = new MainView(controler);
+	    SearchView vue = new SearchView(controler);
 	    
 	    model.addObserver(vue);
 	}

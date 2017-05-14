@@ -31,12 +31,12 @@ import org.apache.lucene.store.FSDirectory;
 public class IndexerATC {
 	public static void main(String[] args) {
 	Date start = new Date();
-    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/atc/br08303.keg");
+    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/atc/br08303.keg");
     
    try {
       System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC" + "'...");
 
-     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC"));
+     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/atc/indexATC"));
       Analyzer analyzer = new StandardAnalyzer();
      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
      iwc.setOpenMode(OpenMode.CREATE);
