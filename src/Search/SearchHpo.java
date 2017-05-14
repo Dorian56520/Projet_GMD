@@ -81,31 +81,39 @@ public class SearchHpo {
 	      System.out.println("---------------------------");
 		return DiseaseList;
 	}
-	public static ArrayList<String[]> SearchHPOCUIandHPOids (String[] args)
+	public static ArrayList<ArrayList<String[]>> SearchHPOCUIandHPOids (String[] args)
 	{
 
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
-		ArrayList<String[]> IDandCUI = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> IDandCUI = new ArrayList<ArrayList<String[]>>();
 		Date start = new Date();
 		try
 		{
 			for(String arg : args)
 			{
+				ArrayList<String[]> tmp = new ArrayList<String[]>();
 				IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 				IndexSearcher searcher = new IndexSearcher(reader);
 				Analyzer analyzer = new StandardAnalyzer();
-				String queryString = arg.trim();
+				String queryString = arg.replace(" ", "").trim().toLowerCase();
 				Term term = new Term("name", queryString);
 				WildcardQuery query = new WildcardQuery(term);
-	
-				TopDocs results = searcher.search(query,24000);
-				ScoreDoc[] hits = results.scoreDocs;
+				
+
+				TopScoreDocCollector collector = TopScoreDocCollector.create(1000);
+				searcher.search(query, collector);
+				ScoreDoc[] hits = collector.topDocs().scoreDocs;
+				
+				/*TopDocs results = searcher.search(query,24000);
+				ScoreDoc[] hits = results.scoreDocs;*/
 				for(ScoreDoc scoredoc: hits)
 				{
 					String id = searcher.doc(scoredoc.doc).getField("ID").stringValue().trim();
 					String CUI = searcher.doc(scoredoc.doc).getField("CUI").stringValue().trim();
-					IDandCUI.add(new String[] {"HP:" + id,CUI});
+					tmp.add(new String[] {"HP:" + id,CUI});
 				}
+				if(tmp.size() > 0)
+					IDandCUI.add(tmp);
 			}
 		}
 		catch(Exception e){}
@@ -170,8 +178,9 @@ public class SearchHpo {
 		/*
 		SearchHpo(trait("Abnormality of the nail"));
 		*/
-		ArrayList<String[]> IDandCUI = SearchHPOCUIandHPOids(new String[] {"Bladder diverticulum","Urinary urgency"});
-		ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUI);
+		ArrayList<ArrayList<String[]>> IDandCUIList = SearchHPOCUIandHPOids(new String[] {"Autosomal recessive inheritance"});
+		ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
+		
 		ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
 		for(String[] arg : IDandLabel)
 		{
@@ -181,44 +190,58 @@ public class SearchHpo {
 			{
 				tmp.add(arg[1]);
 				String value = "";
-				for(String[] cui : IDandCUI)
+				for(ArrayList<String[]> IDandCUI : IDandCUIList)
 				{
-					if(arg[0].equals(cui[0]))
+					for(String[] val : IDandCUI)
 					{
-						value = cui[1];
-						break;
+						if(arg[0].equals(val[0]))
+						{
+							value = val[1];
+							break;
+						}
 					}
-				}
-				if(value.matches(".*[,;].*"))
-				{
-					String[] cuis = value.split("[,;]");
-					for(String cui : cuis)
-						tmp.add(cui.trim());
-				}
-				else
-					tmp.add(value);
-				DiseaseANDcui.add(tmp);
+					if(value.equals(""))
+						break;
+					if(value.matches(".*[,;].*"))
+					{
+						String[] cuis = value.split("[,;]");
+						for(String cui : cuis)
+							tmp.add(cui.trim());
+					}
+					else
+						tmp.add(value.trim());
+					DiseaseANDcui.add(tmp);
+					}
 			}
 			else
 			{
 				String value = "";
-				for(String[] cui : IDandCUI)
+				for(ArrayList<String[]> IDandCUI : IDandCUIList)
 				{
-					if(arg[0].equals(cui[0]))
+					for(String[] val : IDandCUI)
 					{
-						value = cui[1];
-						break;
+						if(arg[0].equals(val[0]))
+						{
+							value = val[1];
+							break;
+						}
 					}
 				}
 				if(value.matches(".*[,;].*"))
 				{
-					String[] cuis = value.split("[,;]");
+					String[] cuis = value.trim().split("[,;]");
 					for(String cui : cuis)
 						DiseaseANDcui.get(ind).add(cui.trim());
 				}
 				else
-					DiseaseANDcui.get(ind).add(value);
+					DiseaseANDcui.get(ind).add(value.trim());
 			}
+		}
+		System.out.println(DiseaseANDcui.size());
+		for(ArrayList<String> list : DiseaseANDcui)
+		{
+			if(list.size() > 2)
+				System.out.println(list);
 		}
 	}
 	public static String trait(String s){

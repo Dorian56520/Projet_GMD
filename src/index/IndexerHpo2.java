@@ -40,13 +40,13 @@ public class IndexerHpo2 {
 		
 		 public static void main(String[] args) {
 			 Date start = new Date();
-			    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/hp.obo");
+			    final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo.obo");
 			    
 			   try {
 				   
 			      System.out.println("Indexing to directory '" + "C:/Users/lulu/Desktop/Projet/Données/hpo/hp.obo" + "'...");
 
-			     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/index"));
+			     Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo"));
 			      Analyzer analyzer = new StandardAnalyzer();
 			     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 			     iwc.setOpenMode(OpenMode.CREATE);
@@ -160,7 +160,7 @@ public class IndexerHpo2 {
 			    	  
 			    	  if(line != null){
 			    		  line = br.readLine();
-			    		  String id = line.substring(4,line.length());
+			    		  String id = line.substring(7,line.length());
 	    				  //System.out.println("id = " + id);
 	    				  //doc.add(new TextField("id",id,Field.Store.YES));
 	    				  doc.add(new TextField("id",id,Field.Store.YES));

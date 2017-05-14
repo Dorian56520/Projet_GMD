@@ -21,7 +21,8 @@ public class HpoSqliteLucas {
         try {
             // db parameters
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
-            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+            
+        	String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
             Statement statement = null;
             ResultSet result = null;
             // create a connection to the database
@@ -61,35 +62,68 @@ public class HpoSqliteLucas {
 		return res;
     }
 	
-	public static ArrayList<String[]> GetCUI(ArrayList<String[]> id) {
-        Connection conn = null;
-        ArrayList<String[]> res = new ArrayList<String[]>();
+	public static ArrayList<String[]> GetCUI(ArrayList<ArrayList<String[]>> HPid) {
+		if(HPid.size() == 0)
+			return new ArrayList<String[]>();
+		Connection conn = null;
+        ArrayList<String[]> results = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> res = new ArrayList<ArrayList<String[]>>();
         try {
             // db parameters
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
-            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
-            Statement statement = null;
-            ResultSet result = null;
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-		    String where = "";
-            for(String[] args : id)
+            for(ArrayList<String[]> id : HPid)
             {
-		    	where += "\"" + args[0].trim() + "\",";
+                ArrayList<String[]> tmp =new ArrayList<String[]>();
+	        	String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+	            Statement statement = null;
+	            ResultSet result = null;
+	            // create a connection to the database
+	            conn = DriverManager.getConnection(url);
+	            String where = "";
+	            for(int i=0;i<id.size() - 1;i++)
+	            {
+	            	where += "\"" + id.get(i)[0] + "\",";
+	            }
+	            where += "\"" + id.get(id.size() - 1)[0] + "\"";
+	            //System.out.println("Connection to SQLite has been established.");
+	            String query = "Select distinct sign_id,disease_label from phenotype_annotation where sign_id IN ("+where+")";
+	            //System.out.println("ici");
+			    statement = conn.createStatement();
+			    
+			    result = statement.executeQuery(query);
+			    while(result.next())
+			    {
+			    	tmp.add(new String[] {result.getString(1),result.getString(2)});
+			    }
+			    if(tmp.size() > 0)
+			    	res.add(tmp);
             }
-		    where += "\"" + id.get(id.size() - 1)[0].trim() + "\"";
-            String query = "Select distinct sign_id,disease_label from phenotype_annotation where sign_id IN ("+where +")";
-		    statement = conn.createStatement();
-		    result = statement.executeQuery(query);
-		    while(result.next())
+		    if(res.size() > 1)
 		    {
-		    	ArrayList<String> tmp = trad(result.getString(2));
-		    	for(String s: tmp)
-		    	{
-		    		res.add(new String[] {result.getString(1),s});
-		    	}
+			    int index = GetsmallerSet(res);
+			    for(int i =0;i<res.get(index).size();i++)
+			    {
+				    int cpt = 0;
+				    boolean contains = true;
+			    	String label = res.get(index).get(i)[1];
+			    	while(cpt < res.size())
+			    	{
+			    		if(cpt != index)
+			    		{
+				    		if(Contains(label,res.get(cpt)) < 0)
+				    		{
+				    			contains = false;
+				    			break;
+				    		}
+			    		}
+			    		cpt++;
+			    	}
+			    	if(contains)
+			    		results.add(new String[] {res.get(index).get(i)[0],label});
+			    }
 		    }
-		    return res;
+		    else
+		    	results = res.get(0);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -103,11 +137,34 @@ public class HpoSqliteLucas {
             }
             
         }
-		return res;
+		return results;
     }
 		/**
 	     * Connect to a sample database
 	     */
+	public static int GetsmallerSet(ArrayList<ArrayList<String[]>> set)
+	{
+		int minSize = set.get(0).size();
+		int index = 0;
+		for(int i=0;i<set.size();i++)
+		{
+			if(set.get(i).size() < minSize)
+			{
+				minSize = set.get(i).size();
+				index = i;
+			}
+		}
+		return index;
+	}
+	public static int Contains(String value, ArrayList<String[]> list)
+	{
+		for(int i=0;i<list.size();i++)
+		{
+			if(list.get(i)[1].equals(value))
+				return i;
+		}
+		return -1;
+	}
 	    public static ArrayList<String> connect(String id) {
 	    	System.out.println(id);
 	        Connection conn = null;

@@ -150,7 +150,7 @@ public class IndexerHpoobo {
 		    					res = res + name[i];
 		    				}
 		    				//System.out.println(res);
-		    				doc.add(new TextField("name",res,Field.Store.NO));
+		    				doc.add(new TextField("name",res.trim(),Field.Store.NO));
 		    				
 		    				
 		    				while(line.length() != 0&& !line.substring(0,4).equals("xref") ){

@@ -158,15 +158,15 @@ public class Sider {
 		return results;
 	}
 	
-public static int GetsmallerSet(ArrayList<ArrayList<String>> stitch_ids)
+public static int GetsmallerSet(ArrayList<ArrayList<String>> set)
 	{
-		int minSize = stitch_ids.get(0).size();
+		int minSize = set.get(0).size();
 		int index = 0;
-		for(int i=0;i<stitch_ids.size();i++)
+		for(int i=0;i<set.size();i++)
 		{
-			if(stitch_ids.get(i).size() < minSize)
+			if(set.get(i).size() < minSize)
 			{
-				minSize = stitch_ids.get(i).size();
+				minSize = set.get(i).size();
 				index = i;
 			}
 		}
