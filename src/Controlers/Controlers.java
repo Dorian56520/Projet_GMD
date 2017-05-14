@@ -27,4 +27,7 @@ public class Controlers {
 	{
 		model.CreateQuery(s);
 	}
+	public void goToSearchView() {
+		model.addObserver(new SearchView(this));
+	}
 }

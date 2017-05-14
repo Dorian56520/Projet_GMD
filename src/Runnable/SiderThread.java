@@ -29,7 +29,6 @@ public class SiderThread implements Runnable{
 		System.out.println("Results :");
 		for(String s : Labels)
 			System.out.println(s);*/
-	    model.notifyObserver(null);
-	    model.sendResult(Labels);
+//	    model.sendResult(Labels);
 	  } 
 }

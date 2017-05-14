@@ -42,12 +42,14 @@ public class Model implements Observable{
 			System.out.print( " AND ");
 		}
 		System.out.println(s[s.length - 1] + "]");
+
 		/*final Object lock1 = new Object();
 	    final Object lock2 = new Object();*/
 		Thread t1 = new Thread(new SiderThread(this,s));
 		Thread t2 = new Thread(new OmimThread(this,s));
 		Thread t3 = new Thread(new OrphaThread(this,s));
 		Thread t4 = new Thread(new HpoThread(this,s));
+		
 		t1.start();
 		t2.start();
 		t3.start();

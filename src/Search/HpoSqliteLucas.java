@@ -20,9 +20,14 @@ public class HpoSqliteLucas {
         ArrayList<String[]> res =new ArrayList<String[]>();
         try {
             // db parameters
+
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
             
         	String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+
+            //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+            //String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+
             Statement statement = null;
             ResultSet result = null;
             // create a connection to the database
@@ -171,8 +176,8 @@ public class HpoSqliteLucas {
 	        ArrayList<String> res =new ArrayList<String>();
 	        try {
 	            // db parameters
-	            //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
-	            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+	            String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+	           // String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
 	            Statement statement = null;
 	            ResultSet result = null;
 	            // create a connection to the database

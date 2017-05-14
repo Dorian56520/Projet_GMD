@@ -1,38 +1,32 @@
 package View;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import Controlers.*;
+import Interface.Observer;
+import Main.SpringUtilities;
+import Model.Model;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.Timer;
-
-import Controlers.Controlers;
-import Interface.Observer;
+import javax.swing.*;
 
 public class MainView extends ImagePanel implements Observer{
 
 	/**
 	 * Create the frame.
 	 */
+	JLabel titleSign = new JLabel("Clinical Signs",JLabel.CENTER);
+	
 	JPanel north = new JPanel();
 	JPanel center = new JPanel(new GridLayout(1,3));
 	
 	JScrollPane JSsign;
 	
-	JPanel GJPsign = new JPanel(new GridLayout(5,1));
+	JPanel GJPsign = new JPanel(new GridLayout(50,1));
 	JPanel BJPsign = new JPanel(new BorderLayout());
 	
 	JButton search  = new JButton(/*new ImageIcon ("./images/boutonconnexion.png")*/);
@@ -51,7 +45,6 @@ public class MainView extends ImagePanel implements Observer{
 		super("./images/Présentation.jpg");
 		controler = c;
 		
-		search.setName("search");
 		search.setText("Search");
 		search.setPreferredSize(new Dimension(200,50));
 		search.addActionListener(new ButtonListener());
@@ -65,21 +58,16 @@ public class MainView extends ImagePanel implements Observer{
 		
 		tim = new Timer(100,new TimerListener());
 		
-		JLabel titleSign = new JLabel("Cinical Signs",JLabel.CENTER);
+
 		titleSign.setFont(new Font(titleSign.getFont().getName(),titleSign.getFont().getStyle(),30));
-		titleSign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		
-		
+		titleSign.setBorder(BorderFactory.createLineBorder(Color.BLACK));		
 
 		GJPsign.add(new CustomPanel(0));
-		
 		BJPsign.add(titleSign,BorderLayout.NORTH);
-
 		BJPsign.add(GJPsign,BorderLayout.CENTER);
 		
 		JSsign = new JScrollPane(BJPsign);
-		
+		JSsign.getVerticalScrollBar().setUnitIncrement(15);
 		center.add(JSsign);
 		
 		north.add(search);
@@ -100,21 +88,24 @@ public class MainView extends ImagePanel implements Observer{
 		JButton add = new JButton(new ImageIcon ("./Images/Add-64.png"));
 		public CustomPanel(int contenttype)
 		{
+			JPanel Panel= new JPanel(new BorderLayout());
 			this.contenttype = contenttype;
 			signs.add(tf);
-			tf.setPreferredSize(new Dimension(500, 50));
+			tf.setPreferredSize(new Dimension(500, 45));
 			
 			add.setOpaque(false);
 			add.setBorder(null);
 			add.setBorderPainted(false);
 			add.setContentAreaFilled(false);
 			add.addActionListener(new AddListener());
-			add.setPreferredSize(new Dimension(50, 50));
-			SpringLayout layout = new SpringLayout();
-			layout.putConstraint(SpringLayout.EAST, this,5,SpringLayout.EAST, add);
-			layout.putConstraint(SpringLayout.SOUTH, this,5,SpringLayout.SOUTH, add);
+			add.setPreferredSize(new Dimension(53, 45));
+			
+			Panel.add(add,BorderLayout.EAST);
+			Panel.setPreferredSize(new Dimension(53,45));;
+			
 			add(tf);
-			add(add);
+			add(Panel);
+		   
 		}
 	}
 	 
@@ -129,14 +120,18 @@ public class MainView extends ImagePanel implements Observer{
 				cpt=0;
 				loadImage.setIcon(null);
 				searchClicked = false;
+				controler.goToSearchView();
+				
 			}
 			else
 				tim.start();
 		}
+
 		else
 		{
 			controler.GetMainWindow().setContentPane(this);
 			controler.GetMainWindow().update();
+
 		}
 	}
 	class ButtonListener implements ActionListener
@@ -154,21 +149,22 @@ public class MainView extends ImagePanel implements Observer{
 	}
 	class AddListener implements ActionListener
 	{
-		@Override
+
 		public void actionPerformed(ActionEvent e) 
 		{
 			if(GJPsign.getComponentCount() == ((GridLayout)GJPsign.getLayout()).getRows())
-				GJPsign.setLayout(new GridLayout(((GridLayout)GJPsign.getLayout()).getRows() + 1,((GridLayout)GJPsign.getLayout()).getColumns()));
-			((CustomPanel)GJPsign.getComponent(GJPsign.getComponentCount() - 1)).add.setVisible(false);
+				GJPsign.setLayout(new GridLayout(((GridLayout)GJPsign.getLayout()).getRows() + 1,((GridLayout)GJPsign.getLayout()).getColumns()));			
 			GJPsign.add(new CustomPanel(0));
+			((CustomPanel)GJPsign.getComponent(GJPsign.getComponentCount() - 1)).add.setVisible(false);
+			
 			GJPsign.repaint();
 			GJPsign.revalidate();
+			
 		}
 	}
 	class TimerListener implements ActionListener
 	{
 
-		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			if(cpt == IconList.length-1)
