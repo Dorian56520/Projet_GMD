@@ -1,77 +1,101 @@
 package Runnable;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import Model.Model;
 import Search.HpoSqliteLucas;
 import Search.SearchHpo;
 
-public class HpoThread implements Runnable {
+public class HpoThread extends Thread {
 
 	Model model;
 	String[] items;
-	//private final Object lock1;
-	public HpoThread(Model m,String[] items/*,Object lock1*/)
+	private final Object lockSqllite;
+	private final Object lockHpo;
+	public HpoThread(Model m,String[] items,Object lockSqllite,Object lockHpo)
 	{
 		model = m;
 		this.items = items;
-		//this.lock1 = lock1;
+		this.lockSqllite = lockSqllite;
+		this.lockHpo = lockHpo;
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		/*ArrayList<String[]> IDandCUI = SearchHpo.SearchHPOCUIandHPOids(new String[] {"*pain*"});
-		ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUI);
-		ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
-		for(String[] arg : IDandLabel)
+		ArrayList<ArrayList<String[]>> IDandCUIList;
+		ArrayList<String[]> IDandLabel;
+		Date start = new Date();
+		synchronized(lockHpo)
 		{
-			ArrayList<String> tmp = new ArrayList<String>();
-			int ind = Contains(arg[1],DiseaseANDcui);
-			if(ind < 0)
-			{
-				tmp.add(arg[1]);
-				String value = "";
-				for(String[] cui : IDandCUI)
-				{
-					if(arg[0].equals(cui[0]))
-					{
-						value = cui[1];
-						break;
-					}
-				}
-				if(value.matches(".*[,;].*"))
-				{
-					String[] cuis = value.split("[,;]");
-					for(String cui : cuis)
-						tmp.add(cui.trim());
-				}
-				else
-					tmp.add(value);
-				DiseaseANDcui.add(tmp);
-			}
-			else
-			{
-				String value = "";
-				for(String[] cui : IDandCUI)
-				{
-					if(arg[0].equals(cui[0]))
-					{
-						value = cui[1];
-						break;
-					}
-				}
-				if(value.matches(".*[,;].*"))
-				{
-					String[] cuis = value.split("[,;]");
-					for(String cui : cuis)
-						DiseaseANDcui.get(ind).add(cui.trim());
-				}
-				else
-					DiseaseANDcui.get(ind).add(value);
-			}
-		}*/
+			IDandCUIList = SearchHpo.SearchHPOCUIandHPOids(items);
+		}
+		synchronized(lockSqllite)
+		{
+			IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
+		}
+		ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
+		MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
+		Date end = new Date();
+	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
-
+	public static void MagouillepourHPO(ArrayList<String[]> IDandLabel, ArrayList<ArrayList<String[]>> IDandCUIList, ArrayList<ArrayList<String>> DiseaseANDcui)
+	 {
+		 for(String[] arg : IDandLabel)
+			{
+				ArrayList<String> tmp = new ArrayList<String>();
+				int ind = Contains(arg[1],DiseaseANDcui);
+				if(ind < 0)
+				{
+					tmp.add(arg[1]);
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+						if(value.equals(""))
+							break;
+						if(value.matches(".*[,;].*"))
+						{
+							String[] cuis = value.split("[,;]");
+							for(String cui : cuis)
+								tmp.add(cui.trim());
+						}
+						else
+							tmp.add(value.trim());
+						DiseaseANDcui.add(tmp);
+						}
+				}
+				else
+				{
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+					}
+					if(value.matches(".*[,;].*"))
+					{
+						String[] cuis = value.trim().split("[,;]");
+						for(String cui : cuis)
+							DiseaseANDcui.get(ind).add(cui.trim());
+					}
+					else
+						DiseaseANDcui.get(ind).add(value.trim());
+				}
+			}
+	 }
 	public static int Contains(String value, ArrayList<ArrayList<String>> list)
 	{
 		for(int i=0;i<list.size();i++)

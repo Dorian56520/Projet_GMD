@@ -284,7 +284,7 @@ public class SearchHpoOrphaOmim {
 	
 	 public static void main(String[] args) {
 			Date start = new Date();
-		 String[] items = new String[] {"Abnormal"};
+		 String[] items = new String[] {"pain*"};
 		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	    	
@@ -292,6 +292,7 @@ public class SearchHpoOrphaOmim {
 	        ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
 	        ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
+	        
 	        ArrayList<ArrayList<String[]>> IDandCUIList = SearchHpo.SearchHPOCUIandHPOids(items);
 			ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
 			
@@ -303,6 +304,11 @@ public class SearchHpoOrphaOmim {
 	    	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
 	    	ArrayList<ArrayList<String>> ATC = SearchStitch.SearchStitchAll(AllStitchID);
 			ArrayList<ArrayList<String>> Labels = SearchATC.SearchATC(ATC);
+			
+			ArrayList<String> data = Sider.GetSiderDrugData(items);
+			ArrayList<String> DrugATC = SearchStitch.SearchStitchAllDrug(data);
+			ArrayList<String> DrugLabels = SearchATC.SearchATCDrug(DrugATC);
+			
 			Date end = new Date();
 		    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
 	    	//SearchHpoFinale.affiche2(presquefin);

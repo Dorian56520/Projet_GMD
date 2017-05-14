@@ -21,24 +21,10 @@ public class OmimThread implements Runnable{
 		/*this.lock1 = lock1;*/
 	}
 	public void run(){
-    	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-    	ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
-		/*Date start = new Date();
-		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(items);
-		ArrayList<String[]> CUIandDisease = SearchOmimtsv.SearchOmimtsvCUIandDisease(data);
-		ArrayList<String> Stitch;
-		synchronized(lock1)
-		{
-			Stitch = Sider.GetStitchIDfromCUI(CUIandDisease);
-		}
-		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		Date start = new Date();
+		ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+	    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		System.out.println("***************************");
-		System.out.println();
-		System.out.println("Results :");*/
-		/*for(String s : Labels)
-			System.out.println(s);*/
+	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	  } 
 }

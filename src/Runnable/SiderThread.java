@@ -8,7 +8,7 @@ import Search.SearchATC;
 import Search.SearchStitch;
 import Search.Sider;
 
-public class SiderThread implements Runnable{
+public class SiderThread extends Thread{
 	Model model;
 	String[] items;
 	public SiderThread(Model m,String[] items)
@@ -18,17 +18,10 @@ public class SiderThread implements Runnable{
 	}
 	public void run(){
 		Date start = new Date();
-		
 		ArrayList<String> data = Sider.GetSiderDrugData(items);
-		/*ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
+		ArrayList<String> ATC = SearchStitch.SearchStitchAllDrug(data);
+		ArrayList<String> Labels = SearchATC.SearchATCDrug(ATC);
 		Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-		/*System.out.println("***************************");
-		System.out.println();
-		System.out.println("Results :");
-		for(String s : Labels)
-			System.out.println(s);*/
-//	    model.sendResult(Labels);
+	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	  } 
 }
