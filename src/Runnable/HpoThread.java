@@ -20,7 +20,7 @@ public class HpoThread implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		ArrayList<String[]> IDandCUI = SearchHpo.SearchHPOCUIandHPOids(new String[] {"*pain*"});
+		/*ArrayList<String[]> IDandCUI = SearchHpo.SearchHPOCUIandHPOids(new String[] {"*pain*"});
 		ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUI);
 		ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
 		for(String[] arg : IDandLabel)
@@ -69,7 +69,7 @@ public class HpoThread implements Runnable {
 				else
 					DiseaseANDcui.get(ind).add(value);
 			}
-		}
+		}*/
 	}
 
 	public static int Contains(String value, ArrayList<ArrayList<String>> list)
