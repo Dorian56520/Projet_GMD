@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +24,7 @@ public class searchOrphadata {
         }
 	 public static ArrayList<String[]> getOrphadataData(String[] args) {
 		 ArrayList<String[]> results = new ArrayList<String[]>();
+		 Date start = new Date();
 		 try
 		 {
 		 for (String arg : args){
@@ -100,6 +102,11 @@ public class searchOrphadata {
 		    	results = stockOrpha.get(0);
 		 }
 		 catch(Exception e){}
+			Date end = new Date();
+		      System.out.println("---------------------------");
+		    System.out.println(end.getTime() - start.getTime() + " Orpha milliseconds");
+			System.out.println("Orpha match : " + results.size());
+		      System.out.println("---------------------------");
 		return results;
 		 
   }

@@ -21,20 +21,20 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchHpo {
 
-	public static ArrayList<String> GetCUIFromHPOid (ArrayList<String> HPids)
+	public static ArrayList<String[]> GetCUIFromHPOid (ArrayList<String[]> HPids)
 	{
 
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
-		ArrayList<String> CUIList = new ArrayList<String>();
+		ArrayList<String[]> CUIList = new ArrayList<String[]>();
 		Date start = new Date();
 		try
 		{
 			IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
-			for(String arg : HPids)
+			for(String[] arg : HPids)
 			{
-				String id = arg.replace("HP:", "").trim();
+				String id = arg[0].replace("HP:", "").trim();
 				Query query = new QueryParser("ID",analyzer).parse(id);
 				
 				TopDocs results = searcher.search(query, 100);
@@ -43,7 +43,7 @@ public class SearchHpo {
 				{
 					String value = searcher.doc(scoredoc.doc).getField("CUI").stringValue();
 					if(!CUIList.contains(value))
-						CUIList.add(value);
+						CUIList.add(new String[] {value,arg[1]});
 				}
 			}
 		}

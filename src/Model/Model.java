@@ -49,9 +49,11 @@ public class Model implements Observable{
 			System.out.print( " AND ");
 		}
 		System.out.println(s[s.length - 1] + "]");
-		Thread t1 = new Thread(new DrugThread(this,s));
+		final Object lock1 = new Object();
+	    //final Object lock2 = new Object();
+		Thread t1 = new Thread(new DrugThread(this,s,lock1));
 		t1.start();
-		Thread t2 = new Thread(new OmimThread(this,s));
+		Thread t2 = new Thread(new OmimThread(this,s,lock1));
 		t2.start();
 		notifyObserver(null);
 	}

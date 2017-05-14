@@ -202,6 +202,7 @@ public class IndexOmimtsv {
 				  	  }
 				  	  else
 				  		  doc.add(new StoredField("CUI",tokens[5].trim()));
+			  		  doc.add(new StoredField("Label",tokens[1].trim()));
 				      writer.addDocument(doc);
 	    		  }
 	    	  }

@@ -17,9 +17,9 @@ import Search.searchOrphadata;
 
 public class HpoSqliteLucas {
 
-	public static ArrayList<String> GetHPidFROMOrphaID(ArrayList<String[]> OrphaID) {
+	public static ArrayList<String[]> GetHPidFROMOrphaID(ArrayList<String[]> OrphaID) {
         Connection conn = null;
-        ArrayList<String> res =new ArrayList<String>();
+        ArrayList<String[]> res =new ArrayList<String[]>();
         try {
             // db parameters
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
@@ -35,7 +35,7 @@ public class HpoSqliteLucas {
             }
             where += "\"" + OrphaID.get(OrphaID.size() - 1)[0] + "\"";
             //System.out.println("Connection to SQLite has been established.");
-            String query = "Select distinct sign_id from phenotype_annotation where disease_id IN ("+where+")";
+            String query = "Select distinct sign_id,disease_label from phenotype_annotation where disease_id IN ("+where+")";
             //System.out.println("ici");
 		    statement = conn.createStatement();
 		    
@@ -43,7 +43,7 @@ public class HpoSqliteLucas {
 		    while(result.next())
 		    {
 		    //System.out.println(result.getString(2));
-		    res.add(result.getString(1));
+		    res.add(new String[] {result.getString(1),result.getString(2)});
 		    }
 		    return res;
             
@@ -169,8 +169,8 @@ public class HpoSqliteLucas {
 	    
 	    public static void main(String[] args) {
 	    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
-	    	ArrayList<String> HPids = GetHPidFROMOrphaID(OrphaID);
-	    	ArrayList<String> CUIList = SearchHpo.GetCUIFromHPOid(HPids);
+	    	ArrayList<String[]> HPidsAndDisease = GetHPidFROMOrphaID(OrphaID);
+	    	ArrayList<String[]> CUIList = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
 			ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUIList);
 			ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
 			ArrayList<String> Labels = SearchATC.SearchATC(ATC);

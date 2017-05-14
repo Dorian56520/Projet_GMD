@@ -11,14 +11,20 @@ import Search.Sider;
 public class DrugThread implements Runnable{
 	Model model;
 	String[] items;
-	public DrugThread(Model m,String[] items)
+	private final Object lock1;
+	public DrugThread(Model m,String[] items,Object lock1)
 	{
 		model = m;
 		this.items = items;
+		this.lock1 = lock1;
 	}
 	public void run(){
 		Date start = new Date();
-		ArrayList<String> data = Sider.GetSiderDrugData(items);
+		ArrayList<String> data;
+		synchronized(lock1)
+		{
+			data = Sider.GetSiderDrugData(items);
+		}
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();

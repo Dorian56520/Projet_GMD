@@ -21,6 +21,8 @@ import org.apache.lucene.store.FSDirectory;
 public class SearchATC {
 	public static ArrayList<String> SearchATC(ArrayList<String> args)
 	{
+		if(args.size() == 0)
+			return new ArrayList<String>();
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
 		ArrayList<String> LabelList = new ArrayList<String>();
 		Date start = new Date();
