@@ -55,11 +55,7 @@ public class SearchHpo {
 		res.add(1,CUI);
 		reader.close();
 		return res;
-		
-		
 
-		
-	
 	}
 	public static void main(String[] args) throws IOException{
 		

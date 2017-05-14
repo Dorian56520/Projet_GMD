@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 public class searchOrphadata {
 	
-	static String symptom = "Abnormal%20colour%20of%20the%20urine";
+	static String symptom = "Autosomal%20recessive%20inheritance";
 	static String symptom2 = "Abnormal%20cry/voice/phonation%20disorder/nasal%20speech";
 	static ArrayList<ArrayList<String>> stockOrpha = new ArrayList<ArrayList<String>>();
 
@@ -23,7 +23,7 @@ public class searchOrphadata {
         }
 	
 	 public static void affiche() throws IOException, ParseException{
-		 	URL FichierJson = new URL("http://couchdb.telecomnancy.univ-lorraine.fr/orphadatabase/_design/clinicalsigns/_view/GetDiseaseByClinicalSign?key=%22"+symptom2+"%22");
+		 	URL FichierJson = new URL("http://couchdb.telecomnancy.univ-lorraine.fr/orphadatabase/_design/clinicalsigns/_view/GetDiseaseByClinicalSign?key=%22"+symptom+"%22");
 		    BufferedReader br = new BufferedReader(new InputStreamReader(FichierJson.openStream()));
 		    JSONParser parser = new JSONParser();
 		    Object obj = parser.parse(br);
