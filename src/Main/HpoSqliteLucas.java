@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Search.SearchATC;
 import Search.SearchHpo;
@@ -18,7 +19,10 @@ import Search.searchOrphadata;
 public class HpoSqliteLucas {
 
 	public static ArrayList<String[]> GetHPidFROMOrphaID(ArrayList<String[]> OrphaID) {
-        Connection conn = null;
+
+		if(OrphaID.size() == 0)
+			return new ArrayList<String[]>();
+		Connection conn = null;
         ArrayList<String[]> res =new ArrayList<String[]>();
         try {
             // db parameters
@@ -168,9 +172,12 @@ public class HpoSqliteLucas {
 	    }
 	    
 	    public static void main(String[] args) {
+	    	Date start = new Date();
 	    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
 	    	ArrayList<String[]> HPidsAndDisease = GetHPidFROMOrphaID(OrphaID);
 	    	ArrayList<String[]> CUIList = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
+	    	Date end = new Date();
+	    	System.out.println(end.getTime() - start.getTime());
 			ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUIList);
 			ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
 			ArrayList<String> Labels = SearchATC.SearchATC(ATC);
