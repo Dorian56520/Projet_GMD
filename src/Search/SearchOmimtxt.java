@@ -57,9 +57,9 @@ public class SearchOmimtxt {
 	public static void main(String[] args) 
 	{
 		Date start = new Date();
-		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"Abnormal*"});
+		/*ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"Abnormal*"});
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 		System.out.println("***************************");
 		System.out.println();

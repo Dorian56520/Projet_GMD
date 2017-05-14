@@ -284,7 +284,7 @@ public class SearchHpoOrphaOmim {
 	
 	 public static void main(String[] args) {
 			Date start = new Date();
-		 String[] items = new String[] {"fever*"};
+		 String[] items = new String[] {"Abnormal"};
 		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	    	
@@ -298,15 +298,41 @@ public class SearchHpoOrphaOmim {
 			ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
 			MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
 	    	
-	    	ArrayList<ArrayList<String>> presquefin = combin(CUIandDiseaseOrpha/*new ArrayList<ArrayList<String>>()*/,DiseaseANDcui, CUIandDiseaseOmim);
+	    	ArrayList<ArrayList<String>> presquefin = combin(CUIandDiseaseOrpha,DiseaseANDcui, CUIandDiseaseOmim);
+	    	presquefin = trie(presquefin);
 	    	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
-	    	//ArrayList<String> ATC = SearchStitch.SearchStitchAll(AllStitchID);
-			//ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+	    	ArrayList<ArrayList<String>> ATC = SearchStitch.SearchStitchAll(AllStitchID);
+			ArrayList<ArrayList<String>> Labels = SearchATC.SearchATC(ATC);
 			Date end = new Date();
 		    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
 	    	//SearchHpoFinale.affiche2(presquefin);
 	    	
 	    }
+	 public static ArrayList<ArrayList<String>> trie(ArrayList<ArrayList<String>> l){
+	       ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+	       int cpt = 0;
+	       for (int i =0 ; i <l.size();i++){
+	           if (l.get(i).get(2).equals("3")){
+	               res.add(l.get(i));
+	               cpt++;
+	           }
+	       }
+	       for (int i =0 ; i <l.size();i++){
+	           if (l.get(i).get(2).equals("2")){
+	               res.add(cpt,l.get(i));
+	               cpt++;
+	           }
+	       }
+
+	       for (int i =0 ; i <l.size();i++){
+	           if (l.get(i).get(2).equals("1")){
+	               res.add(cpt,l.get(i));
+	               cpt++;
+	           }
+	       }
+
+	       return res;
+	   }
 	 public static int Contains(String value, ArrayList<ArrayList<String>> list)
 		{
 			for(int i=0;i<list.size();i++)

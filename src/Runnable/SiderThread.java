@@ -18,10 +18,10 @@ public class SiderThread implements Runnable{
 	}
 	public void run(){
 		Date start = new Date();
-		ArrayList<String> data;
-		data = Sider.GetSiderDrugData(items);
-		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		
+		ArrayList<String> data = Sider.GetSiderDrugData(items);
+		/*ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 		/*System.out.println("***************************");
