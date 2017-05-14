@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import java.util.Date;
 
-import Main.HpoSqliteLucas;
-
 
 public class SearchHpoOrphaOmim {
 
@@ -18,15 +16,15 @@ public class SearchHpoOrphaOmim {
 		//1st 
     	ArrayList<String> Drugdata = Sider.GetSiderDrugData(items);
     	
-    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
+    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
     	ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
-    	ArrayList<String[]> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
-		
+    	ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
+    	
     	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-		ArrayList<String[]> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+    	ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		
-		
-		
+		/*ArrayList<String[]> CUIandDiseaseHPO = SearchHpoFinale.SearchHpof(items);
+>>>>>>> d65f55228e5188f2bb1aadfc8e966bd25900c017
 		//Then concat all CUI
 		ArrayList<String[]> AllCUI = new ArrayList<String[]>();
 		
@@ -41,6 +39,13 @@ public class SearchHpoOrphaOmim {
 			else
 				cpt++;
 		}
+		for(String[] value : CUIandDiseaseHPO)
+		{
+			if(!Contains(value,AllCUI))
+				AllCUI.add(value);
+			else
+				cpt++;
+		}
 		System.out.println("Nb doublon : " + cpt);
     	//SE Drug
 		ArrayList<String> DrugATC = SearchStitch.SearchStitchAll(Drugdata);
@@ -49,7 +54,7 @@ public class SearchHpoOrphaOmim {
     	//Thus search cure drug
 		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(AllCUI);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 		System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
@@ -149,7 +154,7 @@ public class SearchHpoOrphaOmim {
 	    }
 	
     public static void main(String[] args) {
-    	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"*"});
+    	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"hypo*"});
     }
     
 	public static int ContainsMaladie( ArrayList<ArrayList<String>> list, String value)

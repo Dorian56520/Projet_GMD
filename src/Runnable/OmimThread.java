@@ -13,15 +13,17 @@ import Search.Sider;
 public class OmimThread implements Runnable{
 	Model model;
 	String[] items;
-	private final Object lock1;
-	public OmimThread(Model m,String[] items,Object lock1)
+	//private final Object lock1;
+	public OmimThread(Model m,String[] items/*,Object lock1*/)
 	{
 		model = m;
 		this.items = items;
-		this.lock1 = lock1;
+		/*this.lock1 = lock1;*/
 	}
 	public void run(){
-		Date start = new Date();
+    	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+    	ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+		/*Date start = new Date();
 		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(items);
 		ArrayList<String[]> CUIandDisease = SearchOmimtsv.SearchOmimtsvCUIandDisease(data);
 		ArrayList<String> Stitch;
@@ -35,7 +37,7 @@ public class OmimThread implements Runnable{
 	    System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 		System.out.println("***************************");
 		System.out.println();
-		System.out.println("Results :");
+		System.out.println("Results :");*/
 		/*for(String s : Labels)
 			System.out.println(s);*/
 	  } 

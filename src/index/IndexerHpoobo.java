@@ -141,7 +141,7 @@ public class IndexerHpoobo {
 			    		  String id = line.substring(7,line.length()).trim();
 	    				  //System.out.println("id = " + id);
 	    				  //doc.add(new TextField("id",id,Field.Store.YES));
-	    				  doc.add(new TextField("ID",id,Field.Store.NO));
+	    				  doc.add(new TextField("ID",id,Field.Store.YES));
 	    				  line = br.readLine();
 	    				 // System.out.println(line.substring(6,line.length()));
 		    				String[] name = line.substring(6,line.length()).split(" ");

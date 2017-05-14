@@ -21,8 +21,6 @@ import org.apache.lucene.store.FSDirectory;
 public class SearchStitch {
 	public static ArrayList<String> SearchStitchAll(ArrayList<String> args)
 	{
-		args = new ArrayList<String>();
-		args.add("C0000727");
 		if(args.size() == 0)
 			return new ArrayList<String>();
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";

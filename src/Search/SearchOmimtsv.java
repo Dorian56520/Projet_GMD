@@ -19,12 +19,12 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchOmimtsv {
 
-	public static ArrayList<String[]> SearchOmimtsvCUIandDisease(ArrayList<String> args)
+	public static ArrayList<ArrayList<String>> SearchOmimtsvCUIandDisease(ArrayList<String> args)
 	{
 		if(args.size() == 0)
-			return new ArrayList<String[]>();
+			return new ArrayList<ArrayList<String>>();
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv";
-		ArrayList<String[]> CUIList = new ArrayList<String[]>();
+		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
 		{
@@ -33,6 +33,7 @@ public class SearchOmimtsv {
 			Analyzer analyzer = new StandardAnalyzer();
 			for(String arg : args)
 			{
+				ArrayList<String> tmp = new ArrayList<String>();
 				//String[] queries = arg;
 				Query query = new QueryParser("ID",analyzer).parse(arg);
 				//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
@@ -43,19 +44,34 @@ public class SearchOmimtsv {
 				{
 					String cui = searcher.doc(scoredoc.doc).getField("CUI").stringValue();
 					String label = searcher.doc(scoredoc.doc).getField("Label").stringValue();
-					if(cui.contains("|"))
+					int ind = Contains(label,DiseaseList);
+					if(ind < 0)
 					{
-						String[] cuis = cui.split("\\|");
-						for(String s : cuis)
+						tmp.add(label);
+						if(cui.contains("|"))
 						{
-							if(!Contains(s,CUIList))
-								CUIList.add(new String[] {s.trim(),label});
+							String[] cuis = cui.split("\\|");
+							for(String s : cuis)
+							{
+								tmp.add(s.trim());
+							}
 						}
+						else
+							tmp.add(cui.trim());
+						DiseaseList.add(tmp);
 					}
 					else
 					{
-						if(!Contains(cui,CUIList))
-							CUIList.add(new String[] {cui.trim(),label});
+						if(cui.contains("|"))
+						{
+							String[] cuis = cui.split("\\|");
+							for(String s : cuis)
+							{
+								DiseaseList.get(ind).add(s.trim());
+							}
+						}
+						else
+							DiseaseList.get(ind).add(cui.trim());
 					}
 				}
 			}
@@ -64,27 +80,27 @@ public class SearchOmimtsv {
 		Date end = new Date();
 	      System.out.println("---------------------------");
 	    System.out.println(end.getTime() - start.getTime() + " Omimtsv milliseconds");
-		System.out.println("Omimtsv match : " + CUIList.size());
+		System.out.println("Omimtsv match : " + DiseaseList.size());
 	      System.out.println("---------------------------");
-		return CUIList;
+		return DiseaseList;
 	}
-	public static boolean Contains(String cui,ArrayList<String[]> list)
+	public static int Contains(String value, ArrayList<ArrayList<String>> list)
 	{
-		for(String[] value : list)
+		for(int i=0;i<list.size();i++)
 		{
-			if(value[0].equals(cui))
-				return true;
+			if(list.get(i).get(0).equals(value))
+				return i;
 		}
-		return false;
+		return -1;
 	}
 	public static void main(String[] args) 
 	{
-		Date start = new Date();
+		/*Date start = new Date();
 		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
-		ArrayList<String[]> CUIandDisease = SearchOmimtsv.SearchOmimtsvCUIandDisease(data);
+		ArrayList<ArrayList<String>> CUIandDisease = SearchOmimtsv.SearchOmimtsvCUIandDisease(data);
 		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUIandDisease);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 		/*System.out.println("***************************");
 		System.out.println();
