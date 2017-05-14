@@ -13,14 +13,15 @@ public class SearchHpoFinale {
 	public SearchHpoFinale(){}
 	
 	
-	public static ArrayList<String[]> SearchHpof(String [] symptoms ) throws IOException{
+	public static ArrayList<String[]> SearchHpof(String [] symptoms ){
 	
 		
 		
 		ArrayList<ArrayList<String>>resr = new ArrayList<ArrayList<String>>();
 		ArrayList<String[]> resff = new ArrayList<String[]>();
 		ArrayList<String> lCUI = new ArrayList<String>();
-		
+		try
+		{
 		int tsymp = symptoms.length;
 		int cpt2 = 0;
 		for(int h = 0; h < tsymp;h++){
@@ -41,7 +42,7 @@ public class SearchHpoFinale {
 			}
 			lCUI.add(h,res.get(1));
 			resr.add(h,resf);
-			affiche(resf);
+			//affiche(resf);
 		}
 		if(resr.size() > 1){
 			
@@ -93,7 +94,8 @@ public class SearchHpoFinale {
 			}
 			
 		}
-		affiche3(resff);
+		//affiche3(resff);
+		} catch(Exception e) {}
 		return resff;
 		
 		

@@ -18,13 +18,14 @@ public class SearchHpoOrphaOmim {
 		//1st 
     	ArrayList<String> Drugdata = Sider.GetSiderDrugData(items);
     	
-    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
+    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
     	ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
     	ArrayList<String[]> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
 		
     	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 		ArrayList<String[]> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		
+		ArrayList<String[]> CUIandDiseaseHPO = SearchHpoFinale.SearchHpof(items);
 		//Then concat all CUI
 		ArrayList<String[]> AllCUI = new ArrayList<String[]>();
 		
@@ -33,6 +34,13 @@ public class SearchHpoOrphaOmim {
 			AllCUI.add(value);
 		}
 		for(String[] value : CUIandDiseaseOmim)
+		{
+			if(!Contains(value,AllCUI))
+				AllCUI.add(value);
+			else
+				cpt++;
+		}
+		for(String[] value : CUIandDiseaseHPO)
 		{
 			if(!Contains(value,AllCUI))
 				AllCUI.add(value);
@@ -61,7 +69,7 @@ public class SearchHpoOrphaOmim {
 		return false;
 	}
     public static void main(String[] args) {
-    	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"*"});
+    	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"hypo*"});
     }
 
 }
