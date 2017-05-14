@@ -126,9 +126,12 @@ public class MainView extends ImagePanel implements Observer{
 			else
 				tim.start();
 		}
-		else{
-		controler.GetMainWindow().setContentPane(this);
-		controler.GetMainWindow().update();
+
+		else
+		{
+			controler.GetMainWindow().setContentPane(this);
+			controler.GetMainWindow().update();
+
 		}
 	}
 	class ButtonListener implements ActionListener

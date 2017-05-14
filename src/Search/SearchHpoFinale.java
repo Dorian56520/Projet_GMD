@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import Main.HpoSqliteLucas;
-
 public class SearchHpoFinale {
 	
 	ArrayList<ArrayList<String>> resf = new ArrayList<ArrayList<String>>();
@@ -102,6 +100,41 @@ public class SearchHpoFinale {
 		}
 		
 		
+	public static ArrayList<ArrayList<String>> transf(ArrayList<String[]> l){
+		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+		
+		
+		
+		return res;
+	}
+	
+	public static int ContainsMaladie( ArrayList<ArrayList<String>> list, String value)
+    {
+		int res = -2;
+		
+        for(int i = 0; i < list.size(); i++)
+        {
+            if(list.get(i).get(0).equals(value))
+            	res = i;
+                return res;
+        }
+        return res;
+    }
+	
+	public static boolean ContainsCui( ArrayList<ArrayList<String>> list, String value)
+    {
+        for(int i = 0; i < list.size(); i++)
+        {
+        	for(int j =3;j<list.get(i).size();j++){
+        		 if(list.get(i).get(j).equals(value))
+                     return true;
+        	}
+           
+        }
+        return false;
+    }
+	
+	
 	
 	public static ArrayList<String> getallcui (String CUI1){
 		ArrayList<String> resf =new ArrayList<String>();
