@@ -8,23 +8,18 @@ import Search.SearchATC;
 import Search.SearchStitch;
 import Search.Sider;
 
-public class DrugThread implements Runnable{
+public class SiderThread implements Runnable{
 	Model model;
 	String[] items;
-	private final Object lock1;
-	public DrugThread(Model m,String[] items,Object lock1)
+	public SiderThread(Model m,String[] items)
 	{
 		model = m;
 		this.items = items;
-		this.lock1 = lock1;
 	}
 	public void run(){
 		Date start = new Date();
 		ArrayList<String> data;
-		synchronized(lock1)
-		{
-			data = Sider.GetSiderDrugData(items);
-		}
+		data = Sider.GetSiderDrugData(items);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();

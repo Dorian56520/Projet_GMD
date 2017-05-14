@@ -172,7 +172,7 @@ public class HpoSqliteLucas {
 	    }
 	    
 	    public static void main(String[] args) {
-	    	Date start = new Date();
+	    	/*Date start = new Date();
 	    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
 	    	ArrayList<String[]> HPidsAndDisease = GetHPidFROMOrphaID(OrphaID);
 	    	ArrayList<String[]> CUIList = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
@@ -183,7 +183,7 @@ public class HpoSqliteLucas {
 			ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 	    	System.out.println("Nb Results : " + Labels.size());
 	    	for(String lab : Labels)
-	    		System.out.println(lab);
+	    		System.out.println(lab);*/
 	        //connect("\"HP:0000013\"");
 	        //String test = "PARKINSON DISEASE 1, AUTOSOMAL DOMINANT; PARK1";
 	        //affiche(trad(test ));

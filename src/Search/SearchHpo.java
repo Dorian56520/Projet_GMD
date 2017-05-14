@@ -21,11 +21,11 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchHpo {
 
-	public static ArrayList<String[]> GetCUIFromHPOid (ArrayList<String[]> HPids)
+	public static ArrayList<ArrayList<String>> GetCUIFromHPOid (ArrayList<String[]> HPids)
 	{
 
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
-		ArrayList<String[]> CUIList = new ArrayList<String[]>();
+		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
 		{
@@ -34,6 +34,7 @@ public class SearchHpo {
 			Analyzer analyzer = new StandardAnalyzer();
 			for(String[] arg : HPids)
 			{
+				ArrayList<String> tmp = new ArrayList<String>();
 				String id = arg[0].replace("HP:", "").trim();
 				Query query = new QueryParser("ID",analyzer).parse(id);
 				
@@ -41,9 +42,32 @@ public class SearchHpo {
 				ScoreDoc[] hits = results.scoreDocs;
 				for(ScoreDoc scoredoc: hits)
 				{
-					String value = searcher.doc(scoredoc.doc).getField("CUI").stringValue();
-					if(!CUIList.contains(value))
-						CUIList.add(new String[] {value,arg[1]});
+					String value = searcher.doc(scoredoc.doc).getField("CUI").stringValue().trim();
+					int ind = Contains(arg[1],DiseaseList);
+					if(ind < 0)
+					{
+						tmp.add(arg[1]);
+						if(value.matches(".*[,;].*"))
+						{
+							String[] cuis = value.split("[,;]");
+							for(String cui : cuis)
+								tmp.add(cui.trim());
+						}
+						else
+							tmp.add(value);
+						DiseaseList.add(tmp);
+					}
+					else
+					{
+						if(value.matches(".*[,;].*"))
+						{
+							String[] cuis = value.split("[,;]");
+							for(String cui : cuis)
+								DiseaseList.get(ind).add(cui.trim());
+						}
+						else
+							DiseaseList.get(ind).add(value);
+					}
 				}
 			}
 		}
@@ -51,9 +75,9 @@ public class SearchHpo {
 		Date end = new Date();
 	      System.out.println("---------------------------");
 	    System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
-		System.out.println("HPO match : " + CUIList.size());
+		System.out.println("HPO match : " + DiseaseList.size());
 	      System.out.println("---------------------------");
-		return CUIList;
+		return DiseaseList;
 	}
 	public static ArrayList<String> SearchHpo (String symptom) throws IOException{
 		StandardAnalyzer analyzer = new StandardAnalyzer();
@@ -94,6 +118,16 @@ public class SearchHpo {
 		reader.close();
 		return res;
 
+	}
+
+	public static int Contains(String value, ArrayList<ArrayList<String>> list)
+	{
+		for(int i=0;i<list.size();i++)
+		{
+			if(list.get(i).get(0).equals(value))
+				return i;
+		}
+		return -1;
 	}
 	public static void main(String[] args) throws IOException{
 		

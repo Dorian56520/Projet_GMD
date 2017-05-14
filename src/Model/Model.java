@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import Interface.Observable;
 import Interface.Observer;
 import Main.Window;
-import Runnable.DrugThread;
+import Runnable.SiderThread;
 import Runnable.OmimThread;
+import Runnable.OrphaThread;
 import View.MainView;
 
 public class Model implements Observable{
@@ -40,12 +41,14 @@ public class Model implements Observable{
 			System.out.print( " AND ");
 		}
 		System.out.println(s[s.length - 1] + "]");
-		final Object lock1 = new Object();
-	    //final Object lock2 = new Object();
-		Thread t1 = new Thread(new DrugThread(this,s,lock1));
+		/*final Object lock1 = new Object();
+	    final Object lock2 = new Object();*/
+		Thread t1 = new Thread(new SiderThread(this,s));
+		Thread t2 = new Thread(new OmimThread(this,s));
+		Thread t3 = new Thread(new OrphaThread(this,s));
 		t1.start();
-		Thread t2 = new Thread(new OmimThread(this,s,lock1));
 		t2.start();
+		t3.start();
 		notifyObserver(null);
 	}
 	public void sendResult(ArrayList<String> result)

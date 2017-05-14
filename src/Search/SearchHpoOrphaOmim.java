@@ -20,12 +20,12 @@ public class SearchHpoOrphaOmim {
     	
     	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
     	ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
-    	ArrayList<String[]> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
-		
+    	ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
+    	
     	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-		ArrayList<String[]> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+    	ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		
-		ArrayList<String[]> CUIandDiseaseHPO = SearchHpoFinale.SearchHpof(items);
+		/*ArrayList<String[]> CUIandDiseaseHPO = SearchHpoFinale.SearchHpof(items);
 		//Then concat all CUI
 		ArrayList<String[]> AllCUI = new ArrayList<String[]>();
 		
@@ -55,7 +55,7 @@ public class SearchHpoOrphaOmim {
     	//Thus search cure drug
 		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(AllCUI);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 		System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
