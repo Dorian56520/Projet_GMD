@@ -19,11 +19,60 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
 public class SearchATC {
-	public static ArrayList<String> SearchATC(ArrayList<String> args)
+	public static ArrayList<ArrayList<String>> SearchATC(ArrayList<ArrayList<String>> args)
+	{
+		if(args.size() == 0)
+			return new ArrayList<ArrayList<String>>();
+		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
+		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
+		ArrayList<ArrayList<String>> AllLabelList = new ArrayList<ArrayList<String>>();
+		Date start = new Date();
+		try
+		{
+			IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
+			IndexSearcher searcher = new IndexSearcher(reader);
+			Analyzer analyzer = new StandardAnalyzer();
+			for(ArrayList<String> arg : args)
+			{
+				ArrayList<String> LabelList = new ArrayList<String>();
+				LabelList.add(arg.get(0));
+				LabelList.add(arg.get(1));
+				LabelList.add(arg.get(2));
+				for(String s : arg)
+				{
+					String queryString = s;
+					Query query = new QueryParser("ATC",analyzer).parse(queryString);
+					
+					TopDocs results = searcher.search(query, 10);
+					ScoreDoc[] hits = results.scoreDocs;
+					for(ScoreDoc scoredoc: hits)
+					{
+						String value = searcher.doc(scoredoc.doc).getField("Label").stringValue();
+						if(!LabelList.contains(value))
+						   LabelList.add(value);
+					}
+				}
+				//if(LabelList.size() > 3)
+					AllLabelList.add(LabelList);
+			}
+		}
+		catch(Exception e){}
+		Date end = new Date();
+	      System.out.println("---------------------------");
+	    System.out.println(end.getTime() - start.getTime() + " ATC milliseconds");
+		System.out.println("ATC match : " + (AllLabelList.size() == 0 ? "0" : AllLabelList.get(0).size()));
+	      System.out.println("---------------------------");
+		return AllLabelList;
+	}
+	public static ArrayList<String> SearchATCDrug(ArrayList<String> args)
 	{
 		if(args.size() == 0)
 			return new ArrayList<String>();
+
 		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
+
+		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
+
 		ArrayList<String> LabelList = new ArrayList<String>();
 		Date start = new Date();
 		try

@@ -62,7 +62,7 @@ public class searchOrphadata {
 	        			String[] array = new String[]{id_disease,name_disease};
 	        			tmp_names.add(array);
 	        		
-	        			i ++;
+	        			i++;
 	        		
 	        		}
 	        	}

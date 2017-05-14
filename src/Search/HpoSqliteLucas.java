@@ -39,7 +39,7 @@ public class HpoSqliteLucas {
             }
             where += "\"" + OrphaID.get(OrphaID.size() - 1)[0] + "\"";
             //System.out.println("Connection to SQLite has been established.");
-            String query = "Select distinct sign_id,disease_label from phenotype_annotation where disease_id IN ("+where+")";
+            String query = "Select distinct sign_id,disease_label from phenotype_annotation where disease_db = \"ORPHA\" AND disease_id IN ("+where+")";
             //System.out.println("ici");
 		    statement = conn.createStatement();
 		    

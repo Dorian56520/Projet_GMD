@@ -24,6 +24,9 @@ public class SearchOmimtsv {
 		if(args.size() == 0)
 			return new ArrayList<ArrayList<String>>();
 		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtsv";
+
+		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv";
+
 		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try

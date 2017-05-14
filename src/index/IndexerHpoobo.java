@@ -30,13 +30,20 @@ public class IndexerHpoobo {
 		
 		 public static void main(String[] args) {
 			 Date start = new Date();
+
 			    final Path docDir = Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/hp.obo");
+			    //final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/hpo.obo");
+
 			    
 			   try {
 				   
 			      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo" + "'...");
 
+
 			     Directory dir = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs"));
+
+			     //Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/indexHpoobo"));
+
 			      Analyzer analyzer = new StandardAnalyzer();
 			     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 			     iwc.setOpenMode(OpenMode.CREATE);

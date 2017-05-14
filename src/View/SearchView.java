@@ -66,19 +66,19 @@ public class SearchView extends ImagePanel implements Observer{
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
 	
 	
-	 String[] items = new String[] {"ab*"};
-	 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
-    ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
-    ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
-    ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
-    ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
-   	
-    ArrayList<ArrayList<String>> presquefin = SearchHpoOrphaOmim.combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
-	
-    ArrayList<String> data = Sider.GetSiderDrugData(items);
-	ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-	ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+//	 String[] items = new String[] {"ab*"};
+//	 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+//    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+//    ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
+//    ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
+//    ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
+//    ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
+//   	
+//    ArrayList<ArrayList<String>> presquefin = SearchHpoOrphaOmim.combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
+//	
+//    ArrayList<String> data = Sider.GetSiderDrugData(items);
+//	ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+//	ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 	
 	
 	boolean searchClicked;
@@ -151,7 +151,6 @@ public class SearchView extends ImagePanel implements Observer{
 		
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
-		System.out.println(Labels);
 	}
 	@Override
 	public void update() {
@@ -188,8 +187,8 @@ public class SearchView extends ImagePanel implements Observer{
 			controler.ParseIntoQuery(signsTab);
 			/*lalistedemaladies= la fonction qu'ils vont m'envoyer;
 			 * lalistededrugs= pareil ;*/
-			controler.addDrugList(Labels);
-			controler.addDiseaseList(presquefin);
+//			controler.addDrugList(Labels);
+//			controler.addDiseaseList(presquefin);
 			
 		}
 	}

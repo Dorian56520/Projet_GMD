@@ -31,7 +31,11 @@ import org.apache.lucene.store.FSDirectory;
 public class IndexerATC {
 	public static void main(String[] args) {
 	Date start = new Date();
+
     final Path docDir = Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/br08303.keg");
+
+    //final Path docDir = Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/br08303.keg");
+
     
    try {
       System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC" + "'...");

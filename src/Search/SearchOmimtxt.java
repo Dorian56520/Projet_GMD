@@ -21,7 +21,11 @@ public class SearchOmimtxt {
 
 	public static ArrayList<String> SearchOmimtxtCS(String[] args)
 	{
+
 		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtxt";
+
+		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtxt";
+
 		ArrayList<String> NOList = new ArrayList<String>();
 		Date start = new Date();
 		try
@@ -32,9 +36,9 @@ public class SearchOmimtxt {
 			String queryString = "";
 			for(int i=0;i<args.length - 1;i++)
 			{
-				queryString += args[i].trim() + " AND ";
+				queryString += args[i].toLowerCase().trim() + " AND ";
 			}
-			queryString += args[args.length-1].trim();
+			queryString += args[args.length-1].toLowerCase().trim();
 			Term term = new Term("CS", queryString);
 			WildcardQuery query = new WildcardQuery(term);
 			TopDocs results = searcher.search(query,24000);
@@ -56,15 +60,15 @@ public class SearchOmimtxt {
 	}
 	public static void main(String[] args) 
 	{
-		/*Date start = new Date();
-		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
+		Date start = new Date();
+		/*ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"Abnormal*"});
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
 		Date end = new Date();
 		System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
-		for(String s : Labels)
+		/*for(String s : Labels)
 			System.out.println(s);
 	    model.notifyObserver(null);
 	    model.sendResult(Labels);*/

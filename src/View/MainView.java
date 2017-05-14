@@ -120,8 +120,7 @@ public class MainView extends ImagePanel implements Observer{
 				cpt=0;
 				loadImage.setIcon(null);
 				searchClicked = false;
-				controler.goToSearchView();
-				
+				//controler.goToSearchView();
 			}
 			else
 				tim.start();
