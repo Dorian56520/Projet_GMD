@@ -26,7 +26,7 @@ public class SearchHpo {
 	public static ArrayList<ArrayList<String>> GetCUIFromHPOid (ArrayList<String[]> HPids)
 	{
 
-		String index = "C:/Users/lulu/Desktop/Projet/Données/hpo/index";
+		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexHpoobo";
 		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
@@ -84,7 +84,7 @@ public class SearchHpo {
 	public static ArrayList<ArrayList<String[]>> SearchHPOCUIandHPOids (String[] args)
 	{
 
-		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
+		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexHpoobo";
 		ArrayList<ArrayList<String[]>> IDandCUI = new ArrayList<ArrayList<String[]>>();
 		Date start = new Date();
 		try
@@ -126,7 +126,7 @@ public class SearchHpo {
 	}	
 	public static ArrayList<String> SearchHpo (String symptom) throws IOException{
 		StandardAnalyzer analyzer = new StandardAnalyzer();
-		Directory index = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/index"));
+		Directory index = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexHpoobo"));
 		//Directory index = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo"));
 		ArrayList<String> res = new ArrayList<String>();
 		String id = "";

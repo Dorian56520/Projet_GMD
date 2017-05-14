@@ -35,13 +35,13 @@ public class IndexerOmimtxt {
 	static ArrayList<Record> RecordList;
 	public static void main(String[] args) {
 	Date start = new Date();
-    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/omim.txt");
+    final Path docDir = Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/omim.txt");
     
    try {
 	   RecordList = PretraitementOmin.PretraitementOmin();
       System.out.println("Indexing to directory '" + "C:/Users/lulu/Desktop/Projet/Données/omim/indexOmimtxt" + "'...");
 
-     Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/indexOmimtxt"));
+     Directory dir = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtxt"));
       Analyzer analyzer = new StandardAnalyzer();
      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
      iwc.setOpenMode(OpenMode.CREATE);

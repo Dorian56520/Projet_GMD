@@ -11,8 +11,7 @@ public class Window extends JFrame {
 	{
 		// Window
 		this.setTitle("GMD Project");
-	    this.setSize(1280, 740);        
-	    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	    this.setSize(1280, 1024);        
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLocationRelativeTo(null);
 	    this.setVisible(false);

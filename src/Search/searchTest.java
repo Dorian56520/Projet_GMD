@@ -22,7 +22,7 @@ import org.apache.lucene.util.Version;
 public class searchTest {
 	public static void SearchStitch (String querystr) throws IOException{
 		StandardAnalyzer analyzer = new StandardAnalyzer();
-		Directory index = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/index"));
+		Directory index = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch"));
 
 		 //querystr est la recherche
 		Query q = null;

@@ -19,7 +19,7 @@ public class PretraitementOmin {
 		boolean read = false;
 		try {
 			Date start = new Date();
-			Fr = new FileReader("C:/Users/lulu/Desktop/Projet/Données/omim/omim.txt");
+			Fr = new FileReader("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/omim.txt");
 	    	br = new BufferedReader(Fr);
 	    	String line = br.readLine();
 			Record r = null;

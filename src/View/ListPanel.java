@@ -1,28 +1,29 @@
 package View;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.net.URL;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Interface.Observer;
 
 public class ListPanel extends JPanel{
-	
+	public ArrayList<JLabel> listeDiseaseNames= new ArrayList<JLabel>();
+	Observer vue;
 	public ListPanel(Observer vue,ArrayList<ArrayList<String>> list){
+		this.vue=vue;
 		if(list != null)
 		{
 			if(list.size() != 0)
 			{	
 				GridLayout layout=new GridLayout(list.size(),3);
-				layout.setHgap(100);
+				//layout.setHgap(5);
 				this.setLayout(layout);
 				
 				for (ArrayList<String> list2 : list){
@@ -30,11 +31,14 @@ public class ListPanel extends JPanel{
 							  try {
 								
 								//Name
-								JLabel name=new JLabel((list2.get(0)).toString());
-								Font font = new Font("Arial",Font.BOLD,14);
+								JLabel name=new JLabel((list2.get(0)));
+								 
+								Font font = new Font("Arial",Font.BOLD,12);
 								name.setFont(font);
+							    listeDiseaseNames.add(name);
+								name.addMouseListener(new DiseaseListener(list));
 								//Where does it come from ?
-								JLabel from = new JLabel((list2.get(1)).toString());
+								JLabel from = new JLabel("||"+(list2.get(1)).toString()+"||");
 								from.setFont(font);
 								//Score
 								JLabel score = new JLabel((list2.get(2)).toString());
@@ -67,7 +71,7 @@ public class ListPanel extends JPanel{
 					else
 					{
 						// Titre
-						JLabel lab=new JLabel("No connexion from databases...");
+						JLabel lab=new JLabel("No connection from databases...");
 
 						//Police titre
 						Font font = new Font("Arial",Font.BOLD,15);
@@ -79,5 +83,38 @@ public class ListPanel extends JPanel{
 						this.add(pp,BorderLayout.WEST);
 					}
 				}
+	class DiseaseListener implements MouseListener
+	{	ArrayList<ArrayList<String>> list;
+		public DiseaseListener(ArrayList<ArrayList<String>> list){
+			this.list=list;
+		}
+		public void mouseClicked(MouseEvent arg0) {
+			
+		}
+		
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mousePressed(MouseEvent arg0) {
+			int index=listeDiseaseNames.indexOf(arg0.getSource());
+			((SearchView)vue).getControler().addCureList(list,index);
+			
+			
+		}
+
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		
+	}
 }
 

@@ -70,14 +70,14 @@ public class IndexOmimtsv {
 	    
 		 
 	    Date start = new Date();
-	    final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/omimtsv.tsv");
+	    final Path docDir = Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/omimtsv.tsv");
 	    //final Path docDir = Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv");
 	    
 	   try {
 		   
 	      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtsv" + "'...");
 
-		  Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/omim/indexOmimtsv"));
+		  Directory dir = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtsv"));
 	     //Directory dir = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/stitch"));
 	      Analyzer analyzer = new StandardAnalyzer();
 	     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
@@ -217,7 +217,7 @@ public class IndexOmimtsv {
 	       // we use updateDocument instead to replace the old one matching the exact 
 	        // path, if present:
 	       System.out.println("updating " + file);
-	        writer.updateDocument(new Term("C:/Users/lulu/Desktop/Projet/Données/stitch/chemical.sources.v5.0.tsv", file.toString()), doc);
+	        writer.updateDocument(new Term("F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/chemical.sources.v5.0.tsv", file.toString()), doc);
 	      }
 	    }
 	  }

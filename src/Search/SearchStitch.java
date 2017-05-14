@@ -23,7 +23,7 @@ public class SearchStitch {
 	{
 		if(args.size() == 0)
 			return new ArrayList<String>();
-		String index = "C:/Users/lulu/Desktop/Projet/Données/stitch/indexStitch";
+		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch";
 		ArrayList<String> ATCList = new ArrayList<String>();
 		Date start = new Date();
 		try

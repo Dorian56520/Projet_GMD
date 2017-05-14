@@ -21,7 +21,7 @@ public class SearchOmimtxt {
 
 	public static ArrayList<String> SearchOmimtxtCS(String[] args)
 	{
-		String index = "C:/Users/lulu/Desktop/Projet/Données/omim/indexOmimtxt";
+		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtxt";
 		ArrayList<String> NOList = new ArrayList<String>();
 		Date start = new Date();
 		try

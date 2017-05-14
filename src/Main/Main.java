@@ -1,7 +1,15 @@
 package Main;
 
+import java.util.ArrayList;
+
 import Controlers.Controlers;
 import Model.Model;
+import Search.HpoSqliteLucas;
+import Search.SearchHpo;
+import Search.SearchHpoOrphaOmim;
+import Search.SearchOmimtsv;
+import Search.SearchOmimtxt;
+import Search.searchOrphadata;
 import View.SearchView;
 
 public class Main 

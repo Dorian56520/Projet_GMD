@@ -21,31 +21,65 @@ import javax.swing.border.Border;
 
 import Controlers.Controlers;
 import Interface.Observer;
+import Search.HpoSqliteLucas;
+import Search.SearchATC;
+import Search.SearchHpo;
+import Search.SearchHpoOrphaOmim;
+import Search.SearchOmimtsv;
+import Search.SearchOmimtxt;
+import Search.SearchStitch;
+import Search.Sider;
+import Search.searchOrphadata;
 import View.MainView.AddListener;
 import View.MainView.ButtonListener;
 import View.MainView.CustomPanel;
 import View.MainView.TimerListener;
 
 public class SearchView extends ImagePanel implements Observer{
-	JLabel titleD = new JLabel("Disease",JLabel.CENTER);
-	JLabel titleDrugs = new JLabel("Drug",JLabel.CENTER);
-	JLabel titleCure = new JLabel("Cure",JLabel.CENTER);
-	JPanel DiseasePanel = new JPanel(new BorderLayout());
-	JPanel DrugPanel = new JPanel(new BorderLayout());
-	JPanel CurePanel = new JPanel(new BorderLayout());
+	JLabel titleD = new JLabel("                   Disease");
+	JLabel titleDrugs = new JLabel("                     Drug");
+	public JLabel titleCure = new JLabel("                     Cure");
+	public JPanel DiseasePanel = new JPanel(new BorderLayout());
+	public JPanel DrugPanel = new JPanel(new BorderLayout());
+	public JPanel CurePanel = new JPanel(new BorderLayout());
 	JPanel GJPsign = new JPanel(new GridLayout(1,1));
 	JPanel north = new JPanel();
 	JPanel center = new JPanel(new GridLayout(1,3));
 	JButton search  = new JButton();
 	JButton loadImage = new JButton();
 	JLabel result = new JLabel();
+	JScrollPane DiseaseScrollPane=new JScrollPane(DiseasePanel);
+	JScrollPane MedicineScrollPane=new JScrollPane(DrugPanel);
+	JScrollPane SideEffectScrollPane=new JScrollPane(CurePanel);
 	
 	ArrayList<ArrayList<String>> test= new ArrayList<ArrayList<String>>();
 	ArrayList<String>test1 = new ArrayList<String>();
 	ArrayList<String>test2 = new ArrayList<String>();
 	Controlers controler;
 	
+	public Controlers getControler() {
+		return controler;
+	}
+	public void setControler(Controlers controler) {
+		this.controler = controler;
+	}
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
+	
+	
+	 String[] items = new String[] {"ab*"};
+	 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+    ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
+    ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
+    ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
+    ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
+   	
+    ArrayList<ArrayList<String>> presquefin = SearchHpoOrphaOmim.combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
+	
+    ArrayList<String> data = Sider.GetSiderDrugData(items);
+	ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+	ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+	
 	
 	boolean searchClicked;
 	Timer tim;
@@ -73,31 +107,34 @@ public class SearchView extends ImagePanel implements Observer{
 		north.add(GJPsign,BorderLayout.WEST);
 		north.add(search,BorderLayout.CENTER);
 		north.add(loadImage);
+		
+		
+
+		
 		//in order to test the view :
-//		test1.add("Maladie1");
-//		test1.add("prov1");
-//		test1.add("score1");
-//		test2.add("Maladie2");
-//		test2.add("prov2");
-//		test2.add("score2");
-//		test.add(test1);
-//		test.add(test2);
-//		ListPanel DiseasePan= new ListPanel(this,test);
-//		CurePanel.add(DiseasePan);
+		test1.add("Maladie1");
+		test1.add("prov1");
+		test1.add("score1");
+		test2.add("Maladie2");
+		test2.add("prov2");
+		test2.add("score2");
+		test.add(test1);
+		test.add(test2);
+		//ListPanel DiseasePan= new ListPanel(this,test);
+		//CurePanel.add(DiseasePan);
 			
 		
 		//Disease panel
 		titleD.setFont(new Font(titleD.getFont().getName(),titleD.getFont().getStyle(),30));
 		titleD.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		DiseasePanel.add(titleD,BorderLayout.NORTH);
-		JScrollPane DiseaseScrollPane=new JScrollPane(DiseasePanel);
 		DiseaseScrollPane.getVerticalScrollBar().setUnitIncrement(15);
 		
 		//Drugs panel
 		titleDrugs.setFont(new Font(titleDrugs.getFont().getName(),titleDrugs.getFont().getStyle(),30));
 		titleDrugs.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		DrugPanel.add(titleDrugs,BorderLayout.NORTH);
-		JScrollPane MedicineScrollPane=new JScrollPane(DrugPanel);
+		
 		//MedicineScrollPane.add(DrugListPanel);
 		MedicineScrollPane.getVerticalScrollBar().setUnitIncrement(15);
 		
@@ -105,7 +142,6 @@ public class SearchView extends ImagePanel implements Observer{
 		titleCure.setFont(new Font(titleCure.getFont().getName(),titleCure.getFont().getStyle(),30));
 		titleCure.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		CurePanel.add(titleCure,BorderLayout.NORTH);
-		JScrollPane SideEffectScrollPane=new JScrollPane(CurePanel);
 		SideEffectScrollPane.getVerticalScrollBar().setUnitIncrement(15);
 		
 
@@ -115,7 +151,7 @@ public class SearchView extends ImagePanel implements Observer{
 		
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
-		
+		System.out.println(Labels);
 	}
 	@Override
 	public void update() {
@@ -150,13 +186,17 @@ public class SearchView extends ImagePanel implements Observer{
 			for(int i=0;i<signs.size();i++)
 				signsTab[i] = signs.get(i).getText();
 			controler.ParseIntoQuery(signsTab);
+			/*lalistedemaladies= la fonction qu'ils vont m'envoyer;
+			 * lalistededrugs= pareil ;*/
+			controler.addDrugList(Labels);
+			controler.addDiseaseList(presquefin);
+			
 		}
 	}
 	class TimerListener implements ActionListener
 	{
 
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			if(cpt == IconList.length-1)
 				cpt=0;
 			loadImage.setIcon(IconList[cpt]);
