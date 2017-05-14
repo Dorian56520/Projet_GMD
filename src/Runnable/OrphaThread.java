@@ -2,8 +2,8 @@ package Runnable;
 
 import java.util.ArrayList;
 
-import Main.HpoSqliteLucas;
 import Model.Model;
+import Search.HpoSqliteLucas;
 import Search.SearchHpo;
 import Search.searchOrphadata;
 

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import Main.HpoSqliteLucas;
-
 public class SearchHpoFinale {
 	
 	ArrayList<ArrayList<String>> resf = new ArrayList<ArrayList<String>>();

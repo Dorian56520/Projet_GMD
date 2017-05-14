@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import java.util.Date;
 
-import Main.HpoSqliteLucas;
-
 
 public class SearchHpoOrphaOmim {
 
