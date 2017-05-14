@@ -1,4 +1,4 @@
-package Runnable;
+package Thread;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,10 +10,11 @@ import Search.SearchOmimtxt;
 import Search.SearchStitch;
 import Search.Sider;
 
-public class OmimThread implements Runnable{
+public class OmimThread extends Thread{
 	Model model;
 	String[] items;
 	//private final Object lock1;
+	ArrayList<ArrayList<String>> CUIandDiseaseOmim;
 	public OmimThread(Model m,String[] items/*,Object lock1*/)
 	{
 		model = m;
@@ -21,10 +22,7 @@ public class OmimThread implements Runnable{
 		/*this.lock1 = lock1;*/
 	}
 	public void run(){
-		Date start = new Date();
 		ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-	    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
-		Date end = new Date();
-	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+	    CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	  } 
 }

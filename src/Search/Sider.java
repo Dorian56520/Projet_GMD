@@ -31,14 +31,18 @@ public class Sider {
 		    connexion = DriverManager.getConnection( url, user, password );
 			for(ArrayList<String> tmp : args)
 			{
-				if(tmp.size() <= 3)
-					break;
 				/*if(Integer.parseInt(tmp.get(2)) < 2)
 					break;*/
 				ArrayList<String> stitch_ids = new ArrayList<String>();
 				stitch_ids.add(tmp.get(0));
 				stitch_ids.add(tmp.get(1));
 				stitch_ids.add(tmp.get(2));
+				
+				if(tmp.size() <= 3)
+				{
+					Allstitch_ids.add(stitch_ids);
+					break;
+				}
 			    String where = "";
 			    for(int i=3;i<tmp.size() - 1;i++)
 			    	where += "\"" + tmp.get(i).trim() + "\",";
@@ -51,7 +55,7 @@ public class Sider {
 			    {
 		    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
 			    }
-			    if(stitch_ids.size() > 3)
+			    //if(stitch_ids.size() > 3)
 			    	Allstitch_ids.add(stitch_ids);
 			}
 		    Date end = new Date();

@@ -51,7 +51,7 @@ public class SearchATC {
 						   LabelList.add(value);
 					}
 				}
-				if(LabelList.size() > 3)
+				//if(LabelList.size() > 3)
 					AllLabelList.add(LabelList);
 			}
 		}

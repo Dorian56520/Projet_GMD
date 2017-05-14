@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import Interface.Observable;
 import Interface.Observer;
 import Main.Window;
-import Runnable.SiderThread;
-import Runnable.HpoThread;
-import Runnable.OmimThread;
-import Runnable.OrphaThread;
+import Thread.HpoThread;
+import Thread.LastThread;
+import Thread.OmimThread;
+import Thread.OrphaThread;
+import Thread.SiderThread;
 import View.MainView;
 
 public class Model implements Observable{
@@ -45,15 +46,16 @@ public class Model implements Observable{
 
 		final Object lock1 = new Object();
 	    final Object lock2 = new Object();
-		Thread t1 = new Thread(new SiderThread(this,s));
-		Thread t2 = new Thread(new OmimThread(this,s));
-		Thread t3 = new Thread(new OrphaThread(this,s,lock1,lock2));
-		Thread t4 = new Thread(new HpoThread(this,s,lock1,lock2));
-		//Thread t5 = new Thread(new HpoThread(this,s,t3));
+	    SiderThread t1 = new SiderThread(this,s);
+	    OmimThread t2 = new OmimThread(this,s);
+	    OrphaThread t3 = new OrphaThread(this,s,lock1,lock2);
+	    HpoThread t4 = new HpoThread(this,s,lock1,lock2);
+	    LastThread t5 = new LastThread(this,t3,t4,t2);
 		t1.start();
 		t2.start();
 		t3.start();
 		t4.start();
+		t5.start();
 		notifyObserver(Instanceof("MainView"));
 	}
 	public void sendResult(ArrayList<String> result)

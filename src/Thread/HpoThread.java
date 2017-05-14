@@ -1,4 +1,4 @@
-package Runnable;
+package Thread;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +13,7 @@ public class HpoThread extends Thread {
 	String[] items;
 	private final Object lockSqllite;
 	private final Object lockHpo;
+	public ArrayList<ArrayList<String>> DiseaseANDcui;
 	public HpoThread(Model m,String[] items,Object lockSqllite,Object lockHpo)
 	{
 		model = m;
@@ -24,6 +25,7 @@ public class HpoThread extends Thread {
 	public void run() {
 		ArrayList<ArrayList<String[]>> IDandCUIList;
 		ArrayList<String[]> IDandLabel;
+
 		Date start = new Date();
 		synchronized(lockHpo)
 		{
@@ -33,10 +35,10 @@ public class HpoThread extends Thread {
 		{
 			IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
 		}
-		ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
+		DiseaseANDcui = new ArrayList<ArrayList<String>>();
 		MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
 		Date end = new Date();
-	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
 	}
 	public static void MagouillepourHPO(ArrayList<String[]> IDandLabel, ArrayList<ArrayList<String[]>> IDandCUIList, ArrayList<ArrayList<String>> DiseaseANDcui)
 	 {

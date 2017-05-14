@@ -284,7 +284,7 @@ public class SearchHpoOrphaOmim {
 	
 	 public static void main(String[] args) {
 			Date start = new Date();
-		 String[] items = new String[] {"pain*"};
+		 String[] items = new String[] {"ab*"};
 		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	    	

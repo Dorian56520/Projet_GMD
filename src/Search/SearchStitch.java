@@ -52,7 +52,7 @@ public class SearchStitch {
 						   ATCList.add(value);
 					}
 				}
-				if(ATCList.size() > 3)
+				//if(ATCList.size() > 3)
 					AllATCList.add(ATCList);
 			}
 		}
