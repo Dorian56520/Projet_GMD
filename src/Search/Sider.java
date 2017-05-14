@@ -1,10 +1,12 @@
 package Search;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
-import index.PretraitementOmin;
 
 public class Sider {
 
@@ -172,6 +174,8 @@ public static int GetsmallerSet(ArrayList<ArrayList<String>> stitch_ids)
 		}
 		return index;
 	}
+
+	
 	
 	public static void main(String[] args) {
 		/*Date start = new Date();

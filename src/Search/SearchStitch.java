@@ -49,6 +49,7 @@ public class SearchStitch {
 				}
 			}
 		}
+		
 		catch(Exception e){}
 		Date end = new Date();
 	      System.out.println("---------------------------");

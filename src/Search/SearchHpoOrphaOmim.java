@@ -25,6 +25,8 @@ public class SearchHpoOrphaOmim {
     	ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 		ArrayList<String[]> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		
+		
+		
 		//Then concat all CUI
 		ArrayList<String[]> AllCUI = new ArrayList<String[]>();
 		
@@ -60,8 +62,122 @@ public class SearchHpoOrphaOmim {
 		}
 		return false;
 	}
+	
+	 public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO,ArrayList<ArrayList<String>> Omim){
+		 ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>> ();
+		 int cpt = 0;
+		 for(int i = 0; i < Orpha.size();i++){
+			if(ContainsMaladie(res,Orpha.get(i).get(0)) != -2){
+				for(int j = 1; j<Orpha.get(i).size();j++){
+					if(!ContainsCui(res,Orpha.get(i).get(j))){
+						res.get(ContainsMaladie(res,Orpha.get(i).get(0))).add(res.get(ContainsMaladie(res,Orpha.get(i).get(0))).size(),Orpha.get(i).get(j));
+					}
+				}
+				
+			}
+			
+			else{
+				ArrayList<String> aAjoute = new ArrayList<String>();
+				aAjoute.add(0,Orpha.get(i).get(0));
+				aAjoute.add(1,"Orpha");
+				aAjoute.add(2,"1");
+				for(int j =3 ; j < Orpha.get(i).size();j++){
+					aAjoute.add(j,Orpha.get(i).get(j));
+					
+				}
+				res.add(cpt,Orpha.get(i));
+				cpt++;
+			}
+	    		
+	    }
+		 
+		 for(int i = 0; i < HPO.size();i++){
+				if(ContainsMaladie(res,HPO.get(i).get(0)) != -2){
+					for(int j = 1; j<HPO.get(i).size();j++){
+						if(!ContainsCui(res,HPO.get(i).get(j))){
+							res.get(ContainsMaladie(res,HPO.get(i).get(0))).add(res.get(ContainsMaladie(res,HPO.get(i).get(0))).size(),HPO.get(i).get(j));
+						}
+					}
+					
+				}
+				
+				else{
+					ArrayList<String> aAjoute = new ArrayList<String>();
+					aAjoute.add(0,HPO.get(i).get(0));
+					aAjoute.add(1,"HPO");
+					aAjoute.add(2,"1");
+					for(int j =3 ; j < HPO.get(i).size();j++){
+						aAjoute.add(j,HPO.get(i).get(j));
+						
+					}
+					res.add(cpt,HPO.get(i));
+					cpt++;
+				}
+		    		
+		    }
+		 
+		 
+		 for(int i = 0; i < Omim.size();i++){
+				if(ContainsMaladie(res,Omim.get(i).get(0)) != -2){
+					for(int j = 1; j<Omim.get(i).size();j++){
+						if(!ContainsCui(res,Omim.get(i).get(j))){
+							res.get(ContainsMaladie(res,Omim.get(i).get(0))).add(res.get(ContainsMaladie(res,Omim.get(i).get(0))).size(),Omim.get(i).get(j));
+						}
+					}
+					
+				}
+				
+				else{
+					ArrayList<String> aAjoute = new ArrayList<String>();
+					aAjoute.add(0,Omim.get(i).get(0));
+					aAjoute.add(1,"Omim");
+					aAjoute.add(2,"1");
+					for(int j =3 ; j < Omim.get(i).size();j++){
+						aAjoute.add(j,Omim.get(i).get(j));
+						
+					}
+					res.add(cpt,Omim.get(i));
+					cpt++;
+				}
+		    		
+		    }
+		 
+		 
+		 
+		 
+		 return res;
+	    }
+	
     public static void main(String[] args) {
     	SearchHpoOrphaOmim.SearchHpoOrphaOmim(new String[] {"*"});
     }
+    
+	public static int ContainsMaladie( ArrayList<ArrayList<String>> list, String value)
+    {
+		int res = -2;
+		
+        for(int i = 0; i < list.size(); i++)
+        {
+            if(list.get(i).get(0).equals(value))
+            	res = i;
+                return res;
+        }
+        return res;
+    }
+	
+	public static boolean ContainsCui( ArrayList<ArrayList<String>> list, String value)
+    {
+        for(int i = 0; i < list.size(); i++)
+        {
+        	for(int j =3;j<list.get(i).size();j++){
+        		 if(list.get(i).get(j).equals(value))
+                     return true;
+        	}
+           
+        }
+        return false;
+    }
+    
+   
 
 }

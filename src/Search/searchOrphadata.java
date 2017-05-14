@@ -49,10 +49,12 @@ public class searchOrphadata {
 	        	int i = 0;
 	        	if(rows != null){
 	        		while(i < rows.size()){
+	        			
 	        			JSONObject elem = (JSONObject) rows.get(i);
+	        			
 	        			JSONObject value = (JSONObject) elem.get("value");
 	        			JSONObject disease = (JSONObject) value.get("disease");
-	        			String id_disease =(String) disease.get("id");
+	        			String id_disease =(String) disease.get("OrphaNumber");
 	        			JSONObject named = (JSONObject) disease.get("Name");
 	        			String name_disease = (String)  named.get("text");
 	        			String[] array = new String[]{id_disease,name_disease};

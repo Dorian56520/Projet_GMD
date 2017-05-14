@@ -57,8 +57,8 @@ public class SearchHpo {
 	}
 	public static ArrayList<String> SearchHpo (String symptom) throws IOException{
 		StandardAnalyzer analyzer = new StandardAnalyzer();
-		//Directory index = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/index"));
-		Directory index = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo"));
+		Directory index = FSDirectory.open(Paths.get("C:/Users/lulu/Desktop/Projet/Données/hpo/index"));
+		//Directory index = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo"));
 		ArrayList<String> res = new ArrayList<String>();
 		String id = "";
 		String CUI = "";
