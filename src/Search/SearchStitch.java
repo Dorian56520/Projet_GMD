@@ -21,6 +21,10 @@ import org.apache.lucene.store.FSDirectory;
 public class SearchStitch {
 	public static ArrayList<String> SearchStitchAll(ArrayList<String> args)
 	{
+		args = new ArrayList<String>();
+		args.add("C0000727");
+		if(args.size() == 0)
+			return new ArrayList<String>();
 		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
 		ArrayList<String> ATCList = new ArrayList<String>();
 		Date start = new Date();
@@ -32,7 +36,7 @@ public class SearchStitch {
 			for(String arg : args)
 			{
 				//String[] queries = arg;
-				Query query = new QueryParser("CID1",analyzer).parse(arg);
+				Query query = new QueryParser("CID1",analyzer).parse(arg.trim());
 				//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
 				
 				TopDocs results = searcher.search(query, 10);

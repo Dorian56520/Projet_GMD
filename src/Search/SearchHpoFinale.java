@@ -2,6 +2,7 @@ package Search;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Main.HpoSqliteLucas;
 
@@ -148,12 +149,18 @@ public class SearchHpoFinale {
 	}
 
 	public static void main(String[] args) throws IOException {
+
 		
 		SearchHpof(new String[]{"Urinary urgency"});
 		//"Bladder diverticulum","Urinary urgency"
 		//ArrayList<String> test = concateneCui("C0085606;C3544092;C4020898","C40208958;A");
 		//affiche(test);
+Date start = new Date();
+SearchHpof(new String[]{"Bladder diverticulum"});
+Date end = new Date();
+System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
 		
+
 		
 	}
 	

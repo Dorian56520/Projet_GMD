@@ -13,16 +13,22 @@ import Search.Sider;
 public class OmimThread implements Runnable{
 	Model model;
 	String[] items;
-	public OmimThread(Model m,String[] items)
+	private final Object lock1;
+	public OmimThread(Model m,String[] items,Object lock1)
 	{
 		model = m;
 		this.items = items;
+		this.lock1 = lock1;
 	}
 	public void run(){
 		Date start = new Date();
-		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
-		ArrayList<String> CUI = SearchOmimtsv.SearchOmimtsvCUI(data);
-		ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUI);
+		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(items);
+		ArrayList<String[]> CUIandDisease = SearchOmimtsv.SearchOmimtsvCUIandDisease(data);
+		ArrayList<String> Stitch;
+		synchronized(lock1)
+		{
+			Stitch = Sider.GetStitchIDfromCUI(CUIandDisease);
+		}
 		ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
 		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
@@ -30,7 +36,7 @@ public class OmimThread implements Runnable{
 		System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
-		for(String s : Labels)
-			System.out.println(s);
+		/*for(String s : Labels)
+			System.out.println(s);*/
 	  } 
 }

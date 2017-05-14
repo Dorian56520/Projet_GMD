@@ -56,12 +56,12 @@ public class SearchOmimtxt {
 	}
 	public static void main(String[] args) 
 	{
-		Date start = new Date();
+		/*Date start = new Date();
 		ArrayList<String> data = SearchOmimtxt.SearchOmimtxtCS(new String[] {"*"});
-		/*ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-		ArrayList<String> Labels = SearchATC.SearchATC(ATC);*/
+		ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
+		ArrayList<String> Labels = SearchATC.SearchATC(ATC);
 		Date end = new Date();
-		/*System.out.println("***************************");
+		System.out.println("***************************");
 		System.out.println();
 		System.out.println("Results :");
 		for(String s : Labels)

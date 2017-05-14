@@ -8,20 +8,76 @@ import java.sql.SQLException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+
+import Search.SearchATC;
+import Search.SearchHpo;
+import Search.SearchStitch;
+import Search.Sider;
+import Search.searchOrphadata;
 
 public class HpoSqliteLucas {
 
-	
+	public static ArrayList<String[]> GetHPidFROMOrphaID(ArrayList<String[]> OrphaID) {
+
+		if(OrphaID.size() == 0)
+			return new ArrayList<String[]>();
+		Connection conn = null;
+        ArrayList<String[]> res =new ArrayList<String[]>();
+        try {
+            // db parameters
+            //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+            Statement statement = null;
+            ResultSet result = null;
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            String where = "";
+            for(int i=0;i<OrphaID.size() - 1;i++)
+            {
+            	where += "\"" + OrphaID.get(i)[0] + "\",";
+            }
+            where += "\"" + OrphaID.get(OrphaID.size() - 1)[0] + "\"";
+            //System.out.println("Connection to SQLite has been established.");
+            String query = "Select distinct sign_id,disease_label from phenotype_annotation where disease_id IN ("+where+")";
+            //System.out.println("ici");
+		    statement = conn.createStatement();
+		    
+		    result = statement.executeQuery(query);
+		    while(result.next())
+		    {
+		    //System.out.println(result.getString(2));
+		    res.add(new String[] {result.getString(1),result.getString(2)});
+		    }
+		    return res;
+            
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            
+        }
+		return res;
+    }
 	     /**
 	     * Connect to a sample database
 	     */
+	
 	    public static ArrayList<String> connect(String id) {
 	    	System.out.println(id);
 	        Connection conn = null;
 	        ArrayList<String> res =new ArrayList<String>();
 	        try {
 	            // db parameters
-	            String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+	            //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+	            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
 	            Statement statement = null;
 	            ResultSet result = null;
 	            // create a connection to the database
@@ -116,7 +172,19 @@ public class HpoSqliteLucas {
 	    }
 	    
 	    public static void main(String[] args) {
-	        connect("\"HP:0000013\"");
+	    	Date start = new Date();
+	    	ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(new String[]{"Micropenis", "Delayed dentition"});
+	    	ArrayList<String[]> HPidsAndDisease = GetHPidFROMOrphaID(OrphaID);
+	    	ArrayList<String[]> CUIList = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);
+	    	Date end = new Date();
+	    	System.out.println(end.getTime() - start.getTime());
+			ArrayList<String> Stitch = Sider.GetStitchIDfromCUI(CUIList);
+			ArrayList<String> ATC = SearchStitch.SearchStitchAll(Stitch);
+			ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+	    	System.out.println("Nb Results : " + Labels.size());
+	    	for(String lab : Labels)
+	    		System.out.println(lab);
+	        //connect("\"HP:0000013\"");
 	        //String test = "PARKINSON DISEASE 1, AUTOSOMAL DOMINANT; PARK1";
 	        //affiche(trad(test ));
 	    
@@ -127,7 +195,5 @@ public class HpoSqliteLucas {
 				System.out.println(t.get(i));
 			}
 		}
-	    
-	    
-	
+		
 }

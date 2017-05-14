@@ -1,22 +1,13 @@
 package Model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
-import Interface.*;
+import Interface.Observable;
+import Interface.Observer;
 import Main.Window;
 import Runnable.DrugThread;
 import Runnable.OmimThread;
 import View.MainView;
-import Search.SearchATC;
-import Search.SearchStitch;
-import Search.Sider;
 
 public class Model implements Observable{
 	Window f;
@@ -49,9 +40,11 @@ public class Model implements Observable{
 			System.out.print( " AND ");
 		}
 		System.out.println(s[s.length - 1] + "]");
-		Thread t1 = new Thread(new DrugThread(this,s));
+		final Object lock1 = new Object();
+	    //final Object lock2 = new Object();
+		Thread t1 = new Thread(new DrugThread(this,s,lock1));
 		t1.start();
-		Thread t2 = new Thread(new OmimThread(this,s));
+		Thread t2 = new Thread(new OmimThread(this,s,lock1));
 		t2.start();
 		notifyObserver(null);
 	}

@@ -143,7 +143,7 @@ public class IndexerATC {
 				  String ATC =line.split(" ")[0];
 				  String label = line.substring(ATC.length(),line.length()).trim();
 				  label = label.replaceAll("[(\\[].*[)\\]]", "").trim();
-				  doc.add(new TextField("ATC",ATC,Field.Store.NO));
+				  doc.add(new TextField("ATC",ATC,Field.Store.YES));
 				  doc.add(new StoredField("Label",label));
     			  writer.addDocument(doc);
 				  eltCount++;
