@@ -25,8 +25,8 @@ public class SearchHpo {
 
 	public static ArrayList<ArrayList<String>> GetCUIFromHPOid (ArrayList<String[]> HPids)
 	{
-
-		String index = "C:/Users/lulu/Desktop/Projet/Données/hpo/index";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo";
+		//String index = "C:/Users/lulu/Desktop/Projet/Données/hpo/index";
 		ArrayList<ArrayList<String>> DiseaseList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
@@ -120,7 +120,7 @@ public class SearchHpo {
 		Date end = new Date();
 	      System.out.println("---------------------------");
 	    System.out.println(end.getTime() - start.getTime() + " HPO milliseconds");
-		System.out.println("HPO match : " + IDandCUI.size());
+		System.out.println("HPO match : " + (IDandCUI.size() == 0 ? "0" : IDandCUI.get(0).size()));
 	      System.out.println("---------------------------");
 		return IDandCUI;
 	}	

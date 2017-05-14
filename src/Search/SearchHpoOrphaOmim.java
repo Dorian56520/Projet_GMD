@@ -24,7 +24,6 @@ public class SearchHpoOrphaOmim {
     	ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 		
 		/*ArrayList<String[]> CUIandDiseaseHPO = SearchHpoFinale.SearchHpof(items);
->>>>>>> d65f55228e5188f2bb1aadfc8e966bd25900c017
 		//Then concat all CUI
 		ArrayList<String[]> AllCUI = new ArrayList<String[]>();
 		
@@ -104,7 +103,7 @@ public class SearchHpoOrphaOmim {
 				res.get((ContainsMaladie(res,Orpha.get(i).get(0)))).set(1, sAajouter);
 				
 				res.get((ContainsMaladie(res,Orpha.get(i).get(0)))).set(2,String.valueOf(score) );
-				for(int j = 0; j<Orpha.get(i).size();j++){
+				for(int j = 1; j<Orpha.get(i).size();j++){
 					if(!ContainsCui(res,Orpha.get(i).get(j))){
 						res.get(ContainsMaladie(res,Orpha.get(i).get(0))).add(res.get(ContainsMaladie(res,Orpha.get(i).get(0))).size(),Orpha.get(i).get(j));
 					}
@@ -163,7 +162,7 @@ public class SearchHpoOrphaOmim {
 					res.get((ContainsMaladie(res,HPO.get(i).get(0)))).set(1, sAajouter);
 					
 					res.get((ContainsMaladie(res,HPO.get(i).get(0)))).set(2,String.valueOf(score) );
-					for(int j = 0; j<HPO.get(i).size();j++){
+					for(int j = 1; j<HPO.get(i).size();j++){
 						if(!ContainsCui(res,HPO.get(i).get(j))){
 							res.get(ContainsMaladie(res,HPO.get(i).get(0))).add(res.get(ContainsMaladie(res,HPO.get(i).get(0))).size(),HPO.get(i).get(j));
 						}
@@ -222,7 +221,7 @@ public class SearchHpoOrphaOmim {
 					res.get((ContainsMaladie(res,Omim.get(i).get(0)))).set(1, sAajouter);
 					
 					res.get((ContainsMaladie(res,Omim.get(i).get(0)))).set(2,String.valueOf(score) );
-					for(int j = 0; j<Omim.get(i).size();j++){
+					for(int j = 1; j<Omim.get(i).size();j++){
 						if(!ContainsCui(res,Omim.get(i).get(j))){
 							res.get(ContainsMaladie(res,Omim.get(i).get(0))).add(res.get(ContainsMaladie(res,Omim.get(i).get(0))).size(),Omim.get(i).get(j));
 						}
@@ -284,7 +283,8 @@ public class SearchHpoOrphaOmim {
 	
 	
 	 public static void main(String[] args) {
-		 String[] items = new String[] {"micropenis"};
+			Date start = new Date();
+		 String[] items = new String[] {"fever*"};
 		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	    	
@@ -292,20 +292,86 @@ public class SearchHpoOrphaOmim {
 	        ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
 	        ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
 	        ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
-	    	ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
+	        ArrayList<ArrayList<String[]>> IDandCUIList = SearchHpo.SearchHPOCUIandHPOids(items);
+			ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
+			
+			ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
+			MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
 	    	
-	    	ArrayList<ArrayList<String>> presquefin = combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
+	    	ArrayList<ArrayList<String>> presquefin = combin(CUIandDiseaseOrpha/*new ArrayList<ArrayList<String>>()*/,DiseaseANDcui, CUIandDiseaseOmim);
+	    	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
+	    	//ArrayList<String> ATC = SearchStitch.SearchStitchAll(AllStitchID);
+			//ArrayList<String> Labels = SearchATC.SearchATC(ATC);
+			Date end = new Date();
+		    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
+	    	//SearchHpoFinale.affiche2(presquefin);
 	    	
-	    	SearchHpoFinale.affiche2(presquefin);
-	    	
-	    	
-	     
-	        
-	        
 	    }
-	
-	
-    
-   
-
+	 public static int Contains(String value, ArrayList<ArrayList<String>> list)
+		{
+			for(int i=0;i<list.size();i++)
+			{
+				if(list.get(i).get(0).equals(value))
+					return i;
+			}
+			return -1;
+		}
+	 public static void MagouillepourHPO(ArrayList<String[]> IDandLabel, ArrayList<ArrayList<String[]>> IDandCUIList, ArrayList<ArrayList<String>> DiseaseANDcui)
+	 {
+		 for(String[] arg : IDandLabel)
+			{
+				ArrayList<String> tmp = new ArrayList<String>();
+				int ind = Contains(arg[1],DiseaseANDcui);
+				if(ind < 0)
+				{
+					tmp.add(arg[1]);
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+						if(value.equals(""))
+							break;
+						if(value.matches(".*[,;].*"))
+						{
+							String[] cuis = value.split("[,;]");
+							for(String cui : cuis)
+								tmp.add(cui.trim());
+						}
+						else
+							tmp.add(value.trim());
+						DiseaseANDcui.add(tmp);
+						}
+				}
+				else
+				{
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+					}
+					if(value.matches(".*[,;].*"))
+					{
+						String[] cuis = value.trim().split("[,;]");
+						for(String cui : cuis)
+							DiseaseANDcui.get(ind).add(cui.trim());
+					}
+					else
+						DiseaseANDcui.get(ind).add(value.trim());
+				}
+			}
+	 }
 }

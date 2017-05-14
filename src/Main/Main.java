@@ -2,6 +2,7 @@ package Main;
 
 import Controlers.Controlers;
 import Model.Model;
+import View.MainView;
 import View.SearchView;
 
 public class Main 

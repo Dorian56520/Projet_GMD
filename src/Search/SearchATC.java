@@ -23,7 +23,7 @@ public class SearchATC {
 	{
 		if(args.size() == 0)
 			return new ArrayList<String>();
-		String index = "C:/Users/lulu/Desktop/Projet/Données/atc/indexATC";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/indexATC";
 		ArrayList<String> LabelList = new ArrayList<String>();
 		Date start = new Date();
 		try

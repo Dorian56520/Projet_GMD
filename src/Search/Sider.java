@@ -10,10 +10,10 @@ import java.util.Date;
 
 public class Sider {
 
-	public static ArrayList<String> GetStitchIDfromCUI(ArrayList<String[]> args)
+	public static ArrayList<ArrayList<String>> GetStitchIDfromCUI(ArrayList<ArrayList<String>> args)
 	{
 		if(args.size() == 0)
-			return new ArrayList<String>();
+			return new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		String url = "jdbc:mysql://neptune.telecomnancy.univ-lorraine.fr:3306/gmd";
 		String user = "gmd-read";
@@ -21,7 +21,7 @@ public class Sider {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ArrayList<String> stitch_ids = new ArrayList<String>();
+		ArrayList<ArrayList<String>> Allstitch_ids = new ArrayList<ArrayList<String>>();
 		try {
 		    Class.forName( "com.mysql.jdbc.Driver" );
 		} catch ( ClassNotFoundException e ) {
@@ -29,22 +29,35 @@ public class Sider {
 		}
 		try {
 		    connexion = DriverManager.getConnection( url, user, password );
-		    String where = "";
-		    for(int i=0;i<args.size() - 1;i++)
-		    	where += "\"" + args.get(i)[0].trim() + "\",";
-		    where += "\"" + args.get(args.size() - 1)[0].trim() + "\"";
-		    String query = "SELECT DISTINCT stitch_compound_id FROM meddra_all_indications WHERE cui_of_meddra_term IN ( " + where + ")";
-		    statement = connexion.createStatement();
-		    
-		    result = statement.executeQuery(query);
-		    while(result.next())
-		    {
-	    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
-		    }
+			for(ArrayList<String> tmp : args)
+			{
+				if(tmp.size() <= 3)
+					break;
+				/*if(Integer.parseInt(tmp.get(2)) < 2)
+					break;*/
+				ArrayList<String> stitch_ids = new ArrayList<String>();
+				stitch_ids.add(tmp.get(0));
+				stitch_ids.add(tmp.get(1));
+				stitch_ids.add(tmp.get(2));
+			    String where = "";
+			    for(int i=3;i<tmp.size() - 1;i++)
+			    	where += "\"" + tmp.get(i).trim() + "\",";
+			    where += "\"" + tmp.get(tmp.size() - 1).trim() + "\"";
+			    String query = "SELECT stitch_compound_id FROM meddra_all_indications WHERE cui_of_meddra_term IN ( " + where + ")";
+			    statement = connexion.createStatement();
+			    
+			    result = statement.executeQuery(query);
+			    while(result.next())
+			    {
+		    		stitch_ids.add(result.getString(1).replaceFirst("1", "m"));
+			    }
+			    if(stitch_ids.size() > 3)
+			    	Allstitch_ids.add(stitch_ids);
+			}
 		    Date end = new Date();
 		    System.out.println("---------------------------");
 		    System.out.println(end.getTime() - start.getTime() + " Sider milliseconds");
-	    	System.out.println("Sider match : " + stitch_ids.size());
+	    	System.out.println("Sider match : " + (Allstitch_ids.size() == 0 ? "0" : Allstitch_ids.get(0).size()));
 		    System.out.println("---------------------------");
 		} catch ( SQLException e ) {
 			System.out.println(e.getMessage());
@@ -68,7 +81,7 @@ public class Sider {
 		        }
 		    }
 		}
-		return stitch_ids;
+		return Allstitch_ids;
 	}
 	
 	public static ArrayList<String> GetSiderDrugData(String[] args)
