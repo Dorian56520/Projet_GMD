@@ -22,7 +22,10 @@ public class OmimThread extends Thread{
 		/*this.lock1 = lock1;*/
 	}
 	public void run(){
+		//Date start = new Date();
 		ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	    CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+		/*Date end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " Omim Total milliseconds");*/
 	  } 
 }

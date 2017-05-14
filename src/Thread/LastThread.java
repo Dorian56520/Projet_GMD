@@ -27,14 +27,15 @@ public class LastThread extends Thread {
 		Date start = new Date();
 	    while(thread1.isAlive() || thread2.isAlive() || thread3.isAlive());
 	    Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
+	    System.out.println(end.getTime() - start.getTime() + " Wait milliseconds");
+	    
 		ArrayList<ArrayList<String>> presquefin = combin(thread1.CUIandDiseaseOrpha,thread2.DiseaseANDcui, thread3.CUIandDiseaseOmim);
     	presquefin = trie(presquefin);
     	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
     	ArrayList<ArrayList<String>> ATC = SearchStitch.SearchStitchAll(AllStitchID);
 		ArrayList<ArrayList<String>> Labels = SearchATC.SearchATC(ATC);
-	    /*Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");*/
+	    end = new Date();
+	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
 	}
 
 	 public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO ,ArrayList<ArrayList<String>> Omim){

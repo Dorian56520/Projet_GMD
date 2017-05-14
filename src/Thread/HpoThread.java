@@ -26,7 +26,6 @@ public class HpoThread extends Thread {
 		ArrayList<ArrayList<String[]>> IDandCUIList;
 		ArrayList<String[]> IDandLabel;
 
-		Date start = new Date();
 		synchronized(lockHpo)
 		{
 			IDandCUIList = SearchHpo.SearchHPOCUIandHPOids(items);
@@ -37,8 +36,6 @@ public class HpoThread extends Thread {
 		}
 		DiseaseANDcui = new ArrayList<ArrayList<String>>();
 		MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
-		Date end = new Date();
-	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
 	}
 	public static void MagouillepourHPO(ArrayList<String[]> IDandLabel, ArrayList<ArrayList<String[]>> IDandCUIList, ArrayList<ArrayList<String>> DiseaseANDcui)
 	 {
