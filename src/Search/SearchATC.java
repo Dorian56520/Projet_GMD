@@ -23,8 +23,8 @@ public class SearchATC {
 	{
 		if(args.size() == 0)
 			return new ArrayList<ArrayList<String>>();
-		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
-		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
+		//String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
 		ArrayList<ArrayList<String>> AllLabelList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
@@ -81,9 +81,9 @@ public class SearchATC {
 		if(args.size() == 0)
 			return new ArrayList<String>();
 
-		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
+		//String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexATC";
 
-		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexATC";
 
 		ArrayList<String> LabelList = new ArrayList<String>();
 		Date start = new Date();

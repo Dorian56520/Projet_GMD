@@ -36,7 +36,7 @@ public class ListPanel extends JPanel{
 								Font font = new Font("Arial",Font.BOLD,12);
 								name.setFont(font);
 							    listeDiseaseNames.add(name);
-								name.addMouseListener(new DiseaseListener(list));
+								name.addMouseListener(new DiseaseListener(list2));
 								//Where does it come from ?
 								JLabel from = new JLabel("||"+(list2.get(1)).toString()+"||");
 								from.setFont(font);
@@ -84,8 +84,9 @@ public class ListPanel extends JPanel{
 					}
 				}
 	class DiseaseListener implements MouseListener
-	{	ArrayList<ArrayList<String>> list;
-		public DiseaseListener(ArrayList<ArrayList<String>> list){
+	{	//ArrayList<ArrayList<String>> list;
+		ArrayList<String> list;
+		public DiseaseListener(/*ArrayList<ArrayList<String>> list*/ArrayList<String> list){
 			this.list=list;
 		}
 		public void mouseClicked(MouseEvent arg0) {
@@ -104,8 +105,7 @@ public class ListPanel extends JPanel{
 
 		public void mousePressed(MouseEvent arg0) {
 			int index=listeDiseaseNames.indexOf(arg0.getSource());
-			((SearchView)vue).getControler().addCureList(list,index);
-			
+			((SearchView)vue).getControler().addCureList(list);
 			
 		}
 

@@ -22,9 +22,9 @@ public class SearchOmimtxt {
 	public static ArrayList<String> SearchOmimtxtCS(String[] args)
 	{
 
-		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtxt";
+		//String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexOmimtxt";
 
-		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtxt";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexOmimtxt";
 
 		ArrayList<String> NOList = new ArrayList<String>();
 		Date start = new Date();

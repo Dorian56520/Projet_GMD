@@ -23,8 +23,8 @@ public class SearchStitch {
 	{
 		if(args.size() == 0)
 			return new ArrayList<ArrayList<String>>();
-		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch";
-		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
+		//String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
 		ArrayList<ArrayList<String>> AllATCList = new ArrayList<ArrayList<String>>();
 		Date start = new Date();
 		try
@@ -83,9 +83,9 @@ public class SearchStitch {
 		if(args.size() == 0)
 			return new ArrayList<String>();
 
-		String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch";
+		//String index = "F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexStitch";
 
-		//String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
+		String index = "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexStitch";
 
 		ArrayList<String> ATCList = new ArrayList<String>();
 		Date start = new Date();

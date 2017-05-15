@@ -25,8 +25,8 @@ public class Main
 
 	    Controlers controler = new Controlers(model);
 	    
-	    //MainView vue = new MainView(controler);
-	    SearchView vue = new SearchView(controler);
+	    MainView vue = new MainView(controler);
+	    //SearchView vue = new SearchView(controler);
 	    
 	    model.addObserver(vue);
 	}

@@ -11,6 +11,7 @@ import Search.Sider;
 public class SiderThread extends Thread{
 	Model model;
 	String[] items;
+	ArrayList<String> Labels;
 	public SiderThread(Model m,String[] items)
 	{
 		model = m;
@@ -20,7 +21,7 @@ public class SiderThread extends Thread{
 		Date start = new Date();
 		ArrayList<String> data = Sider.GetSiderDrugData(items);
 		ArrayList<String> ATC = SearchStitch.SearchStitchAllDrug(data);
-		ArrayList<String> Labels = SearchATC.SearchATCDrug(ATC);
+		Labels = SearchATC.SearchATCDrug(ATC);
 		Date end = new Date();
 	    //System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	  } 

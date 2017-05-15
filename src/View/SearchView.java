@@ -60,14 +60,14 @@ public class SearchView extends ImagePanel implements Observer{
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
 	
 	
-	boolean searchClicked;
+	boolean searchClicked = true;
 	Timer tim;
 	ImageIcon[] IconList = new ImageIcon[] {new ImageIcon ("./Images/Spinner Frame 1-64.png"),new ImageIcon ("./Images/Spinner Frame 2-64.png"),new ImageIcon ("./Images/Spinner Frame 3-64.png"),new ImageIcon ("./Images/Spinner Frame 4-64.png"),new ImageIcon ("./Images/Spinner Frame 5-64.png"),new ImageIcon ("./Images/Spinner Frame 6-64.png"),new ImageIcon ("./Images/Spinner Frame 7-64.png"),new ImageIcon ("./Images/Spinner Frame 8-64.png")};
 	int cpt = 0;
 	
 	public SearchView(Controlers c) {
 		super(".");
-		 String[] items = new String[] {"pain*"};
+		 /*String[] items = new String[] {"microp*"};
 		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
 	     ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
 	 	
@@ -95,7 +95,7 @@ public class SearchView extends ImagePanel implements Observer{
 			ArrayList<String> data = Sider.GetSiderDrugData(items);
 			ArrayList<String> DrugATC = SearchStitch.SearchStitchAllDrug(data);
 			DrugLabels = SearchATC.SearchATCDrug(DrugATC);
-			System.out.println(DrugLabels.size());
+			System.out.println(DrugLabels.size());*/
 		
 		controler=c;
 		this.setLayout(new BorderLayout());
@@ -146,6 +146,12 @@ public class SearchView extends ImagePanel implements Observer{
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
 	}
+	public void SetPanels(ArrayList<ArrayList<String>> Disease, ArrayList<String> Drug)
+	{
+		controler.addDiseaseList(Disease);
+		controler.addDrugList(Drug);
+		update();
+	}
 	@Override
 	public void update() {
 		if(searchClicked)
@@ -162,11 +168,8 @@ public class SearchView extends ImagePanel implements Observer{
 			else
 				tim.start();
 		}
-		else{
 		controler.GetMainWindow().setContentPane(this);
 		controler.GetMainWindow().update();
-		}
-		
 	}
 	class ButtonListener implements ActionListener
 	{
@@ -181,8 +184,6 @@ public class SearchView extends ImagePanel implements Observer{
 			controler.ParseIntoQuery(signsTab);
 			/*lalistedemaladies= la fonction qu'ils vont m'envoyer;
 			 * lalistededrugs= pareil ;*/
-			controler.addDrugList(DrugLabels);
-			controler.addDiseaseList(Labels);
 			
 		}
 	}

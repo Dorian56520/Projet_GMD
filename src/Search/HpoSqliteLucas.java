@@ -23,10 +23,10 @@ public class HpoSqliteLucas {
 
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
             
-        	String url = "jdbc:sqlite:F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/hpo_annotations.sqlite";
+        	//String url = "jdbc:sqlite:F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/hpo_annotations.sqlite";
 
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
-            //String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
+            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
 
             Statement statement = null;
             ResultSet result = null;
@@ -76,10 +76,11 @@ public class HpoSqliteLucas {
         try {
             // db parameters
             //String url = "jdbc:sqlite:C:/Users/lulu/Desktop/Projet/Données/hpo/hpo_annotations.sqlite";
+            String url = "jdbc:sqlite:C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/hpo_annotations.sqlite";
             for(ArrayList<String[]> id : HPid)
             {
                 ArrayList<String[]> tmp =new ArrayList<String[]>();
-	        	String url = "jdbc:sqlite:F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/hpo_annotations.sqlite";
+	        	//String url = "jdbc:sqlite:F:/Ecole(Telecom)/cours telecom/Projet_GMD/bases/hpo_annotations.sqlite";
 	            Statement statement = null;
 	            ResultSet result = null;
 	            // create a connection to the database

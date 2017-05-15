@@ -11,6 +11,7 @@ import Thread.OmimThread;
 import Thread.OrphaThread;
 import Thread.SiderThread;
 import View.MainView;
+import View.SearchView;
 
 public class Model implements Observable{
 	Window f;
@@ -50,21 +51,21 @@ public class Model implements Observable{
 	    OmimThread t2 = new OmimThread(this,s);
 	    OrphaThread t3 = new OrphaThread(this,s,lock1,lock2);
 	    HpoThread t4 = new HpoThread(this,s,lock1,lock2);
-	    LastThread t5 = new LastThread(this,t3,t4,t2);
+	    LastThread t5 = new LastThread(this,t3,t4,t2,t1);
 		t1.start();
 		t2.start();
 		t3.start();
 		t4.start();
 		t5.start();
-		notifyObserver(Instanceof("MainView"));
+		//notifyObserver(Instanceof("MainView"));
 	}
-	public void sendResult(ArrayList<String> result)
+	public void sendResult(ArrayList<ArrayList<String>> Disease, ArrayList<String> Drug)
 	{
 		for(Observer view : views)
 		{
-			if(view == Instanceof("MainView"))
+			if(view == Instanceof("SearchView"))
 			{
-				((MainView)view).SetLabel(result);
+				((SearchView)view).SetPanels(Disease,Drug);
 			}
 		}
 	}

@@ -139,7 +139,7 @@ public class searchOrphadata {
 	 
 	  public static void main (String[] args) throws IOException, ParseException{
 		  
-		  ArrayList<String[]> data=getOrphadataData(new String[]{"Micropenis","Delayed dentition"});
+		  ArrayList<String[]> data=getOrphadataData(new String[]{"ble*"});
 
       	affiche(data);
       	System.out.println("Size of the list : " +data.size());

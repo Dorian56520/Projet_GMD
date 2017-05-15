@@ -112,7 +112,13 @@ public class Sider {
 		    for(String arg : args)
 		    {
 		    	ArrayList<String> tmp_ids = new ArrayList<String>();
-			    String where = arg.replace("*", "%");
+		    	String where = "";
+		    	if(arg.contains("*"))
+		    	{
+		    		where = arg.replace("*", "%");
+		    	}
+		    	else
+		    		where = "%"+ arg + "%";
 			    String query = "SELECT DISTINCT stitch_compound_id1 FROM meddra_all_se WHERE side_effect_name LIKE \"" + where + "\"";
 			    statement = connexion.createStatement();
 			    

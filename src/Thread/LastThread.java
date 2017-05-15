@@ -3,6 +3,8 @@ package Thread;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 import Model.Model;
 import Search.SearchATC;
 import Search.SearchStitch;
@@ -14,21 +16,23 @@ public class LastThread extends Thread {
 	OrphaThread thread1;
 	HpoThread thread2;
 	OmimThread thread3;
-	public LastThread(Model m,OrphaThread th1,HpoThread th2,OmimThread th3)
+	SiderThread thread4;
+	public LastThread(Model m,OrphaThread th1,HpoThread th2,OmimThread th3,SiderThread th4)
 	{
 		model = m;
 		thread1 = th1;
 		thread2 = th2;
 		thread3 = th3;
+		thread4 = th4;
 	}
 	@Override
 	public void run() 
 	{
 		Date start = new Date();
-	    while(thread1.isAlive() || thread2.isAlive() || thread3.isAlive());
+	    while(thread1.isAlive() || thread2.isAlive() || thread3.isAlive() || thread4.isAlive());
 	    Date end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " Wait milliseconds");
-	    
+	    ArrayList<String> DrugLabels = thread4.Labels;
 		ArrayList<ArrayList<String>> presquefin = combin(thread1.CUIandDiseaseOrpha,thread2.DiseaseANDcui, thread3.CUIandDiseaseOmim);
     	presquefin = trie(presquefin);
     	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
@@ -36,8 +40,20 @@ public class LastThread extends Thread {
 		ArrayList<ArrayList<String>> Labels = SearchATC.SearchATC(ATC);
 	    end = new Date();
 	    System.out.println(end.getTime() - start.getTime() + " Total milliseconds");
+	    affichemedoc(Labels);
+	    SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	            model.sendResult(Labels, DrugLabels);
+	        }
+	    });
 	}
-
+	public static void affichemedoc(ArrayList<ArrayList<String>> l ){
+		for(int i = 0;i<l.size();i++){
+			for(int j = 3 ;j<l.get(i).size();j++){
+				System.out.println(l.get(i).get(j));
+			}
+		}
+	}
 	 public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO ,ArrayList<ArrayList<String>> Omim){
 		 ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>> ();
 		 int cpt = 0;

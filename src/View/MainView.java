@@ -26,19 +26,19 @@ public class MainView extends ImagePanel implements Observer{
 	
 	JScrollPane JSsign;
 	
-	JPanel GJPsign = new JPanel(new GridLayout(50,1));
+	JPanel GJPsign = new JPanel(new GridLayout(5,1));
 	JPanel BJPsign = new JPanel(new BorderLayout());
 	
 	JButton search  = new JButton(/*new ImageIcon ("./images/boutonconnexion.png")*/);
-	JButton loadImage = new JButton();
-	JLabel result = new JLabel();
+	//JButton loadImage = new JButton();
+	//JLabel result = new JLabel();
 	Controlers controler;
 	
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
 	
-	boolean searchClicked;
-	Timer tim;
-	ImageIcon[] IconList = new ImageIcon[] {new ImageIcon ("./Images/Spinner Frame 1-64.png"),new ImageIcon ("./Images/Spinner Frame 2-64.png"),new ImageIcon ("./Images/Spinner Frame 3-64.png"),new ImageIcon ("./Images/Spinner Frame 4-64.png"),new ImageIcon ("./Images/Spinner Frame 5-64.png"),new ImageIcon ("./Images/Spinner Frame 6-64.png"),new ImageIcon ("./Images/Spinner Frame 7-64.png"),new ImageIcon ("./Images/Spinner Frame 8-64.png")};
+	//boolean searchClicked;
+	//Timer tim;
+	//ImageIcon[] IconList = new ImageIcon[] {new ImageIcon ("./Images/Spinner Frame 1-64.png"),new ImageIcon ("./Images/Spinner Frame 2-64.png"),new ImageIcon ("./Images/Spinner Frame 3-64.png"),new ImageIcon ("./Images/Spinner Frame 4-64.png"),new ImageIcon ("./Images/Spinner Frame 5-64.png"),new ImageIcon ("./Images/Spinner Frame 6-64.png"),new ImageIcon ("./Images/Spinner Frame 7-64.png"),new ImageIcon ("./Images/Spinner Frame 8-64.png")};
 	int cpt = 0;
 	
 	public MainView(Controlers c) {
@@ -50,13 +50,13 @@ public class MainView extends ImagePanel implements Observer{
 		search.addActionListener(new ButtonListener());
 		
 
-		loadImage.setOpaque(false);
+		/*loadImage.setOpaque(false);
 		loadImage.setBorder(null);
 		loadImage.setBorderPainted(false);
 		loadImage.setContentAreaFilled(false);
 		loadImage.setPreferredSize(new Dimension(50,50));
 		
-		tim = new Timer(100,new TimerListener());
+		tim = new Timer(100,new TimerListener());*/
 		
 
 		titleSign.setFont(new Font(titleSign.getFont().getName(),titleSign.getFont().getStyle(),30));
@@ -71,16 +71,16 @@ public class MainView extends ImagePanel implements Observer{
 		center.add(JSsign);
 		
 		north.add(search);
-		north.add(loadImage);
-		north.add(result);
+		/*north.add(loadImage);
+		north.add(result);*/
 		
 		add(center,BorderLayout.CENTER);
 		add(north,BorderLayout.NORTH);
 	}
-	public void SetLabel(ArrayList<String> Result)
+	/*public void SetLabel(ArrayList<String> Result)
 	{
 		result.setText(Result.size() + " results found");
-	}
+	}*/
 	class CustomPanel extends JPanel
 	{
 		int contenttype;
@@ -111,34 +111,14 @@ public class MainView extends ImagePanel implements Observer{
 	 
 	public void update() 
 	{
-		if(searchClicked)
-		{
-			if(tim.isRunning())
-			{
-				tim.stop();
-				search.setEnabled(true);
-				cpt=0;
-				loadImage.setIcon(null);
-				searchClicked = false;
-				//controler.goToSearchView();
-			}
-			else
-				tim.start();
-		}
-
-		else
-		{
-			controler.GetMainWindow().setContentPane(this);
-			controler.GetMainWindow().update();
-
-		}
+		controler.GetMainWindow().setContentPane(this);
+		controler.GetMainWindow().update();
 	}
 	class ButtonListener implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			searchClicked = true;
 			search.setEnabled(false);
 			String[] signsTab = new String[signs.size()];
 			for(int i=0;i<signs.size();i++)
@@ -159,19 +139,6 @@ public class MainView extends ImagePanel implements Observer{
 			GJPsign.repaint();
 			GJPsign.revalidate();
 			
-		}
-	}
-	class TimerListener implements ActionListener
-	{
-
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			if(cpt == IconList.length-1)
-				cpt=0;
-			loadImage.setIcon(IconList[cpt]);
-			cpt++;
-			revalidate();
-			repaint();
 		}
 	}
 }
