@@ -38,13 +38,25 @@ public class SearchStitch {
 				ATCList.add(arg.get(0));
 				ATCList.add(arg.get(1));
 				ATCList.add(arg.get(2));
-				for(String s : arg)
+//				for(String s : arg)
+//				{
+//					//String[] queries = arg;
+//					Query query = new QueryParser("CID1",analyzer).parse(s.trim());
+//					//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
+//					
+//					TopDocs results = searcher.search(query, 10);
+//					ScoreDoc[] hits = results.scoreDocs;
+//					for(ScoreDoc scoredoc: hits)
+//					{
+//						String value = searcher.doc(scoredoc.doc).getField("ATC").stringValue();
+//						if(!ATCList.contains(value))
+//						   ATCList.add(value);
+//					}
+//				}
+				for (int i = 3; i<arg.size();i++)
 				{
-					//String[] queries = arg;
-					Query query = new QueryParser("CID1",analyzer).parse(s.trim());
-					//Query query = MultiFieldQueryParser.parse(queries, new String[] {"CID1","CID2"},analyzer);
-					
-					TopDocs results = searcher.search(query, 10);
+					Query query = new QueryParser("CID1",analyzer).parse((arg.get(i)).trim());
+					TopDocs results = searcher.search(query, 100);
 					ScoreDoc[] hits = results.scoreDocs;
 					for(ScoreDoc scoredoc: hits)
 					{

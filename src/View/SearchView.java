@@ -17,23 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.border.Border;
 
 import Controlers.Controlers;
 import Interface.Observer;
 import Search.HpoSqliteLucas;
 import Search.SearchATC;
 import Search.SearchHpo;
-import Search.SearchHpoOrphaOmim;
 import Search.SearchOmimtsv;
 import Search.SearchOmimtxt;
 import Search.SearchStitch;
 import Search.Sider;
-import Search.searchOrphadata;
-import View.MainView.AddListener;
-import View.MainView.ButtonListener;
-import View.MainView.CustomPanel;
-import View.MainView.TimerListener;
+import Search.*;
 
 public class SearchView extends ImagePanel implements Observer{
 	JLabel titleD = new JLabel("                   Disease");
@@ -52,9 +46,9 @@ public class SearchView extends ImagePanel implements Observer{
 	JScrollPane MedicineScrollPane=new JScrollPane(DrugPanel);
 	JScrollPane SideEffectScrollPane=new JScrollPane(CurePanel);
 	
-	ArrayList<ArrayList<String>> test= new ArrayList<ArrayList<String>>();
-	ArrayList<String>test1 = new ArrayList<String>();
-	ArrayList<String>test2 = new ArrayList<String>();
+	ArrayList<ArrayList<String>> Labels=new ArrayList<ArrayList<String>>();
+	ArrayList<String> DrugLabels =new ArrayList<String>();
+	
 	Controlers controler;
 	
 	public Controlers getControler() {
@@ -66,21 +60,6 @@ public class SearchView extends ImagePanel implements Observer{
 	ArrayList<JTextField> signs = new ArrayList<JTextField>();
 	
 	
-//	 String[] items = new String[] {"ab*"};
-//	 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
-//    ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
-//    ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
-//    ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
-//    ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
-//    ArrayList<ArrayList<String>> test3 = new ArrayList<ArrayList<String>>();
-//   	
-//    ArrayList<ArrayList<String>> presquefin = SearchHpoOrphaOmim.combin(CUIandDiseaseOrpha,test3, CUIandDiseaseOmim);
-//	
-//    ArrayList<String> data = Sider.GetSiderDrugData(items);
-//	ArrayList<String> ATC = SearchStitch.SearchStitchAll(data);
-//	ArrayList<String> Labels = SearchATC.SearchATC(ATC);
-	
-	
 	boolean searchClicked;
 	Timer tim;
 	ImageIcon[] IconList = new ImageIcon[] {new ImageIcon ("./Images/Spinner Frame 1-64.png"),new ImageIcon ("./Images/Spinner Frame 2-64.png"),new ImageIcon ("./Images/Spinner Frame 3-64.png"),new ImageIcon ("./Images/Spinner Frame 4-64.png"),new ImageIcon ("./Images/Spinner Frame 5-64.png"),new ImageIcon ("./Images/Spinner Frame 6-64.png"),new ImageIcon ("./Images/Spinner Frame 7-64.png"),new ImageIcon ("./Images/Spinner Frame 8-64.png")};
@@ -88,6 +67,36 @@ public class SearchView extends ImagePanel implements Observer{
 	
 	public SearchView(Controlers c) {
 		super(".");
+		 String[] items = new String[] {"pain*"};
+		 ArrayList<String> Diseasedata = SearchOmimtxt.SearchOmimtxtCS(items);
+	     ArrayList<ArrayList<String>> CUIandDiseaseOmim = SearchOmimtsv.SearchOmimtsvCUIandDisease(Diseasedata);
+	 	
+	 
+	     ArrayList<String[]> OrphaID = searchOrphadata.getOrphadataData(items);
+	     ArrayList<String[]> HPidsAndDisease = HpoSqliteLucas.GetHPidFROMOrphaID(OrphaID);
+	     ArrayList<ArrayList<String>> CUIandDiseaseOrpha = SearchHpo.GetCUIFromHPOid(HPidsAndDisease);	
+	     
+	     ArrayList<ArrayList<String[]>> IDandCUIList = SearchHpo.SearchHPOCUIandHPOids(items);
+			ArrayList<String[]> IDandLabel = HpoSqliteLucas.GetCUI(IDandCUIList);
+			
+			ArrayList<ArrayList<String>> DiseaseANDcui = new ArrayList<ArrayList<String>>();
+			SearchHpoOrphaOmim.MagouillepourHPO(IDandLabel,IDandCUIList,DiseaseANDcui);
+			
+	 	ArrayList<ArrayList<String>> presquefin = SearchHpoOrphaOmim.combin(CUIandDiseaseOrpha,DiseaseANDcui, CUIandDiseaseOmim);
+	 	presquefin = SearchHpoOrphaOmim.trie(presquefin);
+	 	System.out.println("presque fin     "+presquefin.size());
+	 	ArrayList<ArrayList<String>> AllStitchID = Sider.GetStitchIDfromCUI(presquefin);
+	 	System.out.println("All stitch ID        " +AllStitchID.size() );
+	 	ArrayList<ArrayList<String>> ATC = SearchStitch.SearchStitchAll(AllStitchID);
+	 	System.out.println("ATC       "+ ATC.size());
+			Labels = SearchATC.SearchATC(ATC);
+			System.out.println("Labels       "+ Labels.size());	
+			//SearchHpoFinale.affiche2(Labels);
+			ArrayList<String> data = Sider.GetSiderDrugData(items);
+			ArrayList<String> DrugATC = SearchStitch.SearchStitchAllDrug(data);
+			DrugLabels = SearchATC.SearchATCDrug(DrugATC);
+			System.out.println(DrugLabels.size());
+		
 		controler=c;
 		this.setLayout(new BorderLayout());
 		
@@ -107,22 +116,7 @@ public class SearchView extends ImagePanel implements Observer{
 		north.add(GJPsign,BorderLayout.WEST);
 		north.add(search,BorderLayout.CENTER);
 		north.add(loadImage);
-		
-		
-
-		
-		//in order to test the view :
-		test1.add("Maladie1");
-		test1.add("prov1");
-		test1.add("score1");
-		test2.add("Maladie2");
-		test2.add("prov2");
-		test2.add("score2");
-		test.add(test1);
-		test.add(test2);
-		//ListPanel DiseasePan= new ListPanel(this,test);
-		//CurePanel.add(DiseasePan);
-			
+				
 		
 		//Disease panel
 		titleD.setFont(new Font(titleD.getFont().getName(),titleD.getFont().getStyle(),30));
@@ -187,8 +181,8 @@ public class SearchView extends ImagePanel implements Observer{
 			controler.ParseIntoQuery(signsTab);
 			/*lalistedemaladies= la fonction qu'ils vont m'envoyer;
 			 * lalistededrugs= pareil ;*/
-//			controler.addDrugList(Labels);
-//			controler.addDiseaseList(presquefin);
+			controler.addDrugList(DrugLabels);
+			controler.addDiseaseList(Labels);
 			
 		}
 	}
@@ -245,6 +239,246 @@ public class SearchView extends ImagePanel implements Observer{
 			GJPsign.revalidate();
 			
 		}
-	}
+	}public static ArrayList<ArrayList<String>> combin(ArrayList<ArrayList<String>> Orpha,ArrayList<ArrayList<String>> HPO ,ArrayList<ArrayList<String>> Omim){
+		 ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>> ();
+		 int cpt = 0;
+		 boolean BOrpha = true;
+		 boolean BHPO = false;
+		 boolean BOmim = false;
+		 for(int i = 0; i < Orpha.size();i++){
+			if(SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0)) != -2){
+				String sAajouter = res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0)))).get(1);
+				int score = 1;
+				
+				if (!sAajouter.contains("Orpha")&&BOrpha){
+					
+					sAajouter = sAajouter + "," + "Orpha";
+					score++;
+				}
+				
+				
+				if (!sAajouter.contains("HPO")&&BHPO){
+					sAajouter = sAajouter + "," + "HPO";
+					score++;
+					
+				}
+
+				if (!sAajouter.contains("Omim")&&BOmim){
+		
+					sAajouter = sAajouter + "," + "Omim";
+					score++;
+				}
+				
+				
+				
+				
+				res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0)))).set(1, sAajouter);
+				
+				res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0)))).set(2,String.valueOf(score) );
+				for(int j = 1; j<Orpha.get(i).size();j++){
+					if(!SearchHpoOrphaOmim.ContainsCui(res,Orpha.get(i).get(j))){
+						res.get(SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0))).add(res.get(SearchHpoOrphaOmim.ContainsMaladie(res,Orpha.get(i).get(0))).size(),Orpha.get(i).get(j));
+					}
+				}
+				
+			}
+			
+			
+			else{
+				ArrayList<String> aAjoute = new ArrayList<String>();
+				aAjoute.add(0,Orpha.get(i).get(0));
+				aAjoute.add(1,"Orpha");
+				aAjoute.add(2,"1");
+				
+				for(int j =3 ; j < Orpha.get(i).size();j++){
+					aAjoute.add(j,Orpha.get(i).get(j));
+					
+				}
+				res.add(cpt,aAjoute);
+				cpt++;
+			}
+	    		
+	    }
+		 
+		  BOrpha = false;
+		  BHPO = true;
+		  BOmim = false;
+		
+		  for(int i = 0; i < HPO.size();i++){
+				if(SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0)) != -2){
+					String sAajouter = res.get((SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0)))).get(1);
+					int score = 1;
+					
+					if (!sAajouter.contains("Orpha")&&BOrpha){
+						
+						sAajouter = sAajouter + "," + "Orpha";
+						score++;
+					}
+					
+					
+					if (!sAajouter.contains("HPO")&&BHPO){
+						sAajouter = sAajouter + "," + "HPO";
+						score++;
+						
+					}
+
+					if (!sAajouter.contains("Omim")&&BOmim){
+			
+						sAajouter = sAajouter + "," + "Omim";
+						score++;
+					}
+					
+					
+					
+					
+					res.get((SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0)))).set(1, sAajouter);
+					
+					res.get((SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0)))).set(2,String.valueOf(score) );
+					for(int j = 1; j<HPO.get(i).size();j++){
+						if(!SearchHpoOrphaOmim.ContainsCui(res,HPO.get(i).get(j))){
+							res.get(SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0))).add(res.get(SearchHpoOrphaOmim.ContainsMaladie(res,HPO.get(i).get(0))).size(),HPO.get(i).get(j));
+						}
+					}
+					
+				}
+				
+				
+				else{
+					ArrayList<String> aAjoute = new ArrayList<String>();
+					aAjoute.add(0,HPO.get(i).get(0));
+					aAjoute.add(1,"HPO");
+					aAjoute.add(2,"1");
+					
+					for(int j =3 ; j < HPO.get(i).size();j++){
+						aAjoute.add(j,HPO.get(i).get(j));
+						
+					}
+					res.add(cpt,aAjoute);
+					cpt++;
+				}
+		    		
+		    }
+		  
+		  BOrpha = false;
+		  BHPO = false;
+		  BOmim = true;
+		  
+		  for(int i = 0; i < Omim.size();i++){
+				if(SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0)) != -2){
+					String sAajouter = res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0)))).get(1);
+					int score = 1;
+					
+					if (!sAajouter.contains("Orpha")&&BOrpha){
+						
+						sAajouter = sAajouter + "," + "Orpha";
+						score++;
+					}
+					
+					
+					if (!sAajouter.contains("HPO")&&BHPO){
+						sAajouter = sAajouter + "," + "HPO";
+						score++;
+						
+					}
+
+					if (!sAajouter.contains("Omim")&&BOmim){
+			
+						sAajouter = sAajouter + "," + "Omim";
+						score++;
+					}
+					
+					
+					
+					
+					res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0)))).set(1, sAajouter);
+					
+					res.get((SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0)))).set(2,String.valueOf(score) );
+					for(int j = 1; j<Omim.get(i).size();j++){
+						if(!SearchHpoOrphaOmim.ContainsCui(res,Omim.get(i).get(j))){
+							res.get(SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0))).add(res.get(SearchHpoOrphaOmim.ContainsMaladie(res,Omim.get(i).get(0))).size(),Omim.get(i).get(j));
+						}
+					}
+					
+				}
+				
+				
+				else{
+					ArrayList<String> aAjoute = new ArrayList<String>();
+					aAjoute.add(0,Omim.get(i).get(0));
+					aAjoute.add(1,"Omim");
+					aAjoute.add(2,"1");
+					
+					for(int j =3 ; j < Omim.get(i).size();j++){
+						aAjoute.add(j,Omim.get(i).get(j));
+						
+					}
+					res.add(cpt,aAjoute);
+					cpt++;
+				}
+		    		
+		    }
+		
+		 
+		 
+		 return res;
+	    }
+	 public static void MagouillepourHPO(ArrayList<String[]> IDandLabel, ArrayList<ArrayList<String[]>> IDandCUIList, ArrayList<ArrayList<String>> DiseaseANDcui)
+	 {
+		 for(String[] arg : IDandLabel)
+			{
+				ArrayList<String> tmp = new ArrayList<String>();
+				int ind = SearchHpoOrphaOmim.Contains(arg[1],DiseaseANDcui);
+				if(ind < 0)
+				{
+					tmp.add(arg[1]);
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+						if(value.equals(""))
+							break;
+						if(value.matches(".*[,;].*"))
+						{
+							String[] cuis = value.split("[,;]");
+							for(String cui : cuis)
+								tmp.add(cui.trim());
+						}
+						else
+							tmp.add(value.trim());
+						DiseaseANDcui.add(tmp);
+						}
+				}
+				else
+				{
+					String value = "";
+					for(ArrayList<String[]> IDandCUI : IDandCUIList)
+					{
+						for(String[] val : IDandCUI)
+						{
+							if(arg[0].equals(val[0]))
+							{
+								value = val[1];
+								break;
+							}
+						}
+					}
+					if(value.matches(".*[,;].*"))
+					{
+						String[] cuis = value.trim().split("[,;]");
+						for(String cui : cuis)
+							DiseaseANDcui.get(ind).add(cui.trim());
+					}
+					else
+						DiseaseANDcui.get(ind).add(value.trim());
+				}
+			}
+	 }
 	
 }

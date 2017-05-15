@@ -41,9 +41,9 @@ public class Sider {
 				if(tmp.size() <= 3)
 				{
 					Allstitch_ids.add(stitch_ids);
-					break;
 				}
-			    String where = "";
+				else {
+					String where = "";
 			    for(int i=3;i<tmp.size() - 1;i++)
 			    	where += "\"" + tmp.get(i).trim() + "\",";
 			    where += "\"" + tmp.get(tmp.size() - 1).trim() + "\"";
@@ -57,6 +57,8 @@ public class Sider {
 			    }
 			    //if(stitch_ids.size() > 3)
 			    	Allstitch_ids.add(stitch_ids);
+				}
+			    
 			}
 		    Date end = new Date();
 		    System.out.println("---------------------------");
@@ -121,6 +123,7 @@ public class Sider {
 			    }
 			    stitch_ids.add(tmp_ids);
 		    }
+
 		    if(stitch_ids.size() > 1)
 		    {
 			    int index = GetsmallerSet(stitch_ids);

@@ -37,11 +37,15 @@ public class Controlers {
 	public void goToSearchView() {
 		model.addObserver(new SearchView(this));
 	}
+	
+	
 	public void addDiseaseList(ArrayList<ArrayList<String>> list) {
 		ListPanel resultDisease=new ListPanel((SearchView) model.Instanceof("SearchView"),list);
 		((SearchView) model.Instanceof("SearchView")).DiseasePanel.add(resultDisease);
 		
 	}
+	
+	
 	public void addDrugList(ArrayList<String> list) { 
 		JPanel listmedoc= new JPanel(new GridLayout(list.size(), 1));
 		

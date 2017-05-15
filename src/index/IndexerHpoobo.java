@@ -40,7 +40,7 @@ public class IndexerHpoobo {
 			      System.out.println("Indexing to directory '" + "C:/Users/gauthier/Desktop/TELECOM/2A/GMD/Projet/indexHpoobo" + "'...");
 
 
-			     Directory dir = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs"));
+			     Directory dir = FSDirectory.open(Paths.get("F:/Ecole(Telecom)/cours telecom/Projet_GMD/indexs/indexHpoobo"));
 
 			     //Directory dir = FSDirectory.open(Paths.get("C:/Users/gauthier/Desktop/TELECOM/2A/GMD/indexHpoobo"));
 

@@ -38,12 +38,24 @@ public class SearchATC {
 				LabelList.add(arg.get(0));
 				LabelList.add(arg.get(1));
 				LabelList.add(arg.get(2));
-				for(String s : arg)
+//				for(String s : arg)
+//				{
+//					String queryString = s;
+//					Query query = new QueryParser("ATC",analyzer).parse(queryString);
+//					
+//					TopDocs results = searcher.search(query, 10);
+//					ScoreDoc[] hits = results.scoreDocs;
+//					for(ScoreDoc scoredoc: hits)
+//					{
+//						String value = searcher.doc(scoredoc.doc).getField("Label").stringValue();
+//						if(!LabelList.contains(value))
+//						   LabelList.add(value);
+//					}
+//				}
+				for (int i = 3; i<arg.size();i++)
 				{
-					String queryString = s;
-					Query query = new QueryParser("ATC",analyzer).parse(queryString);
-					
-					TopDocs results = searcher.search(query, 10);
+					Query query = new QueryParser("ATC",analyzer).parse((arg.get(i)).trim());
+					TopDocs results = searcher.search(query, 100);
 					ScoreDoc[] hits = results.scoreDocs;
 					for(ScoreDoc scoredoc: hits)
 					{
